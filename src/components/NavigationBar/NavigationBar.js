@@ -1,0 +1,47 @@
+import React from 'react';
+import styles from './styles.module.css';
+
+function NavigationBar() {
+    return (
+        <nav className={styles.navigationBar}>
+            <section className={styles.navBarOne}>
+                <p className={styles.logo}>
+                    World-Tube
+                </p>
+                <div className={styles.accountItems}>
+                    <a className={styles.accountLink}>
+                        Search
+                    </a>
+                    <a className={styles.accountLink}>
+                        Your Videos
+                    </a>
+                    <a className={styles.accountLink}>
+                        Log In
+                    </a>
+                    <button className={styles.signUpButton}>
+                        Sign Up
+                    </button>
+                </div>
+            </section>
+            <section className={styles.navBarTwo}>
+                <a className={styles.videoLink}>
+                    Music
+                </a>
+                <a className={styles.videoLink}>
+                    Funny
+                </a>
+                <a className={styles.videoLink}>
+                    Sports
+                </a>
+                <a className={styles.videoLink}>
+                    News
+                </a>
+                <a className={styles.videoLink}>
+                    Entertainment
+                </a>
+            </section>
+        </nav>
+    )
+}
+
+export default NavigationBar;

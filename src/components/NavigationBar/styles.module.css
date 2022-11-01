@@ -1,0 +1,59 @@
+.navigationBar{
+    background-color: grey;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+}
+
+.navBarOne{
+    background-color: grey;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60%;
+}
+
+.navBarTwo{
+    background-color: rgb(0, 0, 0);
+    color: white;
+    height: 40%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+
+.accountItems{
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo{
+    color: white;
+    margin-left: 20px;
+}
+
+.signUpButton{
+    padding: 10px;
+    background-color: white;
+    border-radius: 10px; 
+    border: none;
+    cursor: pointer;
+}
+
+.signUpButton:hover{
+    background-color: rgb(211, 211, 211);
+}   
+
+.accountLink:hover{
+    cursor: pointer;
+    color:rgb(163, 163, 163)
+}
+
+.videoLink:hover{
+    cursor: pointer;
+    color: rgb(163, 163, 163);
+}
