@@ -5,13 +5,13 @@ import NavigationBar from './NavigationBar';
 import LogInPage from './LogInPage';
 import AccountPage from './AccountPage';
 
+//TODO: install react routers here
 function App() {
     const [user] = useAuthState(auth);
 
     return(
         <>
             <NavigationBar />
-            {user ? <AccountPage/> : <LogInPage/> }        
         </>
     )
 }

@@ -3,7 +3,7 @@ import styles from './styles.module.css';
 import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
-import {useCreateUserWithEmailAndPassword, useSignInWithEmailAndPassword, useSignInWithGoogle} from 'react-firebase-hooks/auth';
+import {useSignInWithEmailAndPassword, useSignInWithGoogle, useAuthState} from 'react-firebase-hooks/auth';
 import {auth} from '../Firebase-config';
 import {signOut} from 'firebase/auth'
 
@@ -20,9 +20,10 @@ const StyledButton = styled(Button)`
 function LogInPage () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+    //const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
     const [signInWithGoogle] = useSignInWithGoogle(auth);
+    const [user] = useAuthState(auth);
 
     signOut(auth);
 
@@ -55,7 +56,7 @@ function LogInPage () {
         }
     }
 
-    return(
+    return user ? (<AccountPage/>) : (
         <section className={styles.flexContainer}>
             <div className={styles.logInContainer}>
                 <h1 className={styles.title}>
@@ -77,7 +78,7 @@ function LogInPage () {
                 </button>
             </div> 
         </section>
-    )
+    )  
 }
 
 export default LogInPage;
