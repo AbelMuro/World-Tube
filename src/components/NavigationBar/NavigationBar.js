@@ -20,9 +20,9 @@ function NavigationBar() {
     return (
         <nav className={styles.navigationBar}>
             <section className={styles.navBarOne}>
-                <p className={styles.logo} onClick={handleHomePage}>
+                <h1 className={styles.logo} onClick={handleHomePage}>
                     World-Tube
-                </p>
+                </h1>
                 <div className={styles.accountItems}>
                     <a className={styles.accountLink}>
                         Search
