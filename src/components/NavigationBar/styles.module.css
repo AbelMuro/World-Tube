@@ -31,7 +31,16 @@
     gap: 20px;
 }
 
+.accountLink{
+    font-family: "crimson text";
+}
+
+.videoLink{
+    font-family: "crimson text";
+}
+
 .logo{
+    font-family: "crimson text";
     color: white;
     margin-left: 20px;
 }

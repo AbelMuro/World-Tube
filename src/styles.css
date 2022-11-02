@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "crimson text";
+    src: url("./Fonts/CrimsonText-Regular.ttf");
+}
+
 body{
     margin: 0px;
+    height: 100vh;
+}
+
+#root{
+    height: 100%;
 }
