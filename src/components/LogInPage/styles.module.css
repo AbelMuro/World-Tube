@@ -1,5 +1,5 @@
 .flexContainer{
-    height: 85%;
+    height: 89.2%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +11,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 20px;
-    background-color: grey;
+    background-color: rgb(37,37,37);
     color: white; 
 }
 

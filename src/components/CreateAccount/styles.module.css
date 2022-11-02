@@ -1,0 +1,15 @@
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 89.2%;
+}
+
+.accountContainer{
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    background-color: rgb(37, 37, 37);
+    width: 300px;
+    padding: 20px;
+}

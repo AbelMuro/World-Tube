@@ -1,3 +1,3 @@
-import {auth} from './Firebase-config.js';
+import {auth, storage} from './Firebase-config.js';
 
-export {auth};
+export {auth, storage};

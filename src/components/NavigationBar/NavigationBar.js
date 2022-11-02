@@ -1,11 +1,26 @@
 import React from 'react';
 import styles from './styles.module.css';
+import {useNavigate} from 'react-router-dom';
 
 function NavigationBar() {
+    const navigate = useNavigate();
+
+    const handleHomePage = () => {
+        navigate("/");
+    }
+
+    const handleLogin = () => {
+        navigate("/login")
+    }
+
+    const handleCreateAccount = () => {
+        navigate("/create-account");
+    }
+
     return (
         <nav className={styles.navigationBar}>
             <section className={styles.navBarOne}>
-                <p className={styles.logo}>
+                <p className={styles.logo} onClick={handleHomePage}>
                     World-Tube
                 </p>
                 <div className={styles.accountItems}>
@@ -15,10 +30,10 @@ function NavigationBar() {
                     <a className={styles.accountLink}>
                         Your Videos
                     </a>
-                    <a className={styles.accountLink}>
+                    <a className={styles.accountLink} onClick={handleLogin}>
                         Log In
                     </a>
-                    <button className={styles.signUpButton}>
+                    <button className={styles.signUpButton} onClick={handleCreateAccount}>
                         Sign Up
                     </button>
                 </div>
