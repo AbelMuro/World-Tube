@@ -3,8 +3,12 @@
     src: url("./Fonts/CrimsonText-Regular.ttf");
 }
 
+* {
+    padding: 0px;
+    margin: 0px
+}
+
 body{
-    margin: 0px;
     height: 100vh;
 }
 

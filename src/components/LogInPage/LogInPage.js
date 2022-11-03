@@ -5,7 +5,8 @@ import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {useSignInWithEmailAndPassword, useSignInWithGoogle, useAuthState} from 'react-firebase-hooks/auth';
 import {auth} from '../Firebase-config';
-import {signOut} from 'firebase/auth'
+import {signOut} from 'firebase/auth';
+import AccountPage from '../AccountPage';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -24,8 +25,6 @@ function LogInPage () {
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
     const [signInWithGoogle] = useSignInWithGoogle(auth);
     const [user] = useAuthState(auth);
-
-    signOut(auth);
 
     const handleEmail = (e) => {
         setEmail(e.target.value);
