@@ -5,7 +5,7 @@ import {ref, getDownloadURL} from 'firebase/storage';
 
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 
-
+//TODO: iterate through the users personal collection and get the url's
 function DisplayVideos({userID, firestore, storage}) {
     const collectionRef = collection(firestore, userID);
     const [videos, loading] = useCollectionData(collectionRef);
