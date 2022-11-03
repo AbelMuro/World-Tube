@@ -12,14 +12,13 @@ function DisplayVideos({userID, firestore, storage}) {
 
     return loading ? (<>loading</>) : (
         <section>
-            {
-                videos.map((video) => {
-                    let storageRef = ref(storage, `/${userID}/${video.name}`);
-                    getDownloadURL(storageRef)
-                    .then((url) => {
-                        console.log(url);
-                    })
-                })
+            {videos ? videos.map((video) => {
+                    //let storageRef = ref(storage, `${video.name}`);
+                    //getDownloadURL(storageRef)
+                    //.then((url) => {
+                        //console.log(url);
+                    //})
+                }) : <>no videos</>
             }
 
         </section>

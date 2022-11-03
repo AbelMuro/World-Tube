@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 
 import {auth, storage, firestore} from '../Firebase-config';
-import {ref as storageRef} from 'firebase/storage';
+import {ref as storageRef, getDownloadURL} from 'firebase/storage';
+import {collection, addDoc} from 'firebase/firestore';
 
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useUploadFile} from 'react-firebase-hooks/storage';
@@ -46,8 +47,23 @@ function AccountPage() {
     useEffect(() => {
         if(video.length > 0) {
             const userID = user.uid;
-            const ref = storageRef(storage, `/${userID}/${video[0].name}`);    
-            uploadFile(ref, video[0]);
+            const ref = storageRef(storage, `/${userID}/${video[0].name}`);  
+
+            (async function uploadStorage(){
+                try{
+                    let {metadata} = await uploadFile(ref, video[0]);
+                    let url = await getDownloadURL(ref);
+                    const collectionRef = collection(firestore, `${user.uid}`);
+                    await addDoc(collectionRef,{
+                        name: metadata.name,
+                        timeCreated: metadata.timeCreated,
+                        url: url
+                    });                       
+                }
+                catch(error){
+                    console.log(error.message);
+                }
+            })(); 
         }
     }, [video]);
 
@@ -68,7 +84,7 @@ function AccountPage() {
             <div className={styles.videosUploaded}>
                 <StyledButton id="outlined-basic" variant="contained" component="label">
                     Upload videos
-                    <input type="file" hidden accept="image/*" onChange={handleVideo}/>
+                    <input type="file" hidden accept="video/*" onChange={handleVideo}/>
                 </StyledButton>                
                 <h1 className={styles.title}>Your Videos:</h1> 
                 <DisplayVideos userID={user.uid} firestore={firestore} storage={storage}/>
