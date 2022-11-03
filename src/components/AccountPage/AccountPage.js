@@ -2,14 +2,15 @@ import React, {useEffect, useState} from 'react';
 
 import {auth, storage, firestore} from '../Firebase-config';
 import {ref as storageRef} from 'firebase/storage';
-import {collection, doc} from 'firebase/firestore';
 
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {useUploadFile, useDownloadURL} from 'react-firebase-hooks/storage';
-import {useCollectionData} from 'react-firebase-hooks/firestore';
+import {useUploadFile} from 'react-firebase-hooks/storage';
 
 import styles from './styles.module.css';
 import emptyAvatar from './images/empty avatar.png';
+
+import DisplayVideos from './DisplayVideos';
+
 import {Button} from '@mui/material';
 import {styled} from '@mui/system';
 
@@ -30,15 +31,12 @@ const StyledButton = styled(Button)`
     }
 `
 
-//TODO: i managed to create a link between the users personal storage(videos) and the users personal firestore
-// the firestore will contain the url's of the videos in the storage
-// now i need to iterate through the firestore collection and display all the urls in video tags
 function AccountPage() {
     const [video, setVideo] = useState([]);
     const [user] = useAuthState(auth);
     const [uploadFile] = useUploadFile(auth);
     //const [downloadURL] = useDownloadURL(auth);
-    //const collectionRef = collection(firestore, `${user.uid}`);                                  // collection() returns a reference to a collection
+    //const collectionRef = collection(firestore, `${user.uid}`);                                  
     //const documentRef = doc(collectionRef, "") 
 
     const handleVideo = (e) => {
@@ -73,6 +71,7 @@ function AccountPage() {
                     <input type="file" hidden accept="image/*" onChange={handleVideo}/>
                 </StyledButton>                
                 <h1 className={styles.title}>Your Videos:</h1> 
+                <DisplayVideos userID={user.uid} firestore={firestore} storage={storage}/>
             </div>
         </section>
     ) : (<>loading</>)
