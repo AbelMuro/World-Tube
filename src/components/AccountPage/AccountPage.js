@@ -11,29 +11,8 @@ import styles from './styles.module.css';
 import emptyAvatar from './images/empty avatar.png';
 
 import DisplayVideos from './DisplayVideos';
+import Popup from './Popup';
 
-import {Button, TextField,Stack, Dialog} from '@mui/material';
-import {Select, MenuItem, InputLabel, FormControl} from '@mui/material';
-import {styled} from '@mui/system';
-
-import Popup from 'reactjs-popup';
-
-const StyledButton = styled(Button)`
-    background-color: #F4F3F3;
-    color: #464646;
-    font-family: "crimson text";
-    margin-bottom: 20px;
-
-    &:hover:not(:disabled) {
-        background-color: #464646;
-        color: #F4F3F3;
-    }     
-
-    &:disabled {
-        background-color: rgb(46, 46, 46);
-        color: rgb(100, 100, 100);
-    }
-`
 
 function AccountPage() {
     const [video, setVideo] = useState([]);
@@ -92,14 +71,7 @@ function AccountPage() {
                 </div>
             </div>
             <div className={styles.videosUploaded}>
-
-            <Dialog></Dialog>
-
-            <StyledButton id="outlined-basic" variant="contained" component="label">
-                Upload videos
-                {/*<input type="file" hidden accept="video/*" onChange={handleVideo}/>*/}
-            </StyledButton>
-           
+            <Popup/>
             <h1 className={styles.title}>Your Videos:</h1> 
             <DisplayVideos userID={user.uid} firestore={firestore}/>
             </div>
