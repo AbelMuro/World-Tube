@@ -41,3 +41,19 @@
 .title{
     font-family: "crimson text";
 }
+
+.overlay{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(61, 61, 61, 0.8);
+}
+
+.popup{
+    width: 500px;
+    height: 500px;
+    background-color:rgb(37, 37, 37);
+    padding: 20px;
+}

@@ -12,8 +12,11 @@ import emptyAvatar from './images/empty avatar.png';
 
 import DisplayVideos from './DisplayVideos';
 
-import {Button} from '@mui/material';
+import {Button, TextField,Stack, Dialog} from '@mui/material';
+import {Select, MenuItem, InputLabel, FormControl} from '@mui/material';
 import {styled} from '@mui/system';
+
+import Popup from 'reactjs-popup';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -34,6 +37,7 @@ const StyledButton = styled(Button)`
 
 function AccountPage() {
     const [video, setVideo] = useState([]);
+    const [category, setCategory] = useState("")
     const [user] = useAuthState(auth);
     const [uploadFile] = useUploadFile(auth);
     //const [downloadURL] = useDownloadURL(auth);
@@ -54,11 +58,17 @@ function AccountPage() {
                     let {metadata} = await uploadFile(ref, video[0]);
                     let url = await getDownloadURL(ref);
                     const collectionRef = collection(firestore, `${user.uid}`);
+                    const allVideosRef = collection(firestore, "All videos");
                     await addDoc(collectionRef,{
                         name: metadata.name,
                         timeCreated: metadata.timeCreated,
                         url: url
-                    });                       
+                    });  
+                    await addDoc(allVideosRef, {
+                        name: user.displayName,
+                        timeCreated: metadata.timeCreated,                        
+                        url: url,    
+                    })                  
                 }
                 catch(error){
                     console.log(error.message);
@@ -82,12 +92,16 @@ function AccountPage() {
                 </div>
             </div>
             <div className={styles.videosUploaded}>
-                <StyledButton id="outlined-basic" variant="contained" component="label">
-                    Upload videos
-                    <input type="file" hidden accept="video/*" onChange={handleVideo}/>
-                </StyledButton>                
-                <h1 className={styles.title}>Your Videos:</h1> 
-                <DisplayVideos userID={user.uid} firestore={firestore} storage={storage}/>
+
+            <Dialog></Dialog>
+
+            <StyledButton id="outlined-basic" variant="contained" component="label">
+                Upload videos
+                {/*<input type="file" hidden accept="video/*" onChange={handleVideo}/>*/}
+            </StyledButton>
+           
+            <h1 className={styles.title}>Your Videos:</h1> 
+            <DisplayVideos userID={user.uid} firestore={firestore}/>
             </div>
         </section>
     ) : (<>loading</>)

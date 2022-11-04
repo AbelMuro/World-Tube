@@ -1,0 +1,23 @@
+.homeContainer{
+    height: auto;
+}
+
+.flexContainer{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.title{
+    text-align: center;
+    font-family: "crimson text";
+    font-size: 40px;
+    margin-top: 20px; 
+}
+
+.video{
+    object-fit: contain;
+    width: 300px;
+}

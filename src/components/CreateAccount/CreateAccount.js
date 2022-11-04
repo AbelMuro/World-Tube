@@ -30,7 +30,6 @@ function CreateAccount() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [user] = useAuthState(auth);
-    //const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
     let disable = !password.match(/\d/g) || !password.match(/\W/g) || !password.match(/[a-zA-Z]/g) || password.length < 6;
 
     const handleUsername = (e) => {

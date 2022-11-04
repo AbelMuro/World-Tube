@@ -1,26 +1,30 @@
 import React from 'react';
+import {v4 as uuid} from 'uuid';
 
 import {collection} from 'firebase/firestore';
-import {ref, getDownloadURL} from 'firebase/storage';
-
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 
-//TODO: iterate through the users personal collection and get the url's
-function DisplayVideos({userID, firestore, storage}) {
+import styles from './styles.module.css';
+
+function DisplayVideos({userID, firestore}) {
     const collectionRef = collection(firestore, userID);
     const [videos, loading] = useCollectionData(collectionRef);
 
     return loading ? (<>loading</>) : (
-        <section>
+        <section className={styles.allVideos}>
             {videos ? videos.map((video) => {
-                    //let storageRef = ref(storage, `${video.name}`);
-                    //getDownloadURL(storageRef)
-                    //.then((url) => {
-                        //console.log(url);
-                    //})
+                if(video.url){
+                    return(
+                        <div key={uuid()} className={styles.videoContainer}>
+                            <video className={styles.videos} controls>
+                                <source src={video.url} type="video/mp4"/>
+                                Your browser doesn't support videos
+                            </video>                            
+                        </div>
+                    )
+                }  
                 }) : <>no videos</>
             }
-
         </section>
     );
 }

@@ -1,0 +1,13 @@
+.allVideos{
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.videos {
+    object-fit: contain;
+    width: 300px;
+}
