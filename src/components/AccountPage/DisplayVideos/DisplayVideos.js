@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {v4 as uuid} from 'uuid';
 
 import {collection} from 'firebase/firestore';
@@ -29,4 +29,4 @@ function DisplayVideos({userID, firestore}) {
     );
 }
 
-export default DisplayVideos;
+export default memo(DisplayVideos);

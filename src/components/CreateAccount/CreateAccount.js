@@ -48,9 +48,7 @@ function CreateAccount() {
         try{
             if(username == "") throw {message: "username is empty"};
             await createUserWithEmailAndPassword(auth, email, password);
-            updateProfile(auth.currentUser, {displayName: username});
-            const collectionRef = collection(firestore, auth.currentUser.uid);
-            await addDoc(collectionRef, {skip: "skip"});
+            await updateProfile(auth.currentUser, {displayName: username});
         }
         catch(error){
             if(error.message == "Firebase: Error (auth/email-already-in-use).")
@@ -75,7 +73,7 @@ function CreateAccount() {
                 <Stack spacing={2}>
                     <TextField id="outlined-basic" label="Enter Username" value={username} onChange={handleUsername} sx={{backgroundColor: "white"}}/>
                     <TextField id="outlined-basic" label="Enter Email" value={email} onChange={handleEmail} sx={{backgroundColor: "white"}}/>
-                    <TextField id="outlined-basic" label="Enter Password" value={password} onChange={handlePassword} sx={{backgroundColor: "white"}}/>       
+                    <TextField id="outlined-basic" label="Enter Password" value={password} onChange={handlePassword} sx={{backgroundColor: "white"}} type="password"/>       
                     <StyledButton disabled={disable} variant="contained" onClick={handleRegister}>
                         Register   
                     </StyledButton>             
