@@ -6,6 +6,7 @@ import {useCollectionData} from 'react-firebase-hooks/firestore'
 
 import styles from './styles.module.css';
 
+
 function DisplayVideos({userID, firestore}) {
     const collectionRef = collection(firestore, userID);
     const [videos, loading] = useCollectionData(collectionRef);

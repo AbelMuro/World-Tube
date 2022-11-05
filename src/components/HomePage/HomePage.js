@@ -7,13 +7,30 @@ import {v4 as uuid} from "uuid";
 import {useNavigate} from 'react-router-dom';
 
 function HomePage() {
-    const allVideosRef = collection(firestore, "All videos");       //allVideosRef is an array of document
+    const allVideosRef = collection(firestore, "developers collection");       //allVideosRef is an array of document
     const [allVideos, loading] = useCollectionData(allVideosRef)
     const navigate = useNavigate();
 
-    //TODO: pass the url into the local storage and pass the video title as a URL parameter
-    const handleNavigate = () => {
-        navigate("");
+    const handleNavigate = (e) => {
+        const selectedVideo = e.target.parentElement;
+        const videoID = selectedVideo.getAttribute("data-id");
+        const userID = selectedVideo.getAttribute("data-user");
+        const title = selectedVideo.querySelector("." + styles.videoTitle).innerHTML;
+        const username = selectedVideo.querySelector("." + styles.videoDesc).lastChild.innerHTML;
+        const userImage = selectedVideo.querySelector("." + styles.videoDesc).firstChild.src;
+        const timeStamp = selectedVideo.querySelector("." + styles.videoTimeStamp).innerHTML;
+        const videoURL = selectedVideo.querySelector("video").firstChild.src;
+        const videoData = {
+            title: title,
+            username: username,
+            userImage: userImage,
+            timeStamp: timeStamp,
+            URL: videoURL,
+            videoID: videoID,
+            userID: userID,
+        }
+        localStorage.setItem("video", JSON.stringify(videoData));
+        navigate("/" + title);
     }
 
     return(
@@ -24,16 +41,19 @@ function HomePage() {
             <div className={styles.flexContainer}>
                 {loading ? <>loading....</> : allVideos.map((video) => {
                     return (
-                        <div className={styles.videoContainer} key={uuid()}>
-                            <video className={styles.video} onClick={handleNavigate} data-hash={video.md5hash}>
+                        <div className={styles.videoContainer} key={uuid()} data-id={video.videoID} data-user={video.userID}>
+                            <video className={styles.video} onClick={handleNavigate}>
                                 <source src={video.url} type="video/mp4"/>
+                                Your Browser doesn't support videos
                             </video>     
                             <h2 className={styles.videoTitle}>
                                 {video.title}
                             </h2>    
                             <p className={styles.videoDesc}>
                                 <img src={video.userImage} className={styles.userImage}/>
-                                {video.username}  
+                                <span id={styles.username}>
+                                    {video.username} 
+                                </span> 
                             </p>   
                             <p className={styles.videoTimeStamp}>
                                 {video.timeCreated}

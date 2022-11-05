@@ -1,0 +1,49 @@
+.title{
+    color: initial;
+}
+
+.timeStamp{
+    color: initial;
+}
+
+.timeStampTitle{
+    color: initial;
+}
+
+.timeCreated{
+    color: initial;
+}
+
+.username{
+    color: initial;
+}
+
+.userInfo{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.userImage{
+    object-fit: contain;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.otherVideosByUser{
+    color: initial;
+}
+
+.flexContainer{
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    margin-top: 40px;
+}
+
+.displayComments, .commentContainer{
+    border-radius: 10px;
+    border: 1px solid rgb(150, 150, 150);
+    padding: 15px;
+}
+

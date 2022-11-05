@@ -29,7 +29,7 @@
     border-radius: 100%;
 }
 
-.videoTitle, .videoDesc, .videoTimeStamp{
+.videoTitle, .videoTimeStamp, #username{
     font-family: "crimson text";
 }
 
