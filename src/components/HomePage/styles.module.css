@@ -3,11 +3,11 @@
 }
 
 .flexContainer{
-    display: flex;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 30px;
     width: 100%;
     padding: 20px;
-    flex-wrap: wrap;
 }
 
 .title{
@@ -19,5 +19,23 @@
 
 .video{
     object-fit: contain;
-    width: 300px;
+    height: 200px;
+    cursor: pointer;
+}
+
+.userImage{
+    object-fit: contain;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.videoTitle, .videoDesc, .videoTimeStamp{
+    font-family: "crimson text";
+}
+
+.videoDesc{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0px;
 }

@@ -22,9 +22,6 @@ function AccountPage() {
     const [category, setCategory] = useState("");
     const [user] = useAuthState(auth);
     const [uploadFile] = useUploadFile(auth);
-    //const [downloadURL] = useDownloadURL(auth);
-    //const collectionRef = collection(firestore, `${user.uid}`);                                  
-    //const documentRef = doc(collectionRef, "") 
 
     const handleVideo = (file) => {
         setVideo(file);
@@ -38,24 +35,29 @@ function AccountPage() {
             (async function uploadStorage(){
                 try{
                     let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
+                    console.log(metadata);
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
+                    let userImage = user.photoURL ? user.photoURL : emptyAvatar;
                     const collectionRef = collection(firestore, `${user.uid}`);                 //referencing the user personal collection
                     const allVideosRef = collection(firestore, "All videos");                   //referencing the collection that will contain ALL videos
                     await addDoc(collectionRef,{                                                //this collection is the users personal collection
-                        name: metadata.name,
+                        username: user.displayName,
+                        md5hash: metadata.md5Hash,
                         title: title,
+                        userImage: userImage,
                         category: category,
                         timeCreated: metadata.timeCreated,
                         url: url
                     });  
                     await addDoc(allVideosRef, {                                                //this collection will be used to contain all videos uploaded by all users
-                        name: user.displayName,
+                        username: user.displayName,
+                        md5hash: metadata.md5Hash,
                         title: title,
+                        userImage: userImage,
                         category: category,
                         timeCreated: metadata.timeCreated,                        
                         url: url,    
                     })    
-                    //TODO: when loading is set to false, the popup should close
                     setLoading(false); 
                     setOpen(false);             
                 }
