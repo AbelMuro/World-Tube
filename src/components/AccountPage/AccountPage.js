@@ -42,7 +42,6 @@ function AccountPage() {
                     const allVideosRef = collection(firestore, "All videos");                   //referencing the collection that will contain ALL videos
                     await addDoc(collectionRef,{                                                //this collection is the users personal collection
                         username: user.displayName,
-                        md5hash: metadata.md5Hash,
                         title: title,
                         userImage: userImage,
                         category: category,
@@ -51,7 +50,6 @@ function AccountPage() {
                     });  
                     await addDoc(allVideosRef, {                                                //this collection will be used to contain all videos uploaded by all users
                         username: user.displayName,
-                        md5hash: metadata.md5Hash,
                         title: title,
                         userImage: userImage,
                         category: category,

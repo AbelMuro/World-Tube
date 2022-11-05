@@ -11,7 +11,7 @@ function HomePage() {
     const [allVideos, loading] = useCollectionData(allVideosRef)
     const navigate = useNavigate();
 
-    //TODO: pass the title of the video to a router and the md5hash to the local storage
+    //TODO: pass the url into the local storage and pass the video title as a URL parameter
     const handleNavigate = () => {
         navigate("");
     }
