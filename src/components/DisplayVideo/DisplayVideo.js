@@ -4,7 +4,7 @@ import {collection, doc, setDoc} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import styles from './styles.module.css';
-import {TextField, Button, Stack} from '@mui/material';
+import {TextField, Button, Stack, CircularProgress} from '@mui/material';
 import {styled} from '@mui/system';
 import Video from './Video';                    //i memoized the Video to prevent it from constantly re-rendering in the controlled component
 import {v4 as uuid} from 'uuid';
@@ -91,10 +91,9 @@ function DisplayVideo() {
                             Submit Comment
                         </StyledButton>
                     </Stack>
-     
                 </div>               
                 <div className={styles.displayComments}>
-                    {(loadingComments) ? <>is loading</> : allComments.map((comment) => {
+                    {(loadingComments) ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.map((comment) => {
                             return (
                                 <div className={styles.commentContainer} key={uuid()}>
                                     <img src={comment.userImage} className={styles.userImage}/>
