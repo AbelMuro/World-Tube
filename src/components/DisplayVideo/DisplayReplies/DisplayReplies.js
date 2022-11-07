@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {collection,} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import styles from './styles.module.css';
+import {v4 as uuid} from 'uuid'
 
 function DisplayReplies({userID, videoID, commentID, firestore}){
     const commentReplyCollection = collection(firestore, `${userID}/${videoID}/commentSection/${commentID}/commentReplies`);
@@ -10,13 +11,13 @@ function DisplayReplies({userID, videoID, commentID, firestore}){
     return( loadingReplies ? <>loading</> : 
         <> 
             {allReplies.map((replyComment) => {
-                <div className={styles.reply}>
+                return (<div className={styles.reply} key={uuid()}>
                     {replyComment.comment}
-                </div>
+                </div>)
             })}
         
         </>
         )
 }
 
-export default DisplayReplies;
+export default memo(DisplayReplies);
