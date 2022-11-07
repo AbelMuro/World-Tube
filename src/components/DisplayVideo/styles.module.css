@@ -2,12 +2,8 @@
     color: initial;
 }
 
-.timeStamp{
-    color: initial;
-}
-
-.timeStampTitle{
-    color: initial;
+.timeStamp, .timeStampTitle, .comment{
+    font-family: "crimson text";
 }
 
 .timeCreated{
@@ -15,7 +11,10 @@
 }
 
 .username{
-    color: initial;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: "crimson text";
 }
 
 .userInfo{
@@ -41,11 +40,26 @@
     margin-top: 40px;
 }
 
-.displayComments, .commentContainer{
+.commentContainer{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+.displayComments, .nestedFlex{
     border-radius: 10px;
     border: 1px solid rgb(150, 150, 150);
     padding: 15px;
     margin: 20px 0px;
+}
+
+.nestedFlex{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-family: "crimson text";
+    height: auto;
 }
 
 .loadingCircle{
@@ -54,4 +68,8 @@
     align-items: center;
     width: 100%;
     height: 100px;
+}
+
+.commentReplies{
+    align-self: flex-end;
 }

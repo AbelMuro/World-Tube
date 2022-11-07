@@ -1,19 +1,20 @@
-import React, { useEffect, useState, memo } from 'react';
-import {auth, storage, firestore} from '../Firebase-config';
-import {collection, doc, setDoc} from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import {auth, firestore} from '../Firebase-config';
+import {collection, doc, setDoc, getDocs, query} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import styles from './styles.module.css';
-import {TextField, Button, Stack, CircularProgress} from '@mui/material';
+import {TextField, Button, Stack, CircularProgress, Dialog, DialogTitle, DialogContent} from '@mui/material';
 import {styled} from '@mui/system';
-import Video from './Video';                    //i memoized the Video to prevent it from constantly re-rendering in the controlled component
+import Video from './Video';                    //i've memoized the Video to prevent it from constantly re-rendering in the controlled component
 import {v4 as uuid} from 'uuid';
+import emptyAvatar from './images/empty avatar.png';
+import DisplayReplies from './DIsplayReplies';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
     color: #464646;
     font-family: "crimson text";
-    margin-bottom: 20px;
 
     &:hover:not(:disabled) {
         background-color: #464646;
@@ -25,35 +26,88 @@ const StyledButton = styled(Button)`
         color: rgb(100, 100, 100);
     }
 `
-//TODO: style the css for the comment boxes for each comment
-// then find a way to enable users to reply to comments
+//How the comment section works;
+//when the user clicks on reply or edit, 
+//it will can an event handler that will access
+//all the data from the comment itself
+//and will store the data into state objects
+//then.. a dialog popup will appear and access
+//the state objects and display them
 
 function DisplayVideo() {
     const [comment, setComment] = useState("");
+    const [commentID, setCommentID] = useState("");
+    const [commentForDialog, setCommentForDialog] = useState("");
+    const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [openReplyDialog, setOpenReplyDialog] = useState(false);
     let videoData = localStorage.getItem("video");
     videoData = JSON.parse(videoData);
     const commentCollection = collection(firestore, `${videoData.userID}/${videoData.videoID}/commentSection`);
     const [allComments, loadingComments] = useCollectionData(commentCollection);
     const [user, loadingUser] = useAuthState(auth);
 
-
     const handleComment = (e) => {
         setComment(e.target.value);
     }
 
+    const closeEditDialog = () => {
+        setOpenEditDialog(false);
+    }
+
+    const closeReplyDialog = () => {
+        setOpenReplyDialog(false)
+    }
+
+
+    const handleEditDialog = (e) => {
+        const commentContainer = e.target.parentElement.parentElement.parentElement;
+        const commentIdentification = commentContainer.getAttribute("id");
+        const commentToEdit = commentContainer.querySelector("." + styles.comment).innerHTML
+        setCommentID(commentIdentification);
+        setCommentForDialog(commentToEdit);
+        setOpenEditDialog(true);
+    }
+
+    //TODO: theres a few more things i have to change here, rememeber that commentCOntainer has two nexted elements, one has all the comment info, and the other is emppty
+    const handleReplyDialog = (e) => {
+        const commentContainer = e.target.parentElement.parentElement.parentElement;  
+        const commentIdentification = commentContainer.getAttribute("id");
+        const commentToReply = commentContainer.querySelector("." + styles.comment).innerHTML;
+        setCommentID(commentIdentification);
+        setCommentForDialog(commentToReply);
+        setOpenReplyDialog(true);
+    }
+
+    const handleReply = async (e) => {
+        const reply = document.querySelector("#replyComment").value;
+        const nestedCommentID = uuid();
+        const commentRef = doc(firestore,`${videoData.userID}`, `${videoData.videoID}/commentSection/${commentID}/commentReplies/${nestedCommentID}`)
+        await setDoc(commentRef,{
+            comment: reply,
+            commentID: nestedCommentID,
+            userID: user.uid,
+            userImage: user.photoURL ? user.photoURL : emptyAvatar,
+            username: user.displayName,
+        })           
+    }
+
+    const handleEdit = () => {
+
+    }
 
     const submitComment = async () => {
         if(!user) {alert("You must be signed in to post a comment"); return}
 
         const userID = videoData.userID;
         const videoID = videoData.videoID;
-        const username = videoData.username;
-        const userImage = videoData.userImage;
-        const documentRef = doc(firestore, userID, `${videoID}/commentSection/${uuid()}`);
+        const commentID = uuid();
+        const documentRef = doc(firestore, userID, `${videoID}/commentSection/${commentID}`);
         await setDoc(documentRef, {
             comment: comment,
-            username: username,
-            userImage: userImage,
+            commentID : commentID,
+            userID: user.uid,
+            userImage: user.photoURL ? user.photoURL : emptyAvatar,
+            username: user.displayName,   
         })
     }
 
@@ -87,22 +141,74 @@ function DisplayVideo() {
                 <div className={styles.commentSection}>
                     <Stack spacing={2}>
                         <TextField id="outlined-basic" label="Enter a comment" multiline rows={4} value={comment} onChange={handleComment}/>
-                        <StyledButton variant="contained" onClick={submitComment}>
+                        <StyledButton variant="contained" onClick={submitComment} sx={{marginBottom: "20px"}}>
                             Submit Comment
                         </StyledButton>
                     </Stack>
                 </div>               
                 <div className={styles.displayComments}>
                     {(loadingComments) ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.map((comment) => {
+                        console.log(comment.commentID)
                             return (
-                                <div className={styles.commentContainer} key={uuid()}>
-                                    <img src={comment.userImage} className={styles.userImage}/>
-                                    <p className={styles.username}>
-                                        {comment.username}
-                                    </p>
-                                    <p>
-                                        {comment.comment}
-                                    </p>
+                                <div id={comment.commentID} className={styles.commentContainer} key={uuid()} >  
+                                    <div className={styles.nestedFlex}>
+                                        <p className={styles.username}> 
+                                            <img src={comment.userImage} className={styles.userImage}/>
+                                            {comment.username}
+                                        </p>
+                                        <p className={styles.comment}>
+                                            {comment.comment}
+                                        </p>
+                                        <Stack spacing={2} direction="row" sx={{position: "absolute", right: "10px", top: "70px"}}>
+                                            <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleReplyDialog}>
+                                                Reply
+                                            </StyledButton>
+                                            {(user.uid == comment.userID) ? <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleEditDialog}>
+                                                Edit
+                                            </StyledButton>: <></>}
+                                        </Stack>                      
+                                    </div>         
+                                    <div className={styles.commentReplies}>
+                                        <DisplayReplies userID={videoData.userID} videoID={videoData.videoID} commentID={comment.commentID} firestore={firestore}/>                 
+                                    </div>      
+  
+                                    <Dialog open={openReplyDialog} >
+                                        <DialogTitle sx={{textAlign: "center"}}>
+                                            Reply To Comment
+                                        </DialogTitle>
+                                        <DialogContent sx={{padding: "20px"}}>        
+                                            <Stack spacing={2}>
+                                                <p className={styles.comment}>
+                                                    {commentForDialog}
+                                                </p>
+                                                <TextField variant="outlined" multiline rows={4} sx={{width: "400px"}} inputProps={{id: "replyComment"}}/>
+                                                <StyledButton variant="outline-basic" onClick={handleReply}>
+                                                    Submit
+                                                </StyledButton>
+                                                <StyledButton variant="outline-basic" onClick={closeReplyDialog}>
+                                                    Close
+                                                </StyledButton>
+                                            </Stack>
+                                        </DialogContent>
+                                    </Dialog>
+
+                                    <Dialog open={openEditDialog} >
+                                        <DialogTitle sx={{textAlign: "center"}}>
+                                            Edit Comment
+                                        </DialogTitle>
+                                        <DialogContent sx={{padding: "20px"}}>     
+                                            <Stack spacing={2}>
+                                                <TextField variant="outlined" defaultValue={commentForDialog} multiline rows={4} sx={{width: "400px"}} inputProps={{id: "editComment"}}/>
+                                                <StyledButton variant="outline-basic" onClick={handleEdit}>
+                                                    Submit
+                                                </StyledButton>
+                                                <StyledButton variant="outline-basic" onClick={closeEditDialog}>
+                                                    Close
+                                                </StyledButton>
+                                            </Stack>
+                                        </DialogContent>
+                                    </Dialog>
+
                                 </div>
                             )
                     })}                        

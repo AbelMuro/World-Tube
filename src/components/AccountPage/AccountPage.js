@@ -37,8 +37,6 @@ function AccountPage() {
                     let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
                     let userImage = user.photoURL ? user.photoURL : emptyAvatar;
-                    //const collectionRef = collection(firestore, `${user.uid}`);                //referencing the user personal collection
-                    //const allVideosRef = collection(firestore, "All videos");                  //referencing the collection that will contain ALL videos
                     const videoID = metadata.md5Hash.replace("/", "");
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
                     const developersDocument = doc(firestore, "developers collection", `${videoID}`);
@@ -62,28 +60,7 @@ function AccountPage() {
                         userID: user.uid,
                         videoID: videoID 
                     })
-
-
-                    //await addDoc(collectionRef,{                                                //this collection is the users personal collection
-                        //username: user.displayName,
-                        //title: title,
-                        //userImage: userImage,
-                        //category: category,
-                        //timeCreated: metadata.timeCreated,
-                        //url: url,
-                        //userID: user.uid,
-                        //videoID: metadata.md5Hash
-                    //});  
-                    //await addDoc(allVideosRef, {                                                //this collection will be used to contain all videos uploaded by all users
-                        //username: user.displayName,
-                        //title: title,
-                        //userImage: userImage,
-                        //category: category,
-                        //timeCreated: metadata.timeCreated,                        
-                        //url: url,
-                        //userID: user.uid,
-                        //videoID: metadata.md5Hash    
-                    //});    
+  
                     setLoading(false); 
                     setOpen(false);             
                 }
