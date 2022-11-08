@@ -37,15 +37,11 @@ const StyledButton = styled(Button)`
 //the state objects and display them
 
 
-//TODO: now i need to order the replies for each comment
-
-
 
 function DisplayVideo() {
     let videoData = localStorage.getItem("video");
     videoData = JSON.parse(videoData);    
     const [commentID, setCommentID] = useState("");
-    const [commentToEdit, setCommentToEdit] = useState("");
     const [commentForDialog, setCommentForDialog] = useState("");
     const commentCollection = collection(firestore, `${videoData.userID}/${videoData.videoID}/commentSection`);
     const q = query(commentCollection, orderBy("order", "desc"));

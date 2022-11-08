@@ -7,6 +7,8 @@ import {v4 as uuid} from 'uuid'
 import {CircularProgress} from '@mui/material';
 
 
+//TODO: create an edit button for each reply 
+
 function DisplayReplies({userID, videoID, commentID}){
     const commentReplyCollection = collection(firestore, `${userID}/${videoID}/commentSection/${commentID}/commentReplies`);
     const q = query(commentReplyCollection, orderBy("order", "desc"))
