@@ -22,6 +22,7 @@ const StyledButton = styled(Button)`
 
 function Dialogs({commentForDialog, openReplyDialog,  openEditDialog , handleReply, handleEdit, closeEditDialog, closeReplyDialog}) {
     const [reply, setReply] = useState("");
+    const [edit, setEdit] = useState(commentForDialog);
 
     const handleReplies = (e) => {
         setReply(e.target.value);
@@ -32,8 +33,12 @@ function Dialogs({commentForDialog, openReplyDialog,  openEditDialog , handleRep
     }
 
 
-    const handleEdits = () => {
-        //callhandleEdit
+    const handleEdits = (e) => {
+        setEdit(e.target.value);
+    }
+
+    const sendEdits = () => {
+        handleEdit(edit);
     }
 
     return( 
@@ -64,8 +69,8 @@ function Dialogs({commentForDialog, openReplyDialog,  openEditDialog , handleRep
             </DialogTitle>
             <DialogContent sx={{padding: "20px"}}>     
                 <Stack spacing={2}>
-                    <TextField variant="outlined" defaultValue={commentForDialog} multiline rows={4} sx={{width: "400px"}} inputProps={{id: "editComment"}}/>
-                    <StyledButton variant="outline-basic" onClick={handleEdits}>
+                    <TextField variant="outlined" value={edit} onChange={handleEdits} multiline rows={4} sx={{width: "400px"}} inputProps={{id: "editComment"}}/>
+                    <StyledButton variant="outline-basic" onClick={sendEdits}>
                         Submit
                     </StyledButton>
                     <StyledButton variant="outline-basic" onClick={closeEditDialog}>

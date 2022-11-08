@@ -34,6 +34,13 @@ function AccountPage() {
 
             (async function uploadStorage(){
                 try{
+                    const currentDate = new Date();
+                    const millisecondsSince1970 = currentDate.getTime();
+                    const readableDate = currentDate.toLocaleDateString();
+                    const currentHour = ((currentDate.getHours() + 11) % 12 + 1);
+                    let currentMinutes = currentDate.getMinutes();
+                    currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
+                    const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
                     let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
                     let userImage = user.photoURL ? user.photoURL : emptyAvatar;
@@ -45,17 +52,18 @@ function AccountPage() {
                         title: title,
                         userImage: userImage,
                         category: category,
-                        timeCreated: metadata.timeCreated,
+                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
                         url: url,
                         userID: user.uid,
-                        videoID: videoID
+                        videoID: videoID,
+                        order: millisecondsSince1970,
                     })
                     await setDoc(developersDocument,{
                         username: user.displayName,
                         title: title,
                         userImage: userImage,
                         category: category,
-                        timeCreated: metadata.timeCreated,
+                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
                         url: url,
                         userID: user.uid,
                         videoID: videoID 

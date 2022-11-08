@@ -1,10 +1,10 @@
 import React, {memo} from 'react';
 import styles from './styles.module.css';
 
-function Video() {
+function Video({url}) {
     return(                
         <video className={styles.video} controls id="mainVideo">
-            <source type="video/*"/>
+            <source src={url} type="video/mp4"/>
             Your Browser doesn't support videos
         </video>
     )

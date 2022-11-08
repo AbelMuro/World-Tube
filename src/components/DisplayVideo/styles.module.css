@@ -6,8 +6,20 @@
     font-family: "crimson text";
 }
 
+.comment{
+    font-size: 19px;
+}
+
+.timeStamp{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0px;
+}
+
 .timeCreated{
-    margin-bottom: 10px;
+    color: initial;
 }
 
 .username{
@@ -70,6 +82,10 @@
     height: 100px;
 }
 
-.commentReplies{
-    align-self: flex-end;
+
+.datePosted{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: "crimson text";
 }
