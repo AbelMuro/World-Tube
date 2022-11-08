@@ -59,6 +59,8 @@ function DisplayVideo() {
         setOpenReplyDialog(false)
     }
 
+
+/*------------there is a chance that i will not need the following two functions-----------------*/
     const handleEditDialog = (e) => {
         const commentContainer = e.target.parentElement.parentElement.parentElement;
         const commentIdentification = commentContainer.getAttribute("id");
@@ -77,6 +79,8 @@ function DisplayVideo() {
         setOpenReplyDialog(true);
     }
 
+
+/*---------------------the following two functions are essential-------------------------*/
     const handleReply = async (commentReply) => {
         const currentDate = new Date();
         const millisecondsSince1970 = currentDate.getTime();
@@ -111,6 +115,7 @@ function DisplayVideo() {
         setOpenEditDialog(false);
     }
 
+//------------------- i will need to put this function into the CommentBox component----------------------
     const submitComment = async (comment) => {
         if(!user) {alert("You must be signed in to post a comment"); return}
         const currentDate = new Date();
