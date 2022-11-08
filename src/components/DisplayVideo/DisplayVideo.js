@@ -4,7 +4,7 @@ import {collection, doc, setDoc, query, orderBy} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import styles from './styles.module.css';
-import {TextField, Button, Stack, CircularProgress} from '@mui/material';
+import {Button, Stack, CircularProgress} from '@mui/material';
 import {styled} from '@mui/system';
 import Video from './Video';                    //i've memoized the Video to prevent it from constantly re-rendering in the controlled component
 import {v4 as uuid} from 'uuid';
@@ -12,6 +12,7 @@ import emptyAvatar from './images/empty avatar.png';
 import DisplayReplies from './DisplayReplies';
 import Dialogs from './Dialogs';
 import CommentBox from './CommentBox';
+import DisplayComments from './DisplayComments';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -161,6 +162,7 @@ function DisplayVideo() {
                     </p>
                 </div>
                 <CommentBox submitComment={submitComment}/>
+                <DisplayComments/>
 
                 {/* TODO: make this into its own component*/}
                 <div className={styles.displayComments}>
