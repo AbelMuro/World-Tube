@@ -161,6 +161,8 @@ function DisplayVideo() {
                     </p>
                 </div>
                 <CommentBox submitComment={submitComment}/>
+
+                {/* TODO: make this into its own component*/}
                 <div className={styles.displayComments}>
                     {(loadingComments) ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.map((comment) => {       
                             return (
@@ -185,7 +187,8 @@ function DisplayVideo() {
                                             </StyledButton>: <></>}
                                         </Stack>                      
                                     </div>         
-                                    <DisplayReplies userID={videoData.userID} videoID={videoData.videoID} commentID={comment.commentID}/>                 
+                                    <DisplayReplies userID={videoData.userID} videoID={videoData.videoID} commentID={comment.commentID}/> 
+
                                     <Dialogs commentForDialog={commentForDialog} openReplyDialog={openReplyDialog} 
                                      openEditDialog={openEditDialog}  handleReply={handleReply} handleEdit={handleEdit}
                                      closeEditDialog={closeEditDialog} closeReplyDialog={closeReplyDialog}/>                                                              
