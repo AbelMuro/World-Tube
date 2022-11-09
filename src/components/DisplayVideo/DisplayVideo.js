@@ -4,6 +4,8 @@ import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
 
 
+//TODO: fix bugs concerning auth variable
+
 function DisplayVideo() {
     let videoData = localStorage.getItem("video");
     videoData = JSON.parse(videoData);    

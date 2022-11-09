@@ -54,7 +54,7 @@ function LogInPage () {
             console.log(error)
         }
     }
-
+        //
     return user ? (<AccountPage/>) : (
         <section className={styles.flexContainer}>
             <div className={styles.logInContainer}>

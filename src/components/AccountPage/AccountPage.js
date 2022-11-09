@@ -10,6 +10,9 @@ import {useUploadFile} from 'react-firebase-hooks/storage';
 import styles from './styles.module.css';
 import emptyAvatar from './images/empty avatar.png';
 
+import { CircularProgress } from '@mui/material';
+
+
 import DisplayVideos from './DisplayVideos';
 import Popup from './Popup';
 
@@ -95,7 +98,7 @@ function AccountPage() {
                 <DisplayVideos userID={user.uid} firestore={firestore}/>
             </div>
         </section>
-    ) : (<>loading</>)
+    ) : (<div className={styles.loading}><CircularProgress/></div>)
 }
 
 export default AccountPage;

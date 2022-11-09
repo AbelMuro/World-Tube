@@ -2,10 +2,28 @@ import React from 'react';
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
+import {signOut} from 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
+import {Button} from '@mui/material';
+import {styled} from '@mui/system';
+
+const StyledButton = styled(Button)`
+    background-color: #F4F3F3;
+    color: #464646;
+    font-family: "crimson text";
+
+    &:hover:not(:disabled) {
+        background-color: #464646;
+        color: #F4F3F3;
+    }     
+
+    &:disabled {
+        background-color: rgb(46, 46, 46);
+        color: rgb(100, 100, 100);
+    }
+`
 
 
-//TODO: trying to refactor the nav bar
 function NavigationBar() {
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
@@ -22,6 +40,15 @@ function NavigationBar() {
         navigate("/create-account");
     }
 
+    const handleAccount = () => {
+        navigate("/account-page");
+    }
+
+    const handleSignOut = async () => {
+        await signOut(auth);
+        navigate("/login");
+    }
+
     return (
         <nav className={styles.navigationBar}>
             <section className={styles.navBarOne}>
@@ -32,15 +59,16 @@ function NavigationBar() {
                     <a className={styles.accountLink}>
                         Search
                     </a>
-                    <a className={styles.accountLink}>
-                        Your Videos
-                    </a>
+                    {user ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
                         Log In
-                    </a>
-                    <button className={styles.signUpButton} onClick={handleCreateAccount}>
+                    </a>}
+                    {user ? <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
+                    <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>
                         Sign Up
-                    </button>
+                    </StyledButton>                    
+                    }
+
                 </div>
             </section>
             <section className={styles.navBarTwo}>
