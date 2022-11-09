@@ -10,4 +10,5 @@
 .videos {
     object-fit: contain;
     width: 300px;
+    cursor: pointer;
 }

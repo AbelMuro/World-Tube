@@ -8,9 +8,9 @@ function DisplayVideo() {
     let videoData = localStorage.getItem("video");
     videoData = JSON.parse(videoData);    
 
-    //will use the data from localstorage and place the data in the DOM
+    //using the data from localstorage and place the data in the DOM
     useEffect(() => {
-        document.querySelector("#mainVideo").firstChild.src = videoData.URL;
+        document.querySelector("." + styles.video).firstChild.src = videoData.URL;
         document.querySelector("." + styles.title).innerHTML = videoData.title;
         document.querySelector("." + styles.timeStamp).lastChild.innerHTML = videoData.timeStamp;
         document.querySelector("." + styles.userImage).src = videoData.userImage;
@@ -20,7 +20,7 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-                <video className={styles.video} controls id="mainVideo">
+                <video className={styles.video} controls>
                     <source src={videoData.url} type="video/mp4"/>
                     Your Browser doesn't support videos
                 </video>

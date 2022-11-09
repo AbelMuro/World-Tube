@@ -1,9 +1,14 @@
 import React from 'react';
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
+import {auth} from '../Firebase-config';
+import {useAuthState} from 'react-firebase-hooks/auth';
 
+
+//TODO: trying to refactor the nav bar
 function NavigationBar() {
     const navigate = useNavigate();
+    const [user] = useAuthState(auth);
 
     const handleHomePage = () => {
         navigate("/");

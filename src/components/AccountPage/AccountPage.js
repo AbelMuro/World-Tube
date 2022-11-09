@@ -47,7 +47,7 @@ function AccountPage() {
                     const videoID = metadata.md5Hash.replace("/", "");
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
                     const developersDocument = doc(firestore, "developers collection", `${videoID}`);
-                    await setDoc(usersDocument, {                                              
+                    videoData = {                                              
                         username: user.displayName,
                         title: title,
                         userImage: userImage,
@@ -57,18 +57,9 @@ function AccountPage() {
                         userID: user.uid,
                         videoID: videoID,
                         order: millisecondsSince1970,
-                    })
-                    await setDoc(developersDocument,{
-                        username: user.displayName,
-                        title: title,
-                        userImage: userImage,
-                        category: category,
-                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
-                        url: url,
-                        userID: user.uid,
-                        videoID: videoID 
-                    })
-  
+                    }
+                    await setDoc(usersDocument, videoData )
+                    await setDoc(developersDocument, videoData)
                     setLoading(false); 
                     setOpen(false);             
                 }

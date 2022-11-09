@@ -11,6 +11,15 @@ function HomePage() {
     const [allVideos, loading] = useCollectionData(allVideosRef)
     const navigate = useNavigate();
 
+
+    const playVideoOnHover = (e) => {
+        e.target.play();
+    }   
+
+    const stopVideoOnLeave = (e) => {
+        e.target.pause();
+    } 
+
     const handleNavigate = (e) => {
         const selectedVideo = e.target.parentElement;
         const videoID = selectedVideo.getAttribute("data-id");
@@ -42,7 +51,7 @@ function HomePage() {
                 {loading ? <>loading....</> : allVideos.map((video) => {
                     return (
                         <div className={styles.videoContainer} key={uuid()} data-id={video.videoID} data-user={video.userID}>
-                            <video className={styles.video} onClick={handleNavigate}>
+                            <video className={styles.video} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave}>
                                 <source src={video.url} type="video/mp4"/>
                                 Your Browser doesn't support videos
                             </video>     

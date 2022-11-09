@@ -4,10 +4,12 @@
 
 .flexContainer{
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, 355px);
     gap: 30px;
     width: 100%;
     padding: 20px;
+    width: 1520px;
+    margin: auto;
 }
 
 .title{
@@ -21,6 +23,11 @@
     object-fit: contain;
     height: 200px;
     cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.video:hover{
+    transform: scale(1.2, 1.2);
 }
 
 .userImage{
