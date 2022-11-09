@@ -4,16 +4,6 @@ import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
 
 
-//How the comment section works;
-//when the user clicks on reply or edit, 
-//it will can an event handler that will access
-//all the data from the comment itself
-//and will store the data into state objects
-//then.. a dialog popup will appear and access
-//the state objects and display them
-
-
-
 function DisplayVideo() {
     let videoData = localStorage.getItem("video");
     videoData = JSON.parse(videoData);    
