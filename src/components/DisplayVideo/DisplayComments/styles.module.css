@@ -1,0 +1,47 @@
+.displayComments, .nestedFlex{
+    border-radius: 10px;
+    border: 1px solid rgb(150, 150, 150);
+    padding: 15px;
+    margin: 20px 0px;
+}
+
+.commentContainer{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+}
+
+
+.nestedFlex{
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    font-family: "crimson text";
+    height: auto;
+}
+
+.userImage{
+    object-fit: contain;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.comment{
+    font-family: "crimson text";
+    font-size: 19px;
+}
+
+.datePosted{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: "crimson text";
+}
+
+.username{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: "crimson text";
+}

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {firestore, auth} from '../../../Firebase-config'
+import {firestore, auth} from '../../../../Firebase-config'
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {doc, setDoc} from 'firebase/firestore';
 import { Button, Dialog, DialogTitle, DialogContent, Stack, TextField} from '@mui/material';
@@ -14,11 +14,9 @@ const StyledButton = styled(Button)`
         background-color: #464646;
         color: #F4F3F3;
     }     
-
- 
 `
 
-function DialogPopup({usersReplyID, comment, userID, videoID, commentID, commentReplyID}) {
+function DialogPopup({ commentOwnerID, comment, userID, videoID, commentID, commentReplyID}) {
     const [user, loading] = useAuthState(auth);
     const [open, setOpen] = useState(false);
     const [edit, setEdit] = useState(comment);
@@ -49,7 +47,7 @@ function DialogPopup({usersReplyID, comment, userID, videoID, commentID, comment
 
     return(loading ? <></> :
         <>
-            {user.uid == usersReplyID ? 
+            {user.uid ==  commentOwnerID ? 
             <StyledButton variant="contained" onClick={openCloseDialog} sx={{position: "absolute", right: "10px", bottom: "10px", width: "46px", height: "30px"}}>
                 Edit
             </StyledButton> : <></>}

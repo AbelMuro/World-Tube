@@ -52,27 +52,6 @@
     margin-top: 40px;
 }
 
-.commentContainer{
-    display: flex;
-    flex-direction: column;
-    height: auto;
-}
-
-.displayComments, .nestedFlex{
-    border-radius: 10px;
-    border: 1px solid rgb(150, 150, 150);
-    padding: 15px;
-    margin: 20px 0px;
-}
-
-.nestedFlex{
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    font-family: "crimson text";
-    height: auto;
-}
 
 .loadingCircle{
     display: flex;
@@ -88,4 +67,9 @@
     top: 10px;
     right: 10px;
     font-family: "crimson text";
+}
+
+.video{
+    object-fit: contain;
+    width: 700px;
 }
