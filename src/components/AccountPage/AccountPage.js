@@ -10,7 +10,7 @@ import {useUploadFile} from 'react-firebase-hooks/storage';
 import styles from './styles.module.css';
 import emptyAvatar from './images/empty avatar.png';
 
-import { CircularProgress } from '@mui/material';
+import {CircularProgress} from '@mui/material';
 
 import DisplayVideos from './DisplayVideos';
 import Popup from './Popup';
@@ -49,9 +49,10 @@ function AccountPage() {
                     const videoID = metadata.md5Hash.replace("/", "");
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
                     const developersDocument = doc(firestore, "developers collection", `${videoID}`);
-                    videoData = {                                              
+                    const videoData = {                                              
                         username: user.displayName,
                         title: title,
+                        searchTitle: title.toLowerCase(),
                         userImage: userImage,
                         category: category,
                         timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,

@@ -4,7 +4,6 @@ import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
 import {useLocation} from 'react-router-dom';
 
-//TODO: find out whats wrong with the videos not playing when you hover over them
 
 function DisplayVideo() {
     const data = useLocation();

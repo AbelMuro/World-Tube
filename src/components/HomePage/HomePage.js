@@ -9,11 +9,13 @@ import LoadingScreen from './LoadingScreen';
 import {CircularProgress} from '@mui/material';
 
 function HomePage() {
-    const data = useLocation();
-    const allVideosRef = collection(firestore, "developers collection");       //allVideosRef is an array of document
-    const q = data.state ? data.state.category != "All" ? query(allVideosRef, where("category", "==", data.state.category)) : query(allVideosRef)
-    : query(allVideosRef);
-    const [allVideos, loading] = useCollectionData(q)
+    const {state} = useLocation();
+    const allVideosRef = collection(firestore, "developers collection");       //TODO: try to do a little bit of research on the where() below
+    const q = state ? state?.search ? query(allVideosRef, where("title", ">=", state.search), where("title", "<=", state.search + '\uf8ff')) :
+        state.category != "All" ? query(allVideosRef, where("category", "==", state.category)) : query(allVideosRef)
+        : query(allVideosRef);
+
+    const [allVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
     const playVideoOnHover = (e) => {
@@ -80,7 +82,7 @@ function HomePage() {
                                 </span> 
                             </p>   
                             <p className={styles.videoTimeStamp}>
-                                {video.timeCreated}
+                                Posted on: {video.timeCreated}
                             </p>                
                         </div>
                     )

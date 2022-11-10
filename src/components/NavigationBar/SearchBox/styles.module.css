@@ -20,3 +20,21 @@
     left: 5px;
     top: 10px;
 }
+
+.submit{
+    border: none;
+    border-radius: 0px 40px 40px 0px;
+    background-color:aliceblue;
+    font-family: "crimson text";
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 10px;
+    display: none;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.submit:hover{
+    background-color: rgb(94, 96, 99);
+}
