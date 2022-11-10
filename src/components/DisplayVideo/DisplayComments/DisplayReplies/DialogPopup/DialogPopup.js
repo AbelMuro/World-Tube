@@ -47,7 +47,8 @@ function DialogPopup({ commentOwnerID, comment, userID, videoID, commentID, comm
 
     return(loading ? <></> :
         <>
-            {user.uid ==  commentOwnerID ? 
+            { !user ? <></> :
+            user.uid ==  commentOwnerID ? 
             <StyledButton variant="contained" onClick={openCloseDialog} sx={{position: "absolute", right: "10px", bottom: "10px", width: "46px", height: "30px"}}>
                 Edit
             </StyledButton> : <></>}

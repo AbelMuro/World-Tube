@@ -33,6 +33,8 @@ function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
     const [user] = useAuthState(auth);
 
     const handleReplyDialog = () => {
+        if(!user) {alert("You must be signed in to make replies"); return}
+        
         setOpenReplyDialog((prevState) => {
             return !prevState;
         });
@@ -97,7 +99,8 @@ function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
             <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleReplyDialog}>
                 Reply
             </StyledButton>
-            {(user.uid == commentOwnerID) ? <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleEditDialog}>
+            { !user ? <></> :
+            (user.uid == commentOwnerID) ? <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleEditDialog}>
                 Edit
             </StyledButton>: <></>}
         </Stack>  

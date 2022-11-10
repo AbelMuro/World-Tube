@@ -46,3 +46,19 @@
     gap: 10px;
     margin: 10px 0px;
 }
+
+.loadingContainer{
+    position: relative;
+}
+
+.loadingBox{
+    position: absolute;
+    left:0px;
+    top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 355.55px;
+    height: 200px;
+    background-color: rgb(235, 233, 233);
+}

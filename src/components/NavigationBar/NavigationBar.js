@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
 import {signOut} from 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {Button} from '@mui/material';
+import {Button, TextField, Box, createTheme, ThemeProvider} from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import {styled} from '@mui/system';
 
 const StyledButton = styled(Button)`
@@ -12,7 +13,7 @@ const StyledButton = styled(Button)`
     color: #464646;
     font-family: "crimson text";
 
-    &:hover:not(:disabled) {
+    &:hover {
         background-color: #464646;
         color: #F4F3F3;
     }     
@@ -23,8 +24,17 @@ const StyledButton = styled(Button)`
     }
 `
 
+const SearchBox = styled(TextField)`
+    background-color: white;
+    font-family: "crimson text";
+    border-radius: 40px;
+    padding: 0px 10px;
+`
+   
+
 
 function NavigationBar() {
+    const [search, setSearch] = useState("");
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
 
@@ -44,6 +54,11 @@ function NavigationBar() {
         navigate("/account-page");
     }
 
+    const handleCategory = (e) => {
+        const category = e.target.innerHTML;
+        navigate("/", {state: {category: category}})
+    }
+
     const handleSignOut = async () => {
         await signOut(auth);
         navigate("/login");
@@ -56,9 +71,7 @@ function NavigationBar() {
                     World-Tube
                 </h1>
                 <div className={styles.accountItems}>
-                    <a className={styles.accountLink}>
-                        Search
-                    </a>
+                    <SearchBox variant="filled" label='Search'/>                        
                     {user ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
                         Log In
@@ -72,20 +85,23 @@ function NavigationBar() {
                 </div>
             </section>
             <section className={styles.navBarTwo}>
-                <a className={styles.videoLink}>
+                <a className={styles.videoLink} onClick={handleCategory}>
+                    All
+                </a>
+                <a className={styles.videoLink} onClick={handleCategory}>
                     Music
                 </a>
-                <a className={styles.videoLink}>
+                <a className={styles.videoLink} onClick={handleCategory}>
                     Funny
                 </a>
-                <a className={styles.videoLink}>
+                <a className={styles.videoLink} onClick={handleCategory}>
                     Sports
                 </a>
-                <a className={styles.videoLink}>
+                <a className={styles.videoLink} onClick={handleCategory}>
                     News
                 </a>
-                <a className={styles.videoLink}>
-                    Entertainment
+                <a className={styles.videoLink} onClick={handleCategory}>
+                    Other
                 </a>
             </section>
         </nav>

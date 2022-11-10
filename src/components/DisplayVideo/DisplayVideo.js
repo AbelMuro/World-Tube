@@ -2,13 +2,13 @@ import React, { useEffect} from 'react';
 import styles from './styles.module.css';
 import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
+import {useLocation} from 'react-router-dom';
 
-
-//TODO: fix bugs concerning auth variable
+//TODO: find out whats wrong with the videos not playing when you hover over them
 
 function DisplayVideo() {
-    let videoData = localStorage.getItem("video");
-    videoData = JSON.parse(videoData);    
+    const data = useLocation();
+    const videoData = data.state;
 
     //using the data from localstorage and place the data in the DOM
     useEffect(() => {

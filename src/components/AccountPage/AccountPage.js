@@ -12,7 +12,6 @@ import emptyAvatar from './images/empty avatar.png';
 
 import { CircularProgress } from '@mui/material';
 
-
 import DisplayVideos from './DisplayVideos';
 import Popup from './Popup';
 

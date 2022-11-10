@@ -32,8 +32,7 @@ function DisplayVideos({userID, firestore}) {
             videoID: videoID,
             userID: userID,
         }
-        localStorage.setItem("video", JSON.stringify(videoData));
-        navigate(`/${title}`);
+        navigate(`/${title}`, {state: videoData});
     }       
 
     return loading ? (<>loading</>) : (

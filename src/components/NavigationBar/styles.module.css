@@ -70,3 +70,8 @@
     cursor: pointer;
     color: rgb(163, 163, 163);
 }
+
+.searchBox{
+    border-radius: 40px;
+    padding: 10px;
+}

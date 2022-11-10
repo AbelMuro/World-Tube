@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {query, collection, orderBy} from 'firebase/firestore';
-import {firestore, auth} from '../../Firebase-config';
-import {useAuthState} from 'react-firebase-hooks/auth';
+import {firestore} from '../../Firebase-config';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {CircularProgress} from '@mui/material';
 import styles from './styles.module.css';
