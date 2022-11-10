@@ -64,6 +64,11 @@ function NavigationBar() {
         setSearch(e.target.value);
     }
 
+    const expandSearchBox = () => {
+       const searchBox = document.querySelector("." + styles.searchBox);
+       searchBox.style.width = "300px";
+    }
+
     const handleSignOut = async () => {
         await signOut(auth);
         navigate("/login");
@@ -77,7 +82,7 @@ function NavigationBar() {
                 </h1>
 
                 <div className={styles.accountItems}>        
-                    <div className={styles.searchBoxContainer}>
+                    <div className={styles.searchBoxContainer} onClick={expandSearchBox}>
                         <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon}/>
                         <input id="search" type="text" className={styles.searchBox} value={search} onChange={handleSearch}/>                       
                     </div>
@@ -91,7 +96,6 @@ function NavigationBar() {
                         Sign Up
                     </StyledButton>                    
                     }
-
                 </div>
             </section>
             <section className={styles.navBarTwo}>

@@ -82,7 +82,9 @@
     padding: 10px;
     font-family: "crimson text";
     color: white;
-    padding-left: 30px
+    padding-left: 30px;
+    width: 50px;
+    transition: width 0.5s linear;
 }
 
 .searchIcon{
