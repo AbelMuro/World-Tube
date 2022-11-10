@@ -4,8 +4,9 @@ import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
 import {signOut} from 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {Button, TextField, Box, createTheme, ThemeProvider} from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import {Button, TextField} from '@mui/material';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'; 
 import {styled} from '@mui/system';
 
 const StyledButton = styled(Button)`
@@ -59,6 +60,10 @@ function NavigationBar() {
         navigate("/", {state: {category: category}})
     }
 
+    const handleSearch = (e) => {
+        setSearch(e.target.value);
+    }
+
     const handleSignOut = async () => {
         await signOut(auth);
         navigate("/login");
@@ -68,10 +73,15 @@ function NavigationBar() {
         <nav className={styles.navigationBar}>
             <section className={styles.navBarOne}>
                 <h1 className={styles.logo} onClick={handleHomePage}>
-                    World-Tube
+                    WORLD-TUBE
                 </h1>
-                <div className={styles.accountItems}>
-                    <SearchBox variant="filled" label='Search'/>                        
+
+                <div className={styles.accountItems}>        
+                    <div className={styles.searchBoxContainer}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon}/>
+                        <input id="search" type="text" className={styles.searchBox} value={search} onChange={handleSearch}/>                       
+                    </div>
+                            
                     {user ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
                         Log In

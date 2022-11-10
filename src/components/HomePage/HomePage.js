@@ -26,7 +26,7 @@ function HomePage() {
 
     const videoLoaded = (e) => {
         const loadingBox = e.target.previousElementSibling;
-        loadingBox.style.visibility = "hidden";
+        loadingBox.style.display = "none";
     }
 
     const handleNavigate = (e) => {
