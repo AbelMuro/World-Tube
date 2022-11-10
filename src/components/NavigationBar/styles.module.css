@@ -70,26 +70,3 @@
     cursor: pointer;
     color: rgb(163, 163, 163);
 }
-
-.searchBoxContainer{
-    position: relative;
-}
-
-.searchBox{
-    background-color: rgb(66, 66, 66);
-    border: none;
-    border-radius: 40px;
-    padding: 10px;
-    font-family: "crimson text";
-    color: white;
-    padding-left: 30px;
-    width: 50px;
-    transition: width 0.5s linear;
-}
-
-.searchIcon{
-    width: 20px;
-    position: absolute;
-    left: 5px;
-    top: 10px;
-}

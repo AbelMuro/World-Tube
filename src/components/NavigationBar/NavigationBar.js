@@ -4,10 +4,9 @@ import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
 import {signOut} from 'firebase/auth';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {Button, TextField} from '@mui/material';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'; 
+import {Button} from '@mui/material';
 import {styled} from '@mui/system';
+import SearchBox from './SearchBox';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -25,17 +24,7 @@ const StyledButton = styled(Button)`
     }
 `
 
-const SearchBox = styled(TextField)`
-    background-color: white;
-    font-family: "crimson text";
-    border-radius: 40px;
-    padding: 0px 10px;
-`
-   
-
-
 function NavigationBar() {
-    const [search, setSearch] = useState("");
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
 
@@ -60,14 +49,6 @@ function NavigationBar() {
         navigate("/", {state: {category: category}})
     }
 
-    const handleSearch = (e) => {
-        setSearch(e.target.value);
-    }
-
-    const expandSearchBox = () => {
-       const searchBox = document.querySelector("." + styles.searchBox);
-       searchBox.style.width = "300px";
-    }
 
     const handleSignOut = async () => {
         await signOut(auth);
@@ -82,11 +63,8 @@ function NavigationBar() {
                 </h1>
 
                 <div className={styles.accountItems}>        
-                    <div className={styles.searchBoxContainer} onClick={expandSearchBox}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon}/>
-                        <input id="search" type="text" className={styles.searchBox} value={search} onChange={handleSearch}/>                       
-                    </div>
-                            
+                    <SearchBox/>
+        
                     {user ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
                         Log In
