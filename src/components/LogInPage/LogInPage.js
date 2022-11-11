@@ -4,7 +4,7 @@ import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {useSignInWithEmailAndPassword, useSignInWithGoogle, useAuthState} from 'react-firebase-hooks/auth';
-import {GoogleAuthProvider ,linkWithCredential} from 'firebase/auth';
+import {GoogleAuthProvider ,linkWithPopup} from 'firebase/auth';
 import {auth} from '../Firebase-config';
 import AccountPage from '../AccountPage';
 
@@ -39,8 +39,8 @@ function LogInPage () {
             if(email == "") throw "email is empty";
             if(password == "") throw "password is empty";
             const googleProvider = new GoogleAuthProvider();
-            let results = await signInWithEmailAndPassword(email, password);     
-            await linkWithCredential(auth.currentUser, googleProvider);               
+            await signInWithEmailAndPassword(email, password);     
+            await linkWithPopup(auth.currentUser, googleProvider);               
         }
         catch(error){
             console.log(error);
