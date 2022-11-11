@@ -29,6 +29,10 @@ function AccountPage() {
         setVideo(file);
     }
 
+    const handleError = () => {
+        console.log("image not loaded");
+    }
+
     useEffect(() => {
         if(video.length > 0) {
             const userID = user.uid;
@@ -78,7 +82,7 @@ function AccountPage() {
         <section>
             <div className={styles.basicInfo}>
                 {user.photoURL ? <img src={user.photoURL} className={styles.usersAvatar}/> 
-                    : <img src={emptyAvatar} className={styles.usersAvatar}/>}
+                    : <img src={emptyAvatar} className={styles.usersAvatar} onError={handleError}/>}
                 <div className={styles.userInfo}>
                     <p className={styles.username}>
                         {user.displayName}

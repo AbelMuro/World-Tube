@@ -4,8 +4,8 @@ import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {useSignInWithEmailAndPassword, useSignInWithGoogle, useAuthState} from 'react-firebase-hooks/auth';
+import {GoogleAuthProvider ,linkWithCredential} from 'firebase/auth';
 import {auth} from '../Firebase-config';
-import {signOut} from 'firebase/auth';
 import AccountPage from '../AccountPage';
 
 const StyledButton = styled(Button)`
@@ -21,7 +21,6 @@ const StyledButton = styled(Button)`
 function LogInPage () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    //const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
     const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
     const [signInWithGoogle] = useSignInWithGoogle(auth);
     const [user] = useAuthState(auth);
@@ -34,12 +33,14 @@ function LogInPage () {
         setPassword(e.target.value);
     }
 
-
+//TODO: try to link the users account to google and email/password;
     const logInWithEmailAndPassword = async () => {
         try{
             if(email == "") throw "email is empty";
             if(password == "") throw "password is empty";
-            await signInWithEmailAndPassword(email, password);            
+            const googleProvider = new GoogleAuthProvider();
+            let results = await signInWithEmailAndPassword(email, password);     
+            await linkWithCredential(auth.currentUser, googleProvider);               
         }
         catch(error){
             console.log(error);
@@ -48,7 +49,9 @@ function LogInPage () {
 
     const logInWithGoogle = async () => {
         try{
-            await signInWithGoogle();
+           await signInWithGoogle();
+
+
         }
         catch(error){
             console.log(error)

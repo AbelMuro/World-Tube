@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'; 
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
+import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
 function SearchBox(){
@@ -15,29 +16,24 @@ function SearchBox(){
 
     const expandSearchBox = () => {
        const searchBox = document.querySelector("." + styles.searchBox);
-       const submitButton = document.querySelector("." + styles.submit);
        searchBox.style.width = "300px";
-       submitButton.style.display = "block";
     }
 
     const shrinkSearchBox = () => {
         const searchBox = document.querySelector("." + styles.searchBox);
-        const submitButton = document.querySelector("." + styles.submit);
         searchBox.style.width = "100px";
-        submitButton.style.display = "none";
+        setSearch("");
     }
 
-    const sendSearchQuery = () => {
-        navigate("/", {state: {search: search}});
-    }
+    useEffect(() => {
+        if(search != "")
+            navigate("/", {state: {search: search}})
+    },[search])
 
     return(                   
-        <div className={styles.searchBoxContainer} onFocus={expandSearchBox} >
+        <div className={styles.searchBoxContainer} onFocus={expandSearchBox} onBlur={shrinkSearchBox}>
             <FontAwesomeIcon icon={faMagnifyingGlass} className={styles.searchIcon}/>
             <input id="search" type="text" className={styles.searchBox} value={search} onChange={handleSearch}/>
-            <button className={styles.submit} onClick={sendSearchQuery}>
-                Search
-            </button>
         </div>
     )
 }
