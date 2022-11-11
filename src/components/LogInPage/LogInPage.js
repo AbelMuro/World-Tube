@@ -33,7 +33,7 @@ function LogInPage () {
         setPassword(e.target.value);
     }
 
-//TODO: try to link the users account to google and email/password;
+//TODO: test out linkWithRedirect and linkWithCredential
     const logInWithEmailAndPassword = async () => {
         try{
             if(email == "") throw "email is empty";
