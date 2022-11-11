@@ -3,7 +3,6 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'; 
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
-import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
 function SearchBox(){
