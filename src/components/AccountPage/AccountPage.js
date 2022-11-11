@@ -49,7 +49,7 @@ function AccountPage() {
                     const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
                     let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
-                    let userImage = user.photoURL ? user.photoURL : emptyAvatar;
+                    let userImage = emptyAvatar;
                     const videoID = metadata.md5Hash.replace("/", "");
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
                     const developersDocument = doc(firestore, "developers collection", `${videoID}`);
@@ -80,9 +80,8 @@ function AccountPage() {
 
     return user ? (
         <section>
-            <div className={styles.basicInfo}>
-                {user.photoURL ? <img src={user.photoURL} className={styles.usersAvatar}/> 
-                    : <img src={emptyAvatar} className={styles.usersAvatar} onError={handleError}/>}
+            <div className={styles.basicInfo}>    
+                <img src={emptyAvatar} className={styles.usersAvatar} onError={handleError}/>
                 <div className={styles.userInfo}>
                     <p className={styles.username}>
                         {user.displayName}

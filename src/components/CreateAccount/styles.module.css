@@ -26,3 +26,26 @@
     font-size: 40px;
     margin: 10px 0px;
 }
+
+.dialogContent{
+    height: 200px;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-direction: column;
+}
+
+.dialogTitle{
+    width: 400px; 
+    display: block;
+    margin: 20px auto;
+}
+
+.loadingIcon {
+    position: absolute; 
+    left: 0;
+    right: 0; 
+    margin: auto; 
+    margin-top: 2px;
+    width: 20px;
+}

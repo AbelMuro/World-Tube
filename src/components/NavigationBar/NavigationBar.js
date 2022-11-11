@@ -65,15 +65,17 @@ function NavigationBar() {
                 <div className={styles.accountItems}>        
                     <SearchBox/>
         
-                    {user ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
+                    {user ? 
+                    user.emailVerified ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
                         Log In
-                    </a>}
-                    {user ? <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
+                    </a> :  <a className={styles.accountLink} onClick={handleLogin}>Log In</a>}
+
+                    {user ? 
+                    user.emailVerified ? <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
                     <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>
                         Sign Up
-                    </StyledButton>                    
-                    }
+                    </StyledButton> :  <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>Sign Up</StyledButton>}
                 </div>
             </section>
             <section className={styles.navBarTwo}>
