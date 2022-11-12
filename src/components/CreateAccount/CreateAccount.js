@@ -44,7 +44,8 @@ function CreateAccount() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [openEmailVerificationDialog, setOpenEmailVerificationDialog] = useState(false);
+    const [openEmailInUseDialog, setOpenEmailInUseDialog] = useState(false);
     const navigate = useNavigate();
     let disable = !password.match(/\d/g) || !password.match(/\W/g) || !password.match(/[a-zA-Z]/g) || password.length < 6 || loading;
 
@@ -61,29 +62,32 @@ function CreateAccount() {
     }
 
     const navigateToLoginPage = () => {
-        setOpen(false);
+        setOpenEmailVerificationDialog(false);
         navigate("/login");
+    }
+
+    const closeEmailInUseDialog = () => {
+        setOpenEmailInUseDialog(false);
     }
     
     const handleRegister = async () => {
         try{
+            if(username == "") throw {message: "username is empty"};       
             setLoading(true);
-            if(username == "") throw {message: "username is empty"};
             const credentials = await createUserWithEmailAndPassword(auth, email, password);      
             await updateProfile(auth.currentUser, {displayName: username});
             await signOut(auth); 
             await sendEmailVerification(credentials.user);               
             setLoading(false);
-            setOpen(true);            
+            setOpenEmailVerificationDialog(true);            
         }
         catch(error){
             if(error.message == "Firebase: Error (auth/email-already-in-use)."){
                 setLoading(false);
-                alert("Email is already registered");
+                setOpenEmailInUseDialog(true); 
             }
-                
-            else
-                console.log(error.message);
+            else if(error.message == "username is empty")
+                alert(error.message);
         }
     }
 
@@ -111,12 +115,22 @@ function CreateAccount() {
                         {loading ? <CircularProgress size={32} className={styles.loadingIcon}/> : <></>}                            
                     </Stack> 
                 </Stack>
-                <Dialog open={open}>
+                <Dialog open={openEmailVerificationDialog}>
                     <DialogContent className={styles.dialogContent}>
                         <DialogTitle className={styles.dialogTitle}>
                             Please verify your email. An email link was sent to the email address you provided
                         </DialogTitle>
                         <DialogButton variant="contained" onClick={navigateToLoginPage} >
+                            OK
+                        </DialogButton>
+                    </DialogContent>
+                </Dialog>
+                <Dialog open={openEmailInUseDialog}>
+                    <DialogContent className={styles.dialogContent}>
+                        <DialogTitle className={styles.dialogTitle} style={{textAlign: "center"}}>
+                            Email is already registered
+                        </DialogTitle>
+                        <DialogButton variant="contained" onClick={closeEmailInUseDialog} >
                             OK
                         </DialogButton>
                     </DialogContent>

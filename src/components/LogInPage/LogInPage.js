@@ -3,10 +3,9 @@ import styles from './styles.module.css';
 import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
-import {useSignInWithEmailAndPassword, useSignInWithGoogle} from 'react-firebase-hooks/auth';
-import {GoogleAuthProvider ,linkWithPopup, linkWithRedirect, EmailAuthProvider, onAuthStateChanged, signOut} from 'firebase/auth';
+import {useSignInWithGoogle} from 'react-firebase-hooks/auth';
+import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
 import {auth} from '../Firebase-config';
-import AccountPage from '../AccountPage';
 import { useNavigate } from 'react-router-dom';
 
 const StyledButton = styled(Button)`
@@ -22,7 +21,6 @@ const StyledButton = styled(Button)`
 function LogInPage () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
     const [signInWithGoogle] = useSignInWithGoogle(auth);
     const navigate = useNavigate();
 
@@ -38,8 +36,7 @@ function LogInPage () {
         try{
             if(email == "") throw {message: "email is empty"};
             if(password == "") throw {message: "password is empty"};
-            let results = await signInWithEmailAndPassword(email, password);
-            if(!results) throw {message: "Email or password is incorrect"};
+            await signInWithEmailAndPassword(auth, email, password)
             if(auth.currentUser.emailVerified) 
                 navigate("/account-page");
             else{
@@ -48,9 +45,11 @@ function LogInPage () {
             }
         }
         catch(error){
-            if(error.message == "Email or password is incorrect")
-                alert(error.message);
-            else if(error.message == "email is empty")
+            if(error.message == "Firebase: Error (auth/user-not-found).")
+                alert("Email is not registered");
+            else if(error.message == "Firebase: Error (auth/wrong-password).")
+                alert("Email or password is incorrect");
+            if(error.message == "email is empty")
                 alert(error.message);
             else if(error.message == "password is empty")
                 alert(error.message);
