@@ -5,6 +5,7 @@ import {updateProfile, createUserWithEmailAndPassword, signOut, sendEmailVerific
 import {TextField, Stack, Button, CircularProgress, Dialog, DialogTitle, DialogContent} from '@mui/material';
 import {styled} from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import emptyAvatar from './images/empty avatar.png';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -75,9 +76,9 @@ function CreateAccount() {
             if(username == "") throw {message: "username is empty"};       
             setLoading(true);
             const credentials = await createUserWithEmailAndPassword(auth, email, password);      
-            await updateProfile(auth.currentUser, {displayName: username});
+            await updateProfile(auth.currentUser, {displayName: username, photoURL: emptyAvatar});
+            await sendEmailVerification(credentials.user);                   
             await signOut(auth); 
-            await sendEmailVerification(credentials.user);               
             setLoading(false);
             setOpenEmailVerificationDialog(true);            
         }

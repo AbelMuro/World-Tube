@@ -3,12 +3,13 @@ import {v4 as uuid} from 'uuid';
 
 import {collection} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore'
+import {firestore} from '../../Firebase-config';
 
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 
 
-function DisplayVideos({userID, firestore}) {
+function DisplayVideos({userID}) {
     const collectionRef = collection(firestore, userID);
     const [videos, loading] = useCollectionData(collectionRef);
     const navigate = useNavigate();
@@ -38,7 +39,6 @@ function DisplayVideos({userID, firestore}) {
     return loading ? (<>loading</>) : (
         <section className={styles.allVideos}>
             {videos ? videos.map((video) => {
-
                 if(video.url){
                     return(
                         <div key={uuid()} className={styles.videoContainer} >

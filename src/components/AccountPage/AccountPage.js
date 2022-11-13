@@ -1,104 +1,62 @@
-import React, {useEffect, useState} from 'react';
-
-import {auth, storage, firestore} from '../Firebase-config';
-import {ref as storageRef, getDownloadURL} from 'firebase/storage';
-import {setDoc, doc} from 'firebase/firestore';
-
+import React from 'react';
+import {auth} from '../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {useUploadFile} from 'react-firebase-hooks/storage';
-
 import styles from './styles.module.css';
-import emptyAvatar from './images/empty avatar.png';
-
 import {CircularProgress} from '@mui/material';
-
 import DisplayVideos from './DisplayVideos';
 import Popup from './Popup';
+import UpdateAccount from './UpdateAccount';
 
 
 function AccountPage() {
-    const [video, setVideo] = useState([]);
-    const [title, setTitle] = useState("");
-    const [open, setOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [category, setCategory] = useState("");
     const [user] = useAuthState(auth);
-    const [uploadFile] = useUploadFile(auth);
 
-    const handleVideo = (file) => {
-        setVideo(file);
+    function getDateCreated() {
+        const dateCreated = new Date(Number(user.metadata.createdAt));
+        return dateCreated.toDateString();
     }
-
-    const handleError = () => {
-        console.log("image not loaded");
-    }
-
-    useEffect(() => {
-        if(video.length > 0) {
-            const userID = user.uid;
-            const ref = storageRef(storage, `/${userID}/${video[0].name}`);  
-
-            (async function uploadStorage(){
-                try{
-                    const currentDate = new Date();
-                    const millisecondsSince1970 = currentDate.getTime();
-                    const readableDate = currentDate.toLocaleDateString();
-                    const currentHour = ((currentDate.getHours() + 11) % 12 + 1);
-                    let currentMinutes = currentDate.getMinutes();
-                    currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
-                    const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
-                    let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
-                    let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
-                    let userImage = emptyAvatar;
-                    const videoID = metadata.md5Hash.replace("/", "");
-                    const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
-                    const developersDocument = doc(firestore, "developers collection", `${videoID}`);
-                    const videoData = {                                              
-                        username: user.displayName,
-                        title: title,
-                        searchTitle: title.toLowerCase(),
-                        userImage: userImage,
-                        category: category,
-                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
-                        url: url,
-                        userID: user.uid,
-                        videoID: videoID,
-                        order: millisecondsSince1970,
-                    }
-                    await setDoc(usersDocument, videoData )
-                    await setDoc(developersDocument, videoData)
-                    setLoading(false); 
-                    setOpen(false);             
-                }
-                catch(error){
-                    setLoading(false);
-                    console.log(error.message);
-                }
-            })(); 
-        }
-    }, [video]);
 
     return user ? (
-        <section>
-            <div className={styles.basicInfo}>    
-                <img src={emptyAvatar} className={styles.usersAvatar} onError={handleError}/>
-                <div className={styles.userInfo}>
-                    <p className={styles.username}>
-                        {user.displayName}
-                    </p>
-                    <p className={styles.email}>
-                        {user.email}
-                    </p>                    
+        <section className={styles.accountContainer}>
+            <div className={styles.basicInfoContainer}>
+                <div className={styles.basicInfo}>    
+                    <img src={user.photoURL} className={styles.usersAvatar}/>
+                    <div className={styles.userInfo}>
+                        <p className={styles.username}>
+                            {user.displayName}
+                        </p>
+                    </div>
                 </div>
+                <div className={styles.otherInfo}>
+                    <h2 className={styles.title}>
+                        Email: 
+                    </h2>
+                    <p className={styles.desc}>
+                        {user.email}
+                    </p>
+                    <h2 className={styles.title}>
+                        First joined: 
+                    </h2>
+                    <p className={styles.desc}>
+                        {getDateCreated()}
+                    </p>
+                    <h2 className={styles.title} id={styles.aboutMe}>
+                        About Me:
+                    </h2>
+                    <p className={styles.desc}>
+                        Hi im new here and i like to upload videos.
+                        I love programming and i love playing games on 
+                        my pc and ps5. Thats right, i got my hands on a ps5.
+                        Don't be jealous.
+                    </p>
+                </div>
+                <UpdateAccount />
             </div>
-            <div className={styles.videosUploaded}>
-                <Popup category={category} setCategory={setCategory} 
-                       title={title} setTitle={setTitle} 
-                       handleVideo={handleVideo} 
-                       loading={loading} setLoading={setLoading}
-                       open={open} setOpen={setOpen}/>
-                <h1 className={styles.title}>Your Videos:</h1> 
-                <DisplayVideos userID={user.uid} firestore={firestore}/>
+
+            <div className={styles.videosUploaded}>     
+                <Popup user={user}/>
+                <h1 className={styles.yourVideosTitle}>Your Videos:</h1> 
+                <DisplayVideos userID={user.uid}/>
             </div>
         </section>
     ) : (<div className={styles.loading}><CircularProgress/></div>)

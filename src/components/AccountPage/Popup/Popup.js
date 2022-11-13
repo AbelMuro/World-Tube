@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Select, MenuItem, InputLabel, 
        FormControl,Dialog, DialogTitle, 
        Stack, Button, TextField, CircularProgress} from '@mui/material';
 import {styled} from '@mui/system';
 import styles from './styles.module.css';
+import {storage, firestore, auth} from '../../Firebase-config';
+import {ref as storageRef, getDownloadURL} from 'firebase/storage';
+import {setDoc, doc} from 'firebase/firestore';
+import {useUploadFile} from 'react-firebase-hooks/storage';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -35,7 +39,18 @@ const ReverseStyledButton = styled(Button)`
 `
 
 
-function Popup({category, setCategory, title, setTitle ,handleVideo, loading, setLoading, open, setOpen}) {
+function Popup({user}) {
+    const [video, setVideo] = useState([]);
+    const [uploadFile] = useUploadFile(auth);
+    const [title, setTitle] = useState("");
+    const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [category, setCategory] = useState("");
+
+
+    const handleVideo = (e) => {
+        setVideo(e.target.files);
+    }   
 
     const handleOpen = () => {
         setOpen(true)
@@ -64,11 +79,50 @@ function Popup({category, setCategory, title, setTitle ,handleVideo, loading, se
         }
     } 
 
-    const uploadVideo = (e) => {
-        const files = e.target.files;
-        setLoading(true);
-        handleVideo(files);
-    }
+    useEffect(() => {
+        if(video.length > 0) {
+            setLoading(true);
+            const userID = user.uid;
+            const ref = storageRef(storage, `/${userID}/${video[0].name}`);  
+
+            (async function uploadStorage(){
+                try{
+                    const currentDate = new Date();
+                    const millisecondsSince1970 = currentDate.getTime();
+                    const readableDate = currentDate.toLocaleDateString();
+                    const currentHour = ((currentDate.getHours() + 11) % 12 + 1);
+                    let currentMinutes = currentDate.getMinutes();
+                    currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
+                    const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
+                    let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
+                    let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
+                    const videoID = metadata.md5Hash.replace("/", "");
+                    const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
+                    const developersDocument = doc(firestore, "developers collection", `${videoID}`);
+                    const videoData = {                                              
+                        username: user.displayName,
+                        title: title,
+                        searchTitle: title.toLowerCase(),
+                        userImage: user.photoURL,
+                        category: category,
+                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
+                        url: url,
+                        userID: user.uid,
+                        videoID: videoID,
+                        order: millisecondsSince1970,
+                    }
+                    await setDoc(usersDocument, videoData)
+                    await setDoc(developersDocument, videoData)
+                    setLoading(false); 
+                    setOpen(false);             
+                }
+                catch(error){
+                    setLoading(false);
+                    console.log(error.message);
+                }
+            })(); 
+        }
+    }, [video]);
 
     return(
     <>
@@ -100,7 +154,7 @@ function Popup({category, setCategory, title, setTitle ,handleVideo, loading, se
 
                     <ReverseStyledButton variant="contained" component="label" onClick={handleClick}>
                         Select Video
-                        {(title && category) ? <input type="file" hidden accept="video/*" onChange={uploadVideo} /> : <></>}
+                        {(title && category) ? <input type="file" hidden accept="video/*" onChange={handleVideo} /> : <></>}
                     </ReverseStyledButton>     
                     <ReverseStyledButton variant="contained" onClick={handleClose}>
                         Close 
