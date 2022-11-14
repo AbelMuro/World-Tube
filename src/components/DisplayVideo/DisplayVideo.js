@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useLayoutEffect} from 'react';
 import styles from './styles.module.css';
 import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
@@ -10,7 +10,7 @@ function DisplayVideo() {
     const videoData = data.state;
 
     //using the data from localstorage and place the data in the DOM
-    useEffect(() => {
+    useLayoutEffect(() => {
         document.querySelector("." + styles.video).firstChild.src = videoData.URL;
         document.querySelector("." + styles.title).innerHTML = videoData.title;
         document.querySelector("." + styles.timeStamp).lastChild.innerHTML = videoData.timeStamp;

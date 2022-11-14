@@ -1,4 +1,4 @@
-import React, {useEffect, useState, memo, forwardRef} from 'react';
+import React, {useLayoutEffect, useState, memo, forwardRef} from 'react';
 import {Button, Stack, Box} from '@mui/material';
 import {styled} from '@mui/system';
 import styles from './styles.module.css';
@@ -22,7 +22,7 @@ const UploadImage = forwardRef((props, ref) => {
         setImage(e.target.files);
     }
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if(image.length == 1){
             const imageUploaded = document.querySelector("." + styles.imageUploaded);
             imageUploaded.innerHTML = image[0].name;
@@ -40,11 +40,7 @@ const UploadImage = forwardRef((props, ref) => {
 
             </Box>
         </Stack>                 
-
         )
-
-
-
 })
 
 

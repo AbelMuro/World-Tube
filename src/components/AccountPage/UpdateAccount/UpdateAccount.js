@@ -1,8 +1,15 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {Button, Dialog, DialogTitle, DialogContent, Stack, TextField} from '@mui/material';
+import React, {useState, useRef} from 'react';
+import {Button, Dialog, DialogTitle, DialogContent, Stack} from '@mui/material';
 import {styled} from '@mui/system';
+import {auth, storage, firestore} from '../../Firebase-config';
+import {useAuthState} from 'react-firebase-hooks/auth';
+import {useUploadFile} from 'react-firebase-hooks/storage'; 
+import {ref as storageRef, getDownloadURL} from 'firebase/storage';
+import { doc, setDoc, collection, getDocs} from 'firebase/firestore';
+import {updateProfile} from 'firebase/auth';
 import styles from './styles.module.css';
 import UploadImage from './UploadImage';
+import TextFields from './TextFields';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -34,6 +41,9 @@ const ReverseStyledButton = styled(Button)`
 function UpdateAccount() {
     const [open, setOpen] = useState(false);
     const image = useRef();
+    const textFields = useRef();
+    const [user] = useAuthState(auth);
+    const [uploadFile] = useUploadFile();
 
     const handleOpen = () => {
         setOpen((prevState) => {
@@ -41,8 +51,58 @@ function UpdateAccount() {
         });
     }
 
-    const submit = () => {
-        console.log(image.current.files);        
+    const submit = async () => {
+        try{
+            const username = textFields.current.username.value;
+            const aboutMe = textFields.current.aboutMe.value;
+            const [imageFile] = image.current.files;
+            let url = null;
+
+            //we upload the image to the storage and then get the download URL for the image, we then update the profile
+            if(imageFile) {
+                const ref = storageRef(storage, `${user.uid}/${imageFile.name}`);
+                await uploadFile(ref, imageFile);
+                url = await getDownloadURL(ref)                
+            }
+
+            updateProfile(user, {
+                ...(username && {displayName: username}),
+                ...(url && {photoURL: url})
+            })  
+
+            //we add a document containing the about-me section of the account
+            const docRef = doc(firestore, `${user.uid}/userInfo`);  
+            if(aboutMe){
+                await setDoc(docRef, {
+                    ...(aboutMe && {aboutMe: aboutMe})
+                }, {merge: true})                
+            } 
+
+
+            const newDocFields = {
+                ...(username && {username: username}),
+                ...(url && {userImage: url}),
+            }
+
+            //updating all the video documents that contain user info
+            const collectionRef = collection(firestore, `${user.uid}`);
+            let allDocs = await getDocs(collectionRef);
+            allDocs.forEach((doc) => {
+                if(username || url)
+                    setDoc(doc, newDocFields, {merge: true});
+            })
+
+            const devCollectionRef = collection(firestore, "developers collection");
+            let allDevDocs = await getDocs(devCollectionRef);
+            allDevDocs.forEach((doc) => {
+                if(username || url)
+                    setDoc(doc, newDocFields, {merge: true});
+            })
+
+        }
+        catch(error){
+            console.log(error);
+        }
     }
  
 
@@ -57,12 +117,9 @@ function UpdateAccount() {
                         Update Account Info
                     </DialogTitle>
                     <UploadImage ref={image}/>
-                    <Stack spacing={2}>
 
-                        {/* TODO: put the textfields below in a separate component with forwardRef*/}
-                        <TextField variant="outlined" label="Enter new username" value/>
-                        <TextField variant="outlined" label="Enter new email"/>
-                        <TextField variant="outlined" label="About me.." rows={6} multiline/>
+                    <Stack spacing={2}>
+                        <TextFields ref={textFields} />                        
                         <ReverseStyledButton variant="contained" onClick={submit}>
                             Submit
                         </ReverseStyledButton>
