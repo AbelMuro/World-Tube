@@ -43,6 +43,7 @@ function UpdateAccount() {
     const image = useRef();
     const textFields = useRef();
     const [user] = useAuthState(auth);
+    const [loading, setLoading] = useState(false);
     const [uploadFile] = useUploadFile();
 
     const handleOpen = () => {
@@ -53,6 +54,7 @@ function UpdateAccount() {
 
     const submit = async () => {
         try{
+            setLoading(true)
             const username = textFields.current.username.value;
             const aboutMe = textFields.current.aboutMe.value;
             const [imageFile] = image.current.files;
@@ -65,6 +67,7 @@ function UpdateAccount() {
                 url = await getDownloadURL(ref)                
             }
 
+            //find a way to render this component if aboutMe and userVideoColl
             await updateProfile(user, {
                 ...(username && {displayName: username}),
                 ...(url && {photoURL: url})
@@ -94,15 +97,17 @@ function UpdateAccount() {
             })
 
             const devCollectionRef = collection(firestore, "developers collection");
-            const allDevDocs = await getDocs(devCollectionRef);
-            allDevDocs.forEach((doc) => {
+            const allDevVideos = await getDocs(devCollectionRef);
+            allDevVideos.forEach((video) => {
                 if(username || url){
                     const currentVideo = doc(firestore, `${user.uid}/${video.id}`);
                     setDoc(currentVideo, newDocFields, {merge: true});    
                 }   
             })
+            setLoading(false);
         }
         catch(error){
+            setLoading(false);
             console.log(error.message);
         }
     }
