@@ -65,7 +65,7 @@ function UpdateAccount() {
                 url = await getDownloadURL(ref)                
             }
 
-            updateProfile(user, {
+            await updateProfile(user, {
                 ...(username && {displayName: username}),
                 ...(url && {photoURL: url})
             })  
@@ -78,30 +78,32 @@ function UpdateAccount() {
                 }, {merge: true})                
             } 
 
-
             const newDocFields = {
                 ...(username && {username: username}),
                 ...(url && {userImage: url}),
             }
-
+            
             //updating all the video documents that contain user info
             const collectionRef = collection(firestore, `${user.uid}`);
-            let allDocs = await getDocs(collectionRef);
-            allDocs.forEach((doc) => {
-                if(username || url)
-                    setDoc(doc, newDocFields, {merge: true});
+            const allUsersVideos = await getDocs(collectionRef);
+            allUsersVideos.forEach((video) => {
+                if(username || url){
+                    const currentVideo = doc(firestore, `${user.uid}/${video.id}`)                
+                    setDoc(currentVideo, newDocFields, {merge: true});                      
+                }
             })
 
             const devCollectionRef = collection(firestore, "developers collection");
-            let allDevDocs = await getDocs(devCollectionRef);
+            const allDevDocs = await getDocs(devCollectionRef);
             allDevDocs.forEach((doc) => {
-                if(username || url)
-                    setDoc(doc, newDocFields, {merge: true});
+                if(username || url){
+                    const currentVideo = doc(firestore, `${user.uid}/${video.id}`);
+                    setDoc(currentVideo, newDocFields, {merge: true});    
+                }   
             })
-
         }
         catch(error){
-            console.log(error);
+            console.log(error.message);
         }
     }
  

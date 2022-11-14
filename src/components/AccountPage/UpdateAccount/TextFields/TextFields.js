@@ -19,7 +19,11 @@ const TextFields = forwardRef((props, ref) => {
         },
         get aboutMe() {
             return aboutMe.current;
+        },
+        get state() {
+            return username;
         }
+
     }))
 
     const handleUsername = (e) => {
