@@ -1,21 +1,17 @@
 import React, {useState, forwardRef, useImperativeHandle, useRef} from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Box, Stack} from '@mui/material';
+import styles from './styles.module.css';
 
 
 const TextFields = forwardRef((props, ref) => {
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [aboutme, setAboutme] = useState("");
     const newUsername = useRef();
-    const newEmail = useRef();
     const aboutMe = useRef();
 
     useImperativeHandle(ref, () => ({
         get username() {
             return newUsername.current;
-        },
-        get email() {
-            return newEmail.current;
         },
         get aboutMe() {
             return aboutMe.current;
@@ -23,27 +19,28 @@ const TextFields = forwardRef((props, ref) => {
         get state() {
             return username;
         }
-
     }))
 
     const handleUsername = (e) => {
-        setUsername(e.target.value)
-    }
-    const handleEmail = (e) => {
-        setEmail(e.target.value)
+        if(e.target.value.length <= 15)
+            setUsername(e.target.value)
     }
     const handleAboutme = (e) => {
-        setAboutme(e.target.value)
+        if(e.target.value.length <= 150)
+            setAboutme(e.target.value)
     }
 
-
-
     return(
-        <>                        
-            <TextField variant="outlined" label="Enter new username" value={username} onChange={handleUsername} inputProps={{}} inputRef={newUsername}/>
-            <TextField variant="outlined" label="Enter new email" value={email} onChange={handleEmail} type="email" inputRef={newEmail}/>
+        <Stack>        
+            <Box className={styles.desc}>
+                Username must be within 15 characters
+            </Box>                
+            <TextField variant="outlined" label="Enter new username" value={username} onChange={handleUsername} inputRef={newUsername}/>
+            <Box className={styles.desc}>
+                'About me' must be within 150 characters
+            </Box>
             <TextField variant="outlined" label="About me.." rows={6} multiline value={aboutme} onChange={handleAboutme} inputRef={aboutMe}/>
-        </>
+        </Stack>
     )
 })
 

@@ -6,3 +6,12 @@
     font-family: "crimson text";
     text-align: center;
 }
+
+.loading{
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

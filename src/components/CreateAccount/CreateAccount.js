@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import styles from './styles.module.css';
-import {auth} from '../Firebase-config';
+import {auth, firestore} from '../Firebase-config';
 import {updateProfile, createUserWithEmailAndPassword, signOut, sendEmailVerification} from 'firebase/auth';
 import {TextField, Stack, Button, CircularProgress, Dialog, DialogTitle, DialogContent} from '@mui/material';
 import {styled} from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import emptyAvatar from './images/empty avatar.png';
+import { setDoc , getDoc, doc } from 'firebase/firestore';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -75,7 +76,23 @@ function CreateAccount() {
         try{
             if(username == "") throw {message: "username is empty"};       
             setLoading(true);
-            const credentials = await createUserWithEmailAndPassword(auth, email, password);      
+            const credentials = await createUserWithEmailAndPassword(auth, email, password); 
+            //storing the user's username in the database to later reference
+            const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+            const devsDoc = await getDoc(devsDocRef); 
+            if(devsDoc.exists()){
+                let docArray = [{username: username}];
+                docArray.push(...devsDoc.data().allUsernames);                
+                console.log(...devsDoc.data().allUsernames);
+                await setDoc(devsDocRef,{
+                    allUsernames: docArray
+                });                
+            }
+            else{
+                await setDoc(devsDocRef,{
+                    allUsernames: [{username: username}]
+                })
+            }
             await updateProfile(auth.currentUser, {displayName: username, photoURL: emptyAvatar});
             await sendEmailVerification(credentials.user);                   
             await signOut(auth); 
@@ -83,12 +100,17 @@ function CreateAccount() {
             setOpenEmailVerificationDialog(true);            
         }
         catch(error){
+            setLoading(false);
             if(error.message == "Firebase: Error (auth/email-already-in-use)."){
                 setLoading(false);
                 setOpenEmailInUseDialog(true); 
             }
-            else if(error.message == "username is empty")
+            else if(error.message == "username is empty"){
+                setLoading(false);
                 alert(error.message);
+            }
+
+                
         }
     }
 

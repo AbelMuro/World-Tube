@@ -5,11 +5,12 @@ import {auth, storage, firestore} from '../../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useUploadFile} from 'react-firebase-hooks/storage'; 
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
-import { doc, setDoc, collection, getDocs} from 'firebase/firestore';
+import {doc, setDoc, collection, getDocs} from 'firebase/firestore';
 import {updateProfile} from 'firebase/auth';
 import styles from './styles.module.css';
 import UploadImage from './UploadImage';
 import TextFields from './TextFields';
+import {CircularProgress, Box} from '@mui/material';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -38,7 +39,7 @@ const ReverseStyledButton = styled(Button)`
 
 
 
-function UpdateAccount() {
+function UpdateAccount({forceRender}) {
     const [open, setOpen] = useState(false);
     const image = useRef();
     const textFields = useRef();
@@ -54,7 +55,7 @@ function UpdateAccount() {
 
     const submit = async () => {
         try{
-            setLoading(true)
+            setLoading(true);
             const username = textFields.current.username.value;
             const aboutMe = textFields.current.aboutMe.value;
             const [imageFile] = image.current.files;
@@ -67,44 +68,47 @@ function UpdateAccount() {
                 url = await getDownloadURL(ref)                
             }
 
-            //find a way to render this component if aboutMe and userVideoColl
+            //we update the data in the auth variable
             await updateProfile(user, {
                 ...(username && {displayName: username}),
-                ...(url && {photoURL: url})
+                ...(url && {photoURL: url}),
             })  
 
             //we add a document containing the about-me section of the account
-            const docRef = doc(firestore, `${user.uid}/userInfo`);  
             if(aboutMe){
+                const docRef = doc(firestore, `${user.uid}/userInfo`);                  
                 await setDoc(docRef, {
-                    ...(aboutMe && {aboutMe: aboutMe})
+                    aboutMe: aboutMe
                 }, {merge: true})                
             } 
 
-            const newDocFields = {
-                ...(username && {username: username}),
-                ...(url && {userImage: url}),
-            }
-            
             //updating all the video documents that contain user info
-            const collectionRef = collection(firestore, `${user.uid}`);
-            const allUsersVideos = await getDocs(collectionRef);
-            allUsersVideos.forEach((video) => {
-                if(username || url){
-                    const currentVideo = doc(firestore, `${user.uid}/${video.id}`)                
-                    setDoc(currentVideo, newDocFields, {merge: true});                      
+            if(username || url){
+                const newDocFields = {
+                    ...(username && {username: username}),
+                    ...(url && {userImage: url}),
                 }
-            })
-
-            const devCollectionRef = collection(firestore, "developers collection");
-            const allDevVideos = await getDocs(devCollectionRef);
-            allDevVideos.forEach((video) => {
-                if(username || url){
+                const collectionRef = collection(firestore, `${user.uid}`);
+                const allUsersVideos = await getDocs(collectionRef);
+                allUsersVideos.forEach((video) => {
+                    if(video.id != "userInfo") {
+                        const currentVideo = doc(firestore, `${user.uid}/${video.id}`)                
+                        setDoc(currentVideo, newDocFields, {merge: true});                              
+                    }
+                })
+                const devCollectionRef = collection(firestore, "developers collection");
+                const allDevVideos = await getDocs(devCollectionRef);
+                allDevVideos.forEach((video) => {
                     const currentVideo = doc(firestore, `${user.uid}/${video.id}`);
-                    setDoc(currentVideo, newDocFields, {merge: true});    
-                }   
-            })
+                    setDoc(currentVideo, newDocFields, {merge: true});     
+                })
+            }
+            setOpen(false);            
             setLoading(false);
+            forceRender((prevState) => {
+                return prevState + 0.0000001
+            });
+ 
         }
         catch(error){
             setLoading(false);
@@ -119,6 +123,7 @@ function UpdateAccount() {
                 Update Account
             </StyledButton>
             <Dialog open={open}>
+                {loading ? <div className={styles.loading}><CircularProgress/></div> :
                 <DialogContent className={styles.dialog}>
                     <DialogTitle className={styles.title}>
                         Update Account Info
@@ -134,7 +139,7 @@ function UpdateAccount() {
                             Close
                         </ReverseStyledButton>
                     </Stack>
-                </DialogContent>
+                </DialogContent>}
             </Dialog>
         </>
     )
