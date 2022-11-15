@@ -1,7 +1,6 @@
 import React, { useState, useEffect} from 'react';
 import {auth, firestore} from '../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import {} from 'react-firebase-hooks/firestore'
 import { doc, getDoc } from 'firebase/firestore';
 import styles from './styles.module.css';
 import {CircularProgress} from '@mui/material';
@@ -12,7 +11,7 @@ import UpdateAccount from './UpdateAccount';
 
 function AccountPage() {
     const [user] = useAuthState(auth);
-    const [,forceRender] = useState(0.00000000001);
+    const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component
 
     
     function getDateCreated() {

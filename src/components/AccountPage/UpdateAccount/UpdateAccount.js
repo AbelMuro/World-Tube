@@ -53,7 +53,7 @@ function UpdateAccount({forceRender}) {
         });
     }
 
-    //TODO: now that every account's username is being registered in the developers collection of the database
+    //TODO: now that every account's username is being registered in the developers collection of the database...
     // i will need to check if the user's new username already exists in that same collection
     const submit = async () => {
         try{

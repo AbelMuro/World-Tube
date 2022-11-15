@@ -83,7 +83,7 @@ function CreateAccount() {
             const devsDoc = await getDoc(devsDocRef); 
             if(devsDoc.exists()){
                 let docArray = [{username: username}];
-                docArray.push(...devsDoc.data().allUsernames);
+                docArray.push(...devsDoc.data().allUsernames);          //remember, allUsernames is an array, so just use .forEach() to check every element
                 await setDoc(devsDocRef,{
                     allUsernames: docArray
                 });                
