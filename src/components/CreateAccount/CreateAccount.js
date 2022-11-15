@@ -72,6 +72,8 @@ function CreateAccount() {
         setOpenEmailInUseDialog(false);
     }
     
+
+    //TODO: if the email is already registered, then the username will still be put into the database
     const handleRegister = async () => {
         try{
             if(username == "") throw {message: "username is empty"};       
@@ -107,16 +109,20 @@ function CreateAccount() {
         }
         catch(error){
             setLoading(false);
-            if(error.message == "Firebase: Error (auth/email-already-in-use).")
+            //TODO: delete the username from database that was added BEFORE createUserWithEmailandPassword();
+            if(error.message == "Firebase: Error (auth/email-already-in-use)."){
+                const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+                const devsDoc = await getDoc(devsDocRef); 
+                devsDoc.forEach();
                 setOpenEmailInUseDialog(true); 
+            }
+                
             
             else if(error.message == "username is empty")
                 alert(error.message);
             
             else if(error.message == "username already exists")
                 alert(error.message);
-
-                
         }
     }
 

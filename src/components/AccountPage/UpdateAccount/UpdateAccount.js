@@ -5,12 +5,12 @@ import {auth, storage, firestore} from '../../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {useUploadFile} from 'react-firebase-hooks/storage'; 
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
-import {doc, setDoc, collection, getDocs} from 'firebase/firestore';
+import {doc, setDoc, collection, getDocs, getDoc} from 'firebase/firestore';
 import {updateProfile} from 'firebase/auth';
 import styles from './styles.module.css';
 import UploadImage from './UploadImage';
 import TextFields from './TextFields';
-import {CircularProgress, Box} from '@mui/material';
+import {CircularProgress} from '@mui/material';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -63,6 +63,23 @@ function UpdateAccount({forceRender}) {
             const [imageFile] = image.current.files;
             let url = null;
 
+            //checking to see if the
+            const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+            const devsDoc = await getDoc(devsDocRef); 
+            if(devsDoc.exists()) {
+                const allUsernames = devsDoc.data().allUsernames;
+                for(let currentUsername in allUsernames){
+                    const users = allUsernames[currentUsername].username;
+                    if(users == username)
+                        throw {message: "username already exists"}  
+                }               
+            }
+            else{
+                await setDoc(devsDocRef,{
+                    allUsernames: [{username: username}]
+                })
+            }
+
             //we upload the image to the storage and then get the download URL for the image, we then update the profile
             if(imageFile) {
                 const ref = storageRef(storage, `${user.uid}/${imageFile.name}`);
@@ -114,6 +131,9 @@ function UpdateAccount({forceRender}) {
         }
         catch(error){
             setLoading(false);
+            if(error.message == "username already exists") {
+                alert(error.message);
+            }
             console.log(error.message);
         }
     }
