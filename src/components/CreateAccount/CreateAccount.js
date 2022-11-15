@@ -78,12 +78,12 @@ function CreateAccount() {
             setLoading(true);
             const credentials = await createUserWithEmailAndPassword(auth, email, password); 
             //storing the user's username in the database to later reference
+            //TODO: i will need to somehow check if the user's initial username already exists in the database
             const devsDocRef = doc(firestore, `developers collection/userInfo`); 
             const devsDoc = await getDoc(devsDocRef); 
             if(devsDoc.exists()){
                 let docArray = [{username: username}];
-                docArray.push(...devsDoc.data().allUsernames);                
-                console.log(...devsDoc.data().allUsernames);
+                docArray.push(...devsDoc.data().allUsernames);
                 await setDoc(devsDocRef,{
                     allUsernames: docArray
                 });                
