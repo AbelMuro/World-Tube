@@ -98,7 +98,7 @@ function Popup({user}) {
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
                     const videoID = metadata.md5Hash.replace("/", "");
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
-                    const developersDocument = doc(firestore, "developers collection", `${videoID}`);
+                    const developersDocument = doc(firestore, "developers collection", `allVideos/videoCollection/${videoID}`);
                     const videoData = {                                              
                         username: user.displayName,
                         title: title,

@@ -75,15 +75,19 @@ function CreateAccount() {
     const handleRegister = async () => {
         try{
             if(username == "") throw {message: "username is empty"};       
-            setLoading(true);
-            const credentials = await createUserWithEmailAndPassword(auth, email, password); 
-            //storing the user's username in the database to later reference
-            //TODO: i will need to somehow check if the user's initial username already exists in the database
+            setLoading(true);            
+            //storing the user's username in the database for later reference and also checking if the user's username already exists in the firestore
             const devsDocRef = doc(firestore, `developers collection/userInfo`); 
             const devsDoc = await getDoc(devsDocRef); 
             if(devsDoc.exists()){
+                const allUsernames = devsDoc.data().allUsernames;
+                for(let currentUsername in allUsernames){
+                    const users = allUsernames[currentUsername].username;
+                    if(users == username)
+                        throw {message: "username already exists"}  
+                }
                 let docArray = [{username: username}];
-                docArray.push(...devsDoc.data().allUsernames);          //remember, allUsernames is an array, so just use .forEach() to check every element
+                docArray.push(...allUsernames);          
                 await setDoc(devsDocRef,{
                     allUsernames: docArray
                 });                
@@ -93,6 +97,8 @@ function CreateAccount() {
                     allUsernames: [{username: username}]
                 })
             }
+            //once we verifed that the username doesnt already exist in the database, we can go ahead and created the users account
+            const credentials = await createUserWithEmailAndPassword(auth, email, password); 
             await updateProfile(auth.currentUser, {displayName: username, photoURL: emptyAvatar});
             await sendEmailVerification(credentials.user);                   
             await signOut(auth); 
@@ -101,14 +107,14 @@ function CreateAccount() {
         }
         catch(error){
             setLoading(false);
-            if(error.message == "Firebase: Error (auth/email-already-in-use)."){
-                setLoading(false);
+            if(error.message == "Firebase: Error (auth/email-already-in-use).")
                 setOpenEmailInUseDialog(true); 
-            }
-            else if(error.message == "username is empty"){
-                setLoading(false);
+            
+            else if(error.message == "username is empty")
                 alert(error.message);
-            }
+            
+            else if(error.message == "username already exists")
+                alert(error.message);
 
                 
         }
