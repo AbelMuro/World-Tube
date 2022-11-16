@@ -43,7 +43,7 @@ function DisplayVideos({userID}) {
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
                             <video className={styles.videos} onClick={displayVideo} data-video={JSON.stringify(video)}>
-                                <source src={video.url} type="video/mp4"/>
+                                <source src={video.url}/>
                                 Your browser doesn't support videos
                             </video>                            
                         </div>

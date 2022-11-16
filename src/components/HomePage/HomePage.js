@@ -66,7 +66,7 @@ function HomePage() {
                                     <CircularProgress />
                                 </div>
                                 <video className={styles.video} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded}>
-                                    <source src={video.url} type="video/mp4"/>
+                                    <source src={video.url}/>
                                     Your Browser doesn't support videos
                                 </video>                                  
                             </div>
