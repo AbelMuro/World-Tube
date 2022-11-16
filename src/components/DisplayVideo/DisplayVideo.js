@@ -56,7 +56,7 @@ function DisplayVideo() {
                 <div className={styles.allVideos}>
                     {loading ? <>...is loading</> : allUsersVideos.length > 1 ? allUsersVideos.map((video) => {
                             return (
-                                <video className={styles.otherVideos} key={uuid()} > {/* TODO: finish up styling the other videos section of this component*/}
+                                <video className={styles.otherVideos} key={uuid()} > {/* TODO: finish up styling the other videos section of this component AND change the names in the comments of the database*/}
                                     <source src={video.url}/>
                                     Your Browser doesn't support videos
                                 </video>
