@@ -13,9 +13,10 @@ function DisplayVideo() {
     const data = useLocation();
     const videoData = data.state;
     const collectionRef = collection(firestore, `${videoData.userID}`);
-    const q = query(collectionRef, where("title", "!=", `${videoData.title}`), where("title", "!=", "userInfo"));
+    const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
     const [allUsersVideos, loading] = useCollectionData(collectionRef);
-
+    
+    //TODO: also make sure to exclude the userInfo document from the collection above
     //TODO: import navigate hook and pass the video data to the DisplayVideo Component (this component)
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
