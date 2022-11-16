@@ -80,9 +80,25 @@
 .otherVideos{
     object-fit: contain;
     width: 300px;
+    pointer-events: none;
 }
 
 .noOtherVideos{
     font-family: "crimson text";
     text-align: center;
+}
+
+.otherVideoContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.otherVideoTitle{
+    font-family: "crimson text";
+    font-size: 22px;
+}
+
+.videoLink{
+    cursor: pointer;
 }

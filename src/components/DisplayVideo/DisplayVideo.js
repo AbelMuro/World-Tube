@@ -14,7 +14,14 @@ function DisplayVideo() {
     const videoData = data.state;
     const collectionRef = collection(firestore, `${videoData.userID}`);
     const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
-    const [allUsersVideos, loading] = useCollectionData(q);
+    const [allUsersVideos, loading] = useCollectionData(collectionRef);
+
+    //TODO: import navigate hook and pass the video data to the DisplayVideo Component (this component)
+    const handleVideoLink = (e) => {
+        let videoData = e.target.getAttribute("data-video");
+        videoData = JSON.parse(videoData);
+        console.log(videoData);
+    }
 
 
     //using the data from localstorage and place the data in the DOM
@@ -56,10 +63,18 @@ function DisplayVideo() {
                 <div className={styles.allVideos}>
                     {loading ? <>...is loading</> : allUsersVideos.length > 1 ? allUsersVideos.map((video) => {
                             return (
-                                <video className={styles.otherVideos} key={uuid()} > {/* TODO: finish up styling the other videos section of this component AND change the names in the comments of the database*/}
-                                    <source src={video.url}/>
-                                    Your Browser doesn't support videos
-                                </video>
+                                <div className={styles.otherVideoContainer} key={uuid()}>
+                                    <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
+                                        <video className={styles.otherVideos}> {/* TODO: finish up styling the other videos section of this component AND change the names in the comments of the database*/}
+                                            <source src={video.url}/>
+                                            Your Browser doesn't support videos
+                                        </video>                                          
+                                    </a>
+                                    <p className={styles.otherVideoTitle}>
+                                        {video.title}   
+                                    </p>                              
+                                </div>
+
                             ) 
                         }) : <h2 className={styles.noOtherVideos}>No other videos</h2>
                     }
