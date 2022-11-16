@@ -36,7 +36,20 @@ const ReverseStyledButton = styled(Button)`
         color: #464646;
     }     
 `
+const DialogButton = styled(Button)`
+    background-color: #F4F3F3;
+    color: #464646;
+    font-family: "crimson text";
+    width: 70%; 
+    margin: auto; 
+    display: block;
 
+    &:hover {
+        background-color: #464646;
+        color: #F4F3F3;
+    }     
+
+`
 
 
 function UpdateAccount({forceRender}) {
@@ -45,6 +58,7 @@ function UpdateAccount({forceRender}) {
     const textFields = useRef();
     const [user] = useAuthState(auth);
     const [loading, setLoading] = useState(false);
+    const [openUsernameAlreadyExistsDialog, setOpenUsernameAlreadyExistsDialog] = useState(false);
     const [uploadFile] = useUploadFile();
 
     const handleOpen = () => {
@@ -53,8 +67,12 @@ function UpdateAccount({forceRender}) {
         });
     }
 
-    //TODO: now that every account's username is being registered in the developers collection of the database...
-    // i will need to check if the user's new username already exists in that same collection
+    const closeUsernameAlreadyExistsDialog = () => {
+        setOpenUsernameAlreadyExistsDialog(false);
+    }
+
+
+    //TODO: delete all account info in firestore and auth, and try again
     const submit = async () => {
         try{
             setLoading(true);
@@ -63,16 +81,29 @@ function UpdateAccount({forceRender}) {
             const [imageFile] = image.current.files;
             let url = null;
 
-            //checking to see if the
+            //checking to see if the new username already exists in the firestore
             const devsDocRef = doc(firestore, `developers collection/userInfo`); 
             const devsDoc = await getDoc(devsDocRef); 
             if(devsDoc.exists()) {
                 const allUsernames = devsDoc.data().allUsernames;
+                const oldUsername = user.displayName;
+                //if the new username already exists in the database, then we throw an error
                 for(let currentUsername in allUsernames){
                     const users = allUsernames[currentUsername].username;
                     if(users == username)
                         throw {message: "username already exists"}  
-                }               
+                }  
+                //if the new username doesn't exist in the database, then we delete the old username and add the new one
+                const updatedUsernames = allUsernames.filter((user) => {
+                    const currentUsername = user.username;
+                    if(currentUsername == oldUsername)
+                        return false;
+                    else
+                        return true;
+                })         
+                await setDoc(devsDocRef, {
+                    allusernames: updatedUsernames,
+                })    
             }
             else{
                 await setDoc(devsDocRef,{
@@ -132,13 +163,12 @@ function UpdateAccount({forceRender}) {
         catch(error){
             setLoading(false);
             if(error.message == "username already exists") {
-                alert(error.message);
+                setOpenUsernameAlreadyExistsDialog(true);
             }
             console.log(error.message);
         }
     }
  
-
     return(
         <>
             <StyledButton variant="contained" onClick={handleOpen}>
@@ -162,6 +192,16 @@ function UpdateAccount({forceRender}) {
                         </ReverseStyledButton>
                     </Stack>
                 </DialogContent>}
+            </Dialog>
+            <Dialog open={openUsernameAlreadyExistsDialog}>
+                <DialogContent className={styles.dialogContent}>
+                    <DialogTitle className={styles.dialogTitle} style={{textAlign: "center"}}>
+                        Username already exists
+                    </DialogTitle>
+                    <DialogButton variant="contained" onClick={closeUsernameAlreadyExistsDialog}>
+                        OK
+                    </DialogButton>
+                </DialogContent>
             </Dialog>
         </>
     )

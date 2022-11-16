@@ -48,6 +48,8 @@ function CreateAccount() {
     const [loading, setLoading] = useState(false);
     const [openEmailVerificationDialog, setOpenEmailVerificationDialog] = useState(false);
     const [openEmailInUseDialog, setOpenEmailInUseDialog] = useState(false);
+    const [openUsernameIsEmptyDialog, setOpenUsernameIsEmptyDialog] = useState(false);
+    const [openUsernameAlreadyExistsDialog, setOpenUsernameAlreadyExistsDialog] = useState(false);
     const navigate = useNavigate();
     let disable = !password.match(/\d/g) || !password.match(/\W/g) || !password.match(/[a-zA-Z]/g) || password.length < 6 || loading;
 
@@ -72,8 +74,14 @@ function CreateAccount() {
         setOpenEmailInUseDialog(false);
     }
     
+    const closeUsernameIsEmptyDialog = () => {
+        setOpenUsernameIsEmptyDialog(false)
+    }
 
-    //TODO: if the email is already registered, then the username will still be put into the database
+    const closeUsernameAlreadyExistsDialog = () => {
+        setOpenUsernameAlreadyExistsDialog(false);
+    }
+
     const handleRegister = async () => {
         try{
             if(username == "") throw {message: "username is empty"};       
@@ -99,7 +107,7 @@ function CreateAccount() {
                     allUsernames: [{username: username}]
                 })
             }
-            //once we verifed that the username doesnt already exist in the database, we can go ahead and created the users account
+            //once we verifed that the username doesn't already exist in the database, we can go ahead and create the users account
             const credentials = await createUserWithEmailAndPassword(auth, email, password); 
             await updateProfile(auth.currentUser, {displayName: username, photoURL: emptyAvatar});
             await sendEmailVerification(credentials.user);                   
@@ -109,20 +117,29 @@ function CreateAccount() {
         }
         catch(error){
             setLoading(false);
-            //TODO: delete the username from database that was added BEFORE createUserWithEmailandPassword();
             if(error.message == "Firebase: Error (auth/email-already-in-use)."){
+                //this block of code will delete the username that was registered before createUserWithEmailAndPassword() threw an error
                 const devsDocRef = doc(firestore, `developers collection/userInfo`); 
                 const devsDoc = await getDoc(devsDocRef); 
-                devsDoc.forEach();
+                const allUsernames = devsDoc.data().allUsernames;
+                const updatedUsernames = allUsernames.filter((user) => {
+                    const currentUser = user.username;
+                    if(currentUser == username)
+                        return false;
+                    else
+                        return true;
+                })
+                await setDoc(devsDocRef, {
+                    allUsernames: updatedUsernames
+                });
                 setOpenEmailInUseDialog(true); 
             }
                 
-            
             else if(error.message == "username is empty")
-                alert(error.message);
+                setOpenUsernameIsEmptyDialog(true)
             
             else if(error.message == "username already exists")
-                alert(error.message);
+                setOpenUsernameAlreadyExistsDialog(true);
         }
     }
 
@@ -170,7 +187,26 @@ function CreateAccount() {
                         </DialogButton>
                     </DialogContent>
                 </Dialog>
-
+                <Dialog open={openUsernameIsEmptyDialog}>
+                    <DialogContent className={styles.dialogContent}>
+                        <DialogTitle className={styles.dialogTitle} style={{textAlign: "center"}}>
+                            Username is empty
+                        </DialogTitle>
+                        <DialogButton variant="contained" onClick={closeUsernameIsEmptyDialog}>
+                            OK
+                        </DialogButton>
+                    </DialogContent>
+                </Dialog>
+                <Dialog open={openUsernameAlreadyExistsDialog}>
+                    <DialogContent className={styles.dialogContent}>
+                        <DialogTitle className={styles.dialogTitle} style={{textAlign: "center"}}>
+                            Username already exists
+                        </DialogTitle>
+                        <DialogButton variant="contained" onClick={closeUsernameAlreadyExistsDialog}>
+                            OK
+                        </DialogButton>
+                    </DialogContent>
+                </Dialog>
             </div>            
         </section>) 
 }

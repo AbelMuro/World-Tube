@@ -24,9 +24,11 @@ function AccountPage() {
             const aboutMeDoc = doc(firestore, `${user.uid}/userInfo`);
             getDoc(aboutMeDoc)
                 .then((doc) => {
-                    const docData = doc.data();
-                    const aboutMe = document.getElementById("aboutMe");
-                    aboutMe.innerHTML = docData.aboutMe;                    
+                    if(doc.exists()){
+                        const docData = doc.data();
+                        const aboutMe = document.getElementById("aboutMe");
+                        aboutMe.innerHTML = docData.aboutMe ? docData.aboutMe : "User hasn't written anything";                             
+                    }
                 })
         }
     })
@@ -59,7 +61,7 @@ function AccountPage() {
                         About Me:
                     </h2>
                     <p className={styles.desc} id="aboutMe">
-
+                        The user hasn't written anything yet.
                     </p>
                 </div>
                 <UpdateAccount forceRender={forceRender}/>                    
