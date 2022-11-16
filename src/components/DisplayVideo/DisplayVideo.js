@@ -13,7 +13,7 @@ function DisplayVideo() {
     const data = useLocation();
     const videoData = data.state;
     const collectionRef = collection(firestore, `${videoData.userID}`);
-    const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
+    const q = query(collectionRef, where("title", "!=", `${videoData.title}`), where("title", "!=", "userInfo"));
     const [allUsersVideos, loading] = useCollectionData(collectionRef);
 
     //TODO: import navigate hook and pass the video data to the DisplayVideo Component (this component)
@@ -62,6 +62,7 @@ function DisplayVideo() {
                 </h1>
                 <div className={styles.allVideos}>
                     {loading ? <>...is loading</> : allUsersVideos.length > 1 ? allUsersVideos.map((video) => {
+
                             return (
                                 <div className={styles.otherVideoContainer} key={uuid()}>
                                     <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
