@@ -61,7 +61,7 @@ function AccountPage() {
                         About Me:
                     </h2>
                     <p className={styles.desc} id="aboutMe">
-                        The user hasn't written anything yet.
+                        User hasn't written anything
                     </p>
                 </div>
                 <UpdateAccount forceRender={forceRender}/>                    

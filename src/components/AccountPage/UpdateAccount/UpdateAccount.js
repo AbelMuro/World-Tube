@@ -81,10 +81,9 @@ function UpdateAccount({forceRender}) {
             const [imageFile] = image.current.files;
             let url = null;
 
-            //checking to see if the new username already exists in the firestore
-            const devsDocRef = doc(firestore, `developers collection/userInfo`); 
-            const devsDoc = await getDoc(devsDocRef); 
-            if(devsDoc.exists()) {
+            if(username){
+                const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+                const devsDoc = await getDoc(devsDocRef); 
                 const allUsernames = devsDoc.data().allUsernames;
                 const oldUsername = user.displayName;
                 //if the new username already exists in the database, then we throw an error
@@ -93,7 +92,7 @@ function UpdateAccount({forceRender}) {
                     if(users == username)
                         throw {message: "username already exists"}  
                 }  
-                //if the new username doesn't exist in the database, then we delete the old username and add the new one
+                //we then delete the old username from the database, and add the new one
                 const updatedUsernames = allUsernames.filter((user) => {
                     const currentUsername = user.username;
                     if(currentUsername == oldUsername)
@@ -101,14 +100,10 @@ function UpdateAccount({forceRender}) {
                     else
                         return true;
                 })         
+                updatedUsernames.push({username: username});
                 await setDoc(devsDocRef, {
-                    allusernames: updatedUsernames,
-                })    
-            }
-            else{
-                await setDoc(devsDocRef,{
-                    allUsernames: [{username: username}]
-                })
+                    allUsernames: updatedUsernames,
+                })                    
             }
 
             //we upload the image to the storage and then get the download URL for the image, we then update the profile
@@ -142,15 +137,17 @@ function UpdateAccount({forceRender}) {
                 const allUsersVideos = await getDocs(collectionRef);
                 allUsersVideos.forEach((video) => {
                     if(video.id != "userInfo") {
-                        const currentVideo = doc(firestore, `${user.uid}/${video.id}`)                
+                        const videoData = video.data();
+                        const currentVideo = doc(firestore, `${user.uid}/${videoData.videoID}`)                
                         setDoc(currentVideo, newDocFields, {merge: true});                              
                     }
                 })
-                const devCollectionRef = collection(firestore, "developers collection");
+                const devCollectionRef = collection(firestore, "developers collection/allVideos/videoCollection");
                 const allDevVideos = await getDocs(devCollectionRef);
                 allDevVideos.forEach((video) => {
-                    const currentVideo = doc(firestore, `${user.uid}/${video.id}`);
-                    setDoc(currentVideo, newDocFields, {merge: true});     
+                    const videoData = video.data();
+                    const currentVideo = doc(devCollectionRef, `${videoData.videoID}`);
+                    setDoc(currentVideo, newDocFields, {merge: true});
                 })
             }
             setOpen(false);            
@@ -158,7 +155,6 @@ function UpdateAccount({forceRender}) {
             forceRender((prevState) => {
                 return prevState + 0.0000001
             });
- 
         }
         catch(error){
             setLoading(false);

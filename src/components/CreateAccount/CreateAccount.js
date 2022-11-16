@@ -92,8 +92,8 @@ function CreateAccount() {
             if(devsDoc.exists()){
                 const allUsernames = devsDoc.data().allUsernames;
                 for(let currentUsername in allUsernames){
-                    const users = allUsernames[currentUsername].username;
-                    if(users == username)
+                    const usernameInDB = allUsernames[currentUsername].username;
+                    if(usernameInDB == username)
                         throw {message: "username already exists"}  
                 }
                 let docArray = [{username: username}];
