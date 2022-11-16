@@ -11,7 +11,7 @@ import {CircularProgress} from '@mui/material';
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
-    const q = state ? state?.search ? query(allVideosRef, where("title", ">=", state.search), where("title", "<=", state.search + '\uf8ff')) :
+    const q = state ? state?.search ? query(allVideosRef, where("searchTitle", ">=", state.search), where("searchTitle", "<=", state.search + '\uf8ff')) :
                       state.category != "All" ? query(allVideosRef, where("category", "==", state.category)) : query(allVideosRef)
               : query(allVideosRef);
     const [allVideos, loading] = useCollectionData(q);

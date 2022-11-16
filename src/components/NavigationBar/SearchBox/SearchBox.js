@@ -25,7 +25,7 @@ function SearchBox(){
     }
 
     useEffect(() => {
-        if(search != "")
+        if(search != "") //TODO: lower case search
             navigate("/", {state: {search: search}})
     },[search])
 
