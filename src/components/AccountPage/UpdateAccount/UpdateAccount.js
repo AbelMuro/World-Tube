@@ -71,8 +71,6 @@ function UpdateAccount({forceRender}) {
         setOpenUsernameAlreadyExistsDialog(false);
     }
 
-
-    //TODO: delete all account info in firestore and auth, and try again
     const submit = async () => {
         try{
             setLoading(true);
@@ -133,15 +131,37 @@ function UpdateAccount({forceRender}) {
                     ...(username && {username: username}),
                     ...(url && {userImage: url}),
                 }
+                //updating the username and image in the users collection
                 const collectionRef = collection(firestore, `${user.uid}`);
                 const allUsersVideos = await getDocs(collectionRef);
                 allUsersVideos.forEach((video) => {
                     if(video.id != "userInfo") {
                         const videoData = video.data();
+                        //updating username and image for every video document
                         const currentVideo = doc(firestore, `${user.uid}/${videoData.videoID}`)                
-                        setDoc(currentVideo, newDocFields, {merge: true});                              
+                        setDoc(currentVideo, newDocFields, {merge: true});  
+                        //updating username and image for every comment posted, including all the replies the user has made 
+                        const commentSectionRef = collection(firestore, `${user.uid}/userInfo/allComments`);   
+                        const commentRepliesRef = collection(firestore, `${user.uid}/userInfo/allReplies`);
+                        getDocs(commentSectionRef)
+                            .then((allComments) => {
+                                allComments.forEach((comment) => {
+                                    const commentData = comment.data();
+                                    const commentRef = doc(firestore, `${commentData.videoOwnerID}/${commentData.videoID}/commentSection/${commentData.commentID}`);
+                                    setDoc(commentRef, newDocFields, {merge: true});                       
+                                })                                
+                            })
+                        getDocs(commentRepliesRef)
+                            .then((allReplies) => {
+                                allReplies.forEach((reply) => {
+                                    const replyData = reply.data();
+                                    const replyRef = doc(firestore,`${replyData.videoOwnerID}/${replyData.videoID}/commentSection/${replyData.commentID}/commentReplies/${replyData.replyID}`);
+                                    setDoc(replyRef, newDocFields, {merge: true});
+                                })
+                            })
                     }
                 })
+                //updating the username and image in the developers collection
                 const devCollectionRef = collection(firestore, "developers collection/allVideos/videoCollection");
                 const allDevVideos = await getDocs(devCollectionRef);
                 allDevVideos.forEach((video) => {

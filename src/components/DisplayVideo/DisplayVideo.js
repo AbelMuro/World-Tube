@@ -7,23 +7,22 @@ import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
 import {useLocation} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
+import {useNavigate} from 'react-router-dom';
 
 
 function DisplayVideo() {
-    const data = useLocation();
-    const videoData = data.state;
+    const {state} = useLocation();
+    const videoData = state;
     const collectionRef = collection(firestore, `${videoData.userID}`);
     const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
-    const [allUsersVideos, loading] = useCollectionData(collectionRef);
+    const [allUsersVideos, loading] = useCollectionData(q);
+    const navigate = useNavigate();
     
-    //TODO: also make sure to exclude the userInfo document from the collection above
-    //TODO: import navigate hook and pass the video data to the DisplayVideo Component (this component)
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
-        console.log(videoData);
+        navigate(`/${videoData.title}`, {state : videoData});
     }
-
 
     //using the data from localstorage and place the data in the DOM
     useEffect(() => {
@@ -38,7 +37,7 @@ function DisplayVideo() {
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
                 <video className={styles.video} controls>
-                    <source src={videoData.url} type="video/mp4"/>
+                    <source src={videoData.url}/>
                     Your Browser doesn't support videos
                 </video>
                 <h1 className={styles.title}></h1>
@@ -63,11 +62,12 @@ function DisplayVideo() {
                 </h1>
                 <div className={styles.allVideos}>
                     {loading ? <>...is loading</> : allUsersVideos.length > 1 ? allUsersVideos.map((video) => {
+                            if(video?.aboutMe) return;
 
                             return (
                                 <div className={styles.otherVideoContainer} key={uuid()}>
                                     <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
-                                        <video className={styles.otherVideos}> {/* TODO: finish up styling the other videos section of this component AND change the names in the comments of the database*/}
+                                        <video className={styles.otherVideos}>
                                             <source src={video.url}/>
                                             Your Browser doesn't support videos
                                         </video>                                          

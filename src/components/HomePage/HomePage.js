@@ -37,7 +37,7 @@ function HomePage() {
         const title = selectedVideo.querySelector("." + styles.videoTitle).innerHTML;
         const username = selectedVideo.querySelector("." + styles.videoDesc).lastChild.innerHTML;
         const userImage = selectedVideo.querySelector("." + styles.videoDesc).firstChild.src;
-        const timeStamp = selectedVideo.querySelector("." + styles.videoTimeStamp).innerHTML;
+        const timeStamp = selectedVideo.querySelector("." + styles.videoTimeStamp).lastChild.innerHTML;
         const videoURL = selectedVideo.querySelector("video").firstChild.src;
         const videoData = {
             title: title,
@@ -81,7 +81,10 @@ function HomePage() {
                                 </span> 
                             </p>   
                             <p className={styles.videoTimeStamp}>
-                                Posted on: {video.timeCreated}
+                                Posted on: 
+                                <p>
+                                    {video.timeCreated}
+                                </p>
                             </p>                
                         </div>
                     )

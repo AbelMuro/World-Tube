@@ -49,6 +49,7 @@ function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
         const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
         const nestedCommentID = uuid();
         const commentRef = doc(firestore,`${videoOwnerID}`, `${videoID}/commentSection/${commentID}/commentReplies/${nestedCommentID}`)
+        const commentRefForUser = doc(firestore, `${user.uid}/userInfo/allReplies/${nestedCommentID}`);
         await setDoc(commentRef,{
             comment: reply,
             commentID: nestedCommentID,
@@ -58,6 +59,12 @@ function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
             timeStamp: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
             order: millisecondsSince1970
         })  
+        await setDoc(commentRefForUser, {
+            videoOwnerID: videoOwnerID,
+            videoID: videoID,
+            commentID: commentID,
+            replyID: nestedCommentID
+        })
         setReply("");
         handleReplyDialog();         
     }

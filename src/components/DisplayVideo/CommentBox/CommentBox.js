@@ -40,6 +40,7 @@ function CommentBox({videoOwnerID, videoID}) {
         const currentMinutes = currentDate.getMinutes();
         const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
         const commentID = uuid();
+        const commentRef = doc(firestore, `${user.uid}`, `userInfo/allComments/${commentID}`);
         const documentRef = doc(firestore, `${videoOwnerID}`, `${videoID}/commentSection/${commentID}`);
         await setDoc(documentRef, {
             comment: comment,
@@ -49,6 +50,11 @@ function CommentBox({videoOwnerID, videoID}) {
             username: user.displayName, 
             order: millisecondsSince1970,
             timeStamp: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`  
+        })
+        await setDoc(commentRef, {
+            videoOwnerID: videoOwnerID,
+            videoID: videoID,
+            commentID: commentID
         })
         setComment("");
     }

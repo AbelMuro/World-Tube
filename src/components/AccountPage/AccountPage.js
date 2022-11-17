@@ -5,7 +5,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import styles from './styles.module.css';
 import {CircularProgress} from '@mui/material';
 import DisplayVideos from './DisplayVideos';
-import Popup from './Popup';
+import UploadVideo from './UploadVideo';
 import UpdateAccount from './UpdateAccount';
 
 
@@ -68,7 +68,7 @@ function AccountPage() {
             </div>
 
             <div className={styles.videosUploaded}>     
-                <Popup user={user}/>
+                <UploadVideo user={user}/>
                 <h1 className={styles.yourVideosTitle}>Your Videos:</h1> 
                 <DisplayVideos userID={user.uid}/>
             </div>

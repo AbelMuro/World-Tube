@@ -40,6 +40,11 @@
     font-family: "crimson text";
 }
 
+.videoTimeStamp {
+    display: flex;
+    gap: 10px;
+}
+
 .videoDesc{
     display: flex;
     align-items: center;

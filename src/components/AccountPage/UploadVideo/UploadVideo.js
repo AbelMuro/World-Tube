@@ -39,7 +39,7 @@ const ReverseStyledButton = styled(Button)`
 `
 
 
-function Popup({user}) {
+function UploadVideo({user}) {
     const [video, setVideo] = useState([]);
     const [uploadFile] = useUploadFile(auth);
     const [title, setTitle] = useState("");
@@ -82,8 +82,7 @@ function Popup({user}) {
     useEffect(() => {
         if(video.length > 0) {
             setLoading(true);
-            const userID = user.uid;
-            const ref = storageRef(storage, `/${userID}/${video[0].name}`);  
+            const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
 
             (async function uploadStorage(){
                 try{
@@ -169,4 +168,4 @@ function Popup({user}) {
     )
 }
 
-export default Popup;
+export default UploadVideo;
