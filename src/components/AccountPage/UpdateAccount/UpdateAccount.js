@@ -117,7 +117,7 @@ function UpdateAccount({forceRender}) {
                 ...(url && {photoURL: url}),
             })  
 
-            //we add a document containing the about-me section of the account
+            //we add a document containing the about-me section of the account and the url image of the user
             if(aboutMe || url){
                 const docRef = doc(firestore, `${user.uid}/userInfo`);                  
                 await setDoc(docRef, {
@@ -140,29 +140,29 @@ function UpdateAccount({forceRender}) {
                         const videoData = video.data();
                         //updating username and image for every video document
                         const currentVideo = doc(firestore, `${user.uid}/${videoData.videoID}`)                
-                        setDoc(currentVideo, newDocFields, {merge: true});  
-                        //updating username and image for every comment posted
-                        const commentSectionRef = collection(firestore, `${user.uid}/userInfo/allComments`);   
-                        const commentRepliesRef = collection(firestore, `${user.uid}/userInfo/allReplies`);
-                        getDocs(commentSectionRef)
-                            .then((allComments) => {
-                                allComments.forEach((comment) => {
-                                    const commentData = comment.data();
-                                    const commentRef = doc(firestore, `${commentData.videoOwnerID}/${commentData.videoID}/commentSection/${commentData.commentID}`);
-                                    setDoc(commentRef, newDocFields, {merge: true});                       
-                                })                                
-                            })
-                        //updating username and image for every reply made by this user
-                        getDocs(commentRepliesRef)
-                            .then((allReplies) => {
-                                allReplies.forEach((reply) => {
-                                    const replyData = reply.data();
-                                    const replyRef = doc(firestore,`${replyData.videoOwnerID}/${replyData.videoID}/commentSection/${replyData.commentID}/commentReplies/${replyData.replyID}`);
-                                    setDoc(replyRef, newDocFields, {merge: true});
-                                })
-                            })
+                        setDoc(currentVideo, newDocFields, {merge: true}); 
                     }
                 })
+                //updating username and image for every comment posted (if the user hasnt posted any comments. then nothing will happen)
+                const commentSectionRef = collection(firestore, `${user.uid}/userInfo/allComments`);   
+                getDocs(commentSectionRef)
+                    .then((allComments) => {
+                        allComments.forEach((comment) => {
+                            const commentData = comment.data();
+                            const commentRef = doc(firestore, `${commentData.videoOwnerID}/${commentData.videoID}/commentSection/${commentData.commentID}`);
+                            setDoc(commentRef, newDocFields, {merge: true});                       
+                        })                                
+                    })
+                //updating username and image for every reply made by this user (if the user hasnt made any replies, then nothing will happen)
+                const commentRepliesRef = collection(firestore, `${user.uid}/userInfo/allReplies`);
+                getDocs(commentRepliesRef)
+                    .then((allReplies) => {
+                        allReplies.forEach((reply) => {
+                            const replyData = reply.data();
+                            const replyRef = doc(firestore,`${replyData.videoOwnerID}/${replyData.videoID}/commentSection/${replyData.commentID}/commentReplies/${replyData.replyID}`);
+                            setDoc(replyRef, newDocFields, {merge: true});
+                        })
+                    })
                 //updating the username and image in the developers collection
                 const devCollectionRef = collection(firestore, "developers collection/allVideos/videoCollection");
                 const allDevVideos = await getDocs(devCollectionRef);

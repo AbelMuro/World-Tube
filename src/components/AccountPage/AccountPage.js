@@ -16,19 +16,22 @@ function AccountPage() {
     const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component
 
 
+    //TODO: fix the block of code below
     if(user) {
-        user.providerData.forEach((provider) => {
-            if(provider.providerId == "google.com"){
-                const docRef = doc(firestore, `${user.uid}/userInfo`)
-                getDoc(docRef)
-                    .then((userInfo) => {
-                        const userData = userInfo.data();
-                        if(userData?.imageURL){
-                            updateProfile(user, {photoURL: userInfo.imageURL})
-                        }
-                    })
-            }
-        })
+        if(user.providerData.length > 1){
+            const docRef = doc(firestore, `${user.uid}/userInfo`)
+            getDoc(docRef)
+                .then((userInfo) => {
+                    const userData = userInfo.data();
+                    if(userData?.imageURL){
+                        updateProfile(user, {photoURL: userInfo.imageURL});
+                    }
+                    else
+                        updateProfile(user, {photoURL: emptyAvatar});
+                })
+        }
+
+    
         
     }
     
