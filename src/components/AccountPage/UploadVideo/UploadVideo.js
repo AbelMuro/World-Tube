@@ -86,6 +86,7 @@ function UploadVideo({user}) {
 
             (async function uploadStorage(){
                 try{
+                    //creating a date object and formatting it
                     const currentDate = new Date();
                     const millisecondsSince1970 = currentDate.getTime();
                     const readableDate = currentDate.toLocaleDateString();
@@ -93,11 +94,14 @@ function UploadVideo({user}) {
                     let currentMinutes = currentDate.getMinutes();
                     currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
                     const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
+                    //uploading the video onto the storage and then getting the URL of that video
                     let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
                     let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
                     const videoID = metadata.md5Hash.replace("/", "");
+                    //referencing two collections, the users personal collection and the developers collection
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
                     const developersDocument = doc(firestore, "developers collection", `allVideos/videoCollection/${videoID}`);
+                    //creating an object that contains all the meta data of the video being uploaded
                     const videoData = {                                              
                         username: user.displayName,
                         title: title,
@@ -110,6 +114,7 @@ function UploadVideo({user}) {
                         videoID: videoID,
                         order: millisecondsSince1970,
                     }
+                    //setting the object onto the firestore
                     await setDoc(usersDocument, videoData)
                     await setDoc(developersDocument, videoData)
                     setLoading(false); 

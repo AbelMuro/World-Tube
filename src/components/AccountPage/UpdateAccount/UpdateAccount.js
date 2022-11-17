@@ -140,7 +140,7 @@ function UpdateAccount({forceRender}) {
                         //updating username and image for every video document
                         const currentVideo = doc(firestore, `${user.uid}/${videoData.videoID}`)                
                         setDoc(currentVideo, newDocFields, {merge: true});  
-                        //updating username and image for every comment posted, including all the replies the user has made 
+                        //updating username and image for every comment posted
                         const commentSectionRef = collection(firestore, `${user.uid}/userInfo/allComments`);   
                         const commentRepliesRef = collection(firestore, `${user.uid}/userInfo/allReplies`);
                         getDocs(commentSectionRef)
@@ -151,6 +151,7 @@ function UpdateAccount({forceRender}) {
                                     setDoc(commentRef, newDocFields, {merge: true});                       
                                 })                                
                             })
+                        //updating username and image for every reply made by this user
                         getDocs(commentRepliesRef)
                             .then((allReplies) => {
                                 allReplies.forEach((reply) => {

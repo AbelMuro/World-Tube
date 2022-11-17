@@ -25,7 +25,7 @@ const StyledButton = styled(Button)`
 `
 
 
-function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
+function ReplyOrEdit({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
     const [reply, setReply] = useState("");
     const [edit, setEdit] = useState(comment);
     const [openReplyDialog, setOpenReplyDialog] = useState(false);
@@ -151,4 +151,4 @@ function Dialogs({videoOwnerID, videoID, commentOwnerID ,commentID, comment}) {
     )
 }
 
-export default memo(Dialogs);
+export default memo(ReplyOrEdit);

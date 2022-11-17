@@ -6,7 +6,7 @@ import {CircularProgress} from '@mui/material';
 import styles from './styles.module.css';
 import {v4 as uuid} from 'uuid';
 import DisplayReplies from './DisplayReplies';
-import Dialogs from './Dialogs';
+import ReplyOrEdit from './ReplyOrEdit';
 
 function DisplayComments({videoOwnerID, videoID}){
     const commentCollection = collection(firestore, `${videoOwnerID}/${videoID}/commentSection`);
@@ -30,7 +30,7 @@ function DisplayComments({videoOwnerID, videoID}){
                                     {comment.timeStamp}
                                 </p>
 
-                                <Dialogs videoOwnerID={videoOwnerID} videoID={videoID} commentOwnerID={comment.userID} commentID={comment.commentID} comment={comment.comment}/>
+                                <ReplyOrEdit videoOwnerID={videoOwnerID} videoID={videoID} commentOwnerID={comment.userID} commentID={comment.commentID} comment={comment.comment}/>
 
                             </div>         
                             <DisplayReplies userID={videoOwnerID} videoID={videoID} commentID={comment.commentID}/>                                                          
