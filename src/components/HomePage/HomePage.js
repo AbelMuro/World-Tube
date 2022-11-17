@@ -80,12 +80,12 @@ function HomePage() {
                                     {video.username} 
                                 </span> 
                             </p>   
-                            <p className={styles.videoTimeStamp}>
+                            <div className={styles.videoTimeStamp}>
                                 Posted on: 
                                 <p>
                                     {video.timeCreated}
                                 </p>
-                            </p>                
+                            </div>                
                         </div>
                     )
                 })}

@@ -118,10 +118,11 @@ function UpdateAccount({forceRender}) {
             })  
 
             //we add a document containing the about-me section of the account
-            if(aboutMe){
+            if(aboutMe || url){
                 const docRef = doc(firestore, `${user.uid}/userInfo`);                  
                 await setDoc(docRef, {
-                    aboutMe: aboutMe
+                    ...(aboutMe && {aboutMe: aboutMe}),
+                    ...(url && {imageURL: url}),
                 }, {merge: true})                
             } 
 
@@ -131,7 +132,7 @@ function UpdateAccount({forceRender}) {
                     ...(username && {username: username}),
                     ...(url && {userImage: url}),
                 }
-                //updating the username and image in the users collection
+                //updating the username and image in the users personal collection
                 const collectionRef = collection(firestore, `${user.uid}`);
                 const allUsersVideos = await getDocs(collectionRef);
                 allUsersVideos.forEach((video) => {

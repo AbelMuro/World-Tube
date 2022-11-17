@@ -13,12 +13,19 @@
     height: 60%;
 }
 
-.navBarTwo{
+.navBarTwoBackground{
     background-color: rgb(37, 37, 37);
-    color: white;
     height: 40%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+}
+
+.navBarTwo{
+    color: white;
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
 
 }

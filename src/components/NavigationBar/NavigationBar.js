@@ -78,26 +78,29 @@ function NavigationBar() {
                     </StyledButton> :  <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>Sign Up</StyledButton>}
                 </div>
             </section>
-            <section className={styles.navBarTwo}>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    All
-                </a>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    Music
-                </a>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    Funny
-                </a>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    Sports
-                </a>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    News
-                </a>
-                <a className={styles.videoLink} onClick={handleCategory}>
-                    Other
-                </a>
+            <section className={styles.navBarTwoBackground}>
+                <div className={styles.navBarTwo}>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        All
+                    </a>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        Music
+                    </a>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        Funny
+                    </a>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        Sports
+                    </a>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        News
+                    </a>
+                    <a className={styles.videoLink} onClick={handleCategory}>
+                        Other
+                    </a>
+                </div>
             </section>
+
         </nav>
     )
 }
