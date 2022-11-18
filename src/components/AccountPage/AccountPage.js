@@ -3,38 +3,24 @@ import {auth, firestore} from '../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import {updateProfile} from 'firebase/auth';
 import { doc, getDoc} from 'firebase/firestore';
+import {useDocumentData} from 'react-firebase-hooks/firestore';
 import styles from './styles.module.css';
 import {CircularProgress} from '@mui/material';
 import DisplayVideos from './DisplayVideos';
 import UploadVideo from './UploadVideo';
 import UpdateAccount from './UpdateAccount';
 import emptyAvatar from './images/empty avatar.png';
+import {useLocation} from 'react-router-dom';
 
 
 function AccountPage() {
     const [user] = useAuthState(auth);
-    const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component
+    const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component  
+    //const {state} = useLocation();
+    //const userDocRef = state ? doc(firestore, `${state.userID}/userInfo`);
+    //const [userInfo, loading] = useDocumentData(userDocRef);
 
 
-    //TODO: fix the block of code below
-    if(user) {
-        if(user.providerData.length > 1){
-            const docRef = doc(firestore, `${user.uid}/userInfo`)
-            getDoc(docRef)
-                .then((userInfo) => {
-                    const userData = userInfo.data();
-                    if(userData?.imageURL){
-                        updateProfile(user, {photoURL: userInfo.imageURL});
-                    }
-                    else
-                        updateProfile(user, {photoURL: emptyAvatar});
-                })
-        }
-
-    
-        
-    }
-    
     const handleError = () => {
         console.log("error");
     }
@@ -57,7 +43,6 @@ function AccountPage() {
                 })
         }
     })
-
     return user ? (
         <section className={styles.accountContainer}>
             <div className={styles.basicInfoContainer}>

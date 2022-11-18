@@ -8,6 +8,7 @@ import DisplayComments from './DisplayComments';
 import {useLocation} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
+import {CircularProgress} from '@mui/material';
 
 
 function DisplayVideo() {
@@ -17,11 +18,16 @@ function DisplayVideo() {
     const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
     const [allUsersVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
-    
+
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
         navigate(`/${videoData.title}`, {state : videoData});
+    }
+
+    const handleLoad = (e) => {
+        const loadingBlock = e.target.previousElementSibling;
+        loadingBlock.style.display = "none";
     }
 
     //using the data from localstorage and place the data in the DOM
@@ -61,13 +67,14 @@ function DisplayVideo() {
                     Other videos by {videoData.username}
                 </h1>
                 <div className={styles.allVideos}>
-                    {loading ? <>...is loading</> : allUsersVideos.length > 1 ? allUsersVideos.map((video) => {
-                            if(video?.aboutMe) return;
-
+                    {loading ? <div className={styles.loading}><CircularProgress/></div> : allUsersVideos.length >= 1 ? allUsersVideos.map((video) => {
                             return (
                                 <div className={styles.otherVideoContainer} key={uuid()}>
                                     <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
-                                        <video className={styles.otherVideos}>
+                                        <div className={styles.loadingVideo}>
+                                            <CircularProgress />
+                                        </div>
+                                        <video className={styles.otherVideos} onLoadedData={handleLoad}>
                                             <source src={video.url}/>
                                             Your Browser doesn't support videos
                                         </video>                                          

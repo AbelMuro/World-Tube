@@ -12,3 +12,27 @@
     width: 300px;
     cursor: pointer;
 }
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px
+}
+
+.videoContainer{
+    position: relative;
+}
+
+.loadingVideo{
+    background-color: rgb(248, 248, 248);
+    width: 300px;
+    height: 168.750px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}

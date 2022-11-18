@@ -3,9 +3,9 @@ import styles from './styles.module.css';
 import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
-import {useSignInWithGoogle} from 'react-firebase-hooks/auth';
-import {signInWithEmailAndPassword, signOut} from 'firebase/auth';
-import {auth} from '../Firebase-config';
+import {signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, updateProfile} from 'firebase/auth';
+import {doc, getDoc,} from 'firebase/firestore';
+import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
 
 const StyledButton = styled(Button)`
@@ -21,7 +21,6 @@ const StyledButton = styled(Button)`
 function LogInPage () {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [signInWithGoogle] = useSignInWithGoogle(auth);
     const navigate = useNavigate();
 
     const handleEmail = (e) => {
@@ -58,7 +57,15 @@ function LogInPage () {
 
     const logInWithGoogle = async () => {
         try{
-            await signInWithGoogle();  
+            const provider = new GoogleAuthProvider();
+            const credentials = await signInWithPopup(auth, provider);  
+            const userID = credentials.user.uid;
+            const userDocRef = doc(firestore, `${userID}/userInfo`);
+            const userDoc = await getDoc(userDocRef);
+            if(userDoc.exists()){
+                const userInfo = userDoc.data();
+                await updateProfile(credentials.user, {displayName: userInfo.username, photoURL: userInfo.imageURL });
+            }
             navigate("/account-page");   
         }
         catch(error){

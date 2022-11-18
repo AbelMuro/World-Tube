@@ -101,4 +101,25 @@
 
 .videoLink{
     cursor: pointer;
+    position: relative;
+}
+
+.loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 200px;
+}
+
+.loadingVideo{
+    background-color: rgb(238, 238, 238);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+    height: 168.75px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }

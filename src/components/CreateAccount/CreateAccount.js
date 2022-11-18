@@ -109,6 +109,10 @@ function CreateAccount() {
             }
             //once we verifed that the username doesn't already exist in the database, we can go ahead and create the users account
             const credentials = await createUserWithEmailAndPassword(auth, email, password); 
+            //storing the username in the users personal collection
+            const usersDocRef = doc(firestore,`${auth.currentUser.uid}/userInfo`);
+            await setDoc(usersDocRef, {username: username, imageURL: emptyAvatar});
+            //updating the profile and sending an email verification to the user
             await updateProfile(auth.currentUser, {displayName: username, photoURL: emptyAvatar});
             await sendEmailVerification(credentials.user);                   
             await signOut(auth); 
@@ -116,6 +120,7 @@ function CreateAccount() {
             setOpenEmailVerificationDialog(true);            
         }
         catch(error){
+            console.log(error);
             setLoading(false);
             if(error.message == "Firebase: Error (auth/email-already-in-use)."){
                 //this block of code will delete the username that was registered before createUserWithEmailAndPassword() threw an error

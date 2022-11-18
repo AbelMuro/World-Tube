@@ -7,12 +7,18 @@ import {firestore} from '../../Firebase-config';
 
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
+import {CircularProgress} from '@mui/material';
 
 
 function DisplayVideos({userID}) {
     const collectionRef = collection(firestore, userID);
     const [videos, loading] = useCollectionData(collectionRef);
     const navigate = useNavigate();
+
+    const handleLoad = (e) => {
+        const loadingBlock = e.target.previousElementSibling;
+        loadingBlock.style.display = "none";
+    }
 
     const displayVideo = (e) => {
         let video = e.target.getAttribute("data-video");
@@ -36,13 +42,16 @@ function DisplayVideos({userID}) {
         navigate(`/${title}`, {state: videoData});
     }       
 
-    return loading ? (<>loading</>) : (
+    return loading ? (<div className={styles.loading}><CircularProgress /></div>) : (
         <section className={styles.allVideos}>
             {videos ? videos.map((video) => {
                 if(video.url){
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
-                            <video className={styles.videos} onClick={displayVideo} data-video={JSON.stringify(video)}>
+                            <div className={styles.loadingVideo}>
+                                <CircularProgress/>
+                            </div>
+                            <video className={styles.videos} onClick={displayVideo} onLoadedData={handleLoad} data-video={JSON.stringify(video)}>
                                 <source src={video.url}/>
                                 Your browser doesn't support videos
                             </video>                            
