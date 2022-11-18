@@ -86,16 +86,16 @@ function CreateAccount() {
         try{
             if(username == "") throw {message: "username is empty"};       
             setLoading(true);            
-            //storing the user's username in the database for later reference and also checking if the user's username already exists in the firestore
+            //storing the user's username in the developers collection for later reference and also checking if the user's username already exists in the firestore
             const devsDocRef = doc(firestore, `developers collection/userInfo`); 
             const devsDoc = await getDoc(devsDocRef); 
             if(devsDoc.exists()){
                 const allUsernames = devsDoc.data().allUsernames;
-                for(let currentUsername in allUsernames){
-                    const usernameInDB = allUsernames[currentUsername].username;
-                    if(usernameInDB == username)
+                allUsernames.forEach((usernameDoc) => {
+                    const currentUsername = usernameDoc.username;  
+                    if(currentUsername == username)
                         throw {message: "username already exists"}  
-                }
+                })
                 let docArray = [{username: username}];
                 docArray.push(...allUsernames);          
                 await setDoc(devsDocRef,{

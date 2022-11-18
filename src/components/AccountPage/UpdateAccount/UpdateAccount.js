@@ -168,8 +168,10 @@ function UpdateAccount({forceRender}) {
                 const allDevVideos = await getDocs(devCollectionRef);
                 allDevVideos.forEach((video) => {
                     const videoData = video.data();
-                    const currentVideo = doc(devCollectionRef, `${videoData.videoID}`);
-                    setDoc(currentVideo, newDocFields, {merge: true});
+                    if(videoData.userID == user.uid){
+                        const currentVideo = doc(devCollectionRef, `${videoData.videoID}`);
+                        setDoc(currentVideo, newDocFields, {merge: true});                        
+                    }
                 })
             }
             setOpen(false);            

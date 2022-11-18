@@ -30,7 +30,6 @@ function DisplayVideo() {
         loadingBlock.style.display = "none";
     }
 
-    //using the data from localstorage and place the data in the DOM
     useEffect(() => {
         document.querySelector("." + styles.video).firstChild.src = videoData.URL;
         document.querySelector("." + styles.title).innerHTML = videoData.title;
@@ -61,7 +60,8 @@ function DisplayVideo() {
                 </div>
                 <CommentBox videoOwnerID={videoData.userID} videoID={videoData.videoID}/>
                 <DisplayComments videoOwnerID={videoData.userID} videoID={videoData.videoID}/>
-            </div>    
+            </div>   
+            {/*TODO: Fix the bug that occurs in the code below */} 
             <div className={styles.otherVideosByUser}>
                 <h1 className={styles.title}>
                     Other videos by {videoData.username}
