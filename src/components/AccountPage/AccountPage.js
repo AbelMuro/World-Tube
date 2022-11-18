@@ -9,17 +9,10 @@ import {CircularProgress} from '@mui/material';
 import DisplayVideos from './DisplayVideos';
 import UploadVideo from './UploadVideo';
 import UpdateAccount from './UpdateAccount';
-import emptyAvatar from './images/empty avatar.png';
-import {useLocation} from 'react-router-dom';
-
 
 function AccountPage() {
     const [user] = useAuthState(auth);
     const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component  
-    //const {state} = useLocation();
-    //const userDocRef = state ? doc(firestore, `${state.userID}/userInfo`);
-    //const [userInfo, loading] = useDocumentData(userDocRef);
-
 
     const handleError = () => {
         console.log("error");

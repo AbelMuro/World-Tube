@@ -7,6 +7,7 @@ import {useAuthState} from 'react-firebase-hooks/auth';
 import {Button} from '@mui/material';
 import {styled} from '@mui/system';
 import SearchBox from './SearchBox';
+import MenuIcon from '@mui/icons-material/Menu';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -80,6 +81,9 @@ function NavigationBar() {
             </section>
             <section className={styles.navBarTwoBackground}>
                 <div className={styles.navBarTwo}>
+                    <div className={styles.hamburger}>
+                        <MenuIcon />
+                    </div>
                     <a className={styles.videoLink} onClick={handleCategory}>
                         All
                     </a>

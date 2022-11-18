@@ -27,7 +27,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-
 }
 
 .accountItems{
@@ -76,4 +75,28 @@
 .videoLink:hover{
     cursor: pointer;
     color: rgb(163, 163, 163);
+}
+
+.hamburger{
+    display: none;
+}
+
+@media(max-width: 850px){
+    .navBarTwo{
+        width: 400px;
+    }
+}
+
+@media(max-width: 470px){
+    .hamburger{
+        display: initial;
+    }
+    .navBarTwoBackground{
+        height: auto;
+        position: relative;
+        z-index: 5;
+    }
+    .navBarTwo{
+        flex-direction: column;
+    }
 }

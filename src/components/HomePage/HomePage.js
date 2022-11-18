@@ -31,24 +31,9 @@ function HomePage() {
     }
 
     const handleNavigate = (e) => {
-        const selectedVideo = e.target.parentElement.parentElement;
-        const videoID = selectedVideo.getAttribute("data-id");
-        const userID = selectedVideo.getAttribute("data-user");
-        const title = selectedVideo.querySelector("." + styles.videoTitle).innerHTML;
-        const username = selectedVideo.querySelector("." + styles.videoDesc).lastChild.innerHTML;
-        const userImage = selectedVideo.querySelector("." + styles.videoDesc).firstChild.src;
-        const timeStamp = selectedVideo.querySelector("." + styles.videoTimeStamp).lastChild.innerHTML;
-        const videoURL = selectedVideo.querySelector("video").firstChild.src;
-        const videoData = {
-            title: title,
-            username: username,
-            userImage: userImage,
-            timeStamp: timeStamp,
-            URL: videoURL,
-            videoID: videoID,
-            userID: userID,
-        }
-        navigate(`/${title}`, {state: videoData});
+        let videoData = e.target.getAttribute("data-video");
+        videoData = JSON.parse(videoData);
+        navigate(`/${videoData.title}`, {state: videoData});
     }
 
     return(
@@ -56,7 +41,7 @@ function HomePage() {
             <h1 className={styles.title}>
                 Enjoy the selection of videos uploaded by our users!
             </h1>
-            <div className={styles.flexContainer}>
+            <div className={styles.gridContainer}>
                 {loading ? <LoadingScreen/> : allVideos.map((video) => {
                     return (
                         <div key={uuid()} data-id={video.videoID} data-user={video.userID}>
@@ -65,7 +50,7 @@ function HomePage() {
                                 <div className={styles.loadingBox}>
                                     <CircularProgress />
                                 </div>
-                                <video className={styles.video} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded}>
+                                <video className={styles.video} data-video={JSON.stringify(video)} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded}>
                                     <source src={video.url}/>
                                     Your Browser doesn't support videos
                                 </video>                                  
