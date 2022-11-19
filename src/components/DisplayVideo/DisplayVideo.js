@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState} from 'react';
 import {collection, query, where} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {firestore} from '../Firebase-config';
@@ -23,6 +23,7 @@ function DisplayVideo() {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
         navigate(`/${videoData.title}`, {state : videoData});
+        window.location.reload(false);
     }
 
     const handleLoad = (e) => {
@@ -30,13 +31,6 @@ function DisplayVideo() {
         loadingBlock.style.display = "none";
     }
 
-    useEffect(() => {
-        document.querySelector("." + styles.video).firstChild.src = videoData.URL;
-        document.querySelector("." + styles.title).innerHTML = videoData.title;
-        document.querySelector("." + styles.timeStamp).lastChild.innerHTML = videoData.timeStamp;
-        document.querySelector("." + styles.userImage).src = videoData.userImage;
-        document.querySelector("." + styles.username).innerHTML = videoData.username 
-    }, [])
 
     return(
         <section className={styles.flexContainer}>
@@ -45,17 +39,21 @@ function DisplayVideo() {
                     <source src={videoData.url}/>
                     Your Browser doesn't support videos
                 </video>
-                <h1 className={styles.title}></h1>
+                <h1 className={styles.title}>
+                    {videoData.title}
+                </h1>
                 <div className={styles.userInfo}>
-                    <img className={styles.userImage}/>
-                    <p className={styles.username}></p>
+                    <img className={styles.userImage} src={videoData.userImage}/>
+                    <p className={styles.username}>
+                        {videoData.username} 
+                    </p>
                 </div>
                 <div className={styles.timeStamp}>
                     <p className={styles.timeStampTitle}>
                         Posted on: 
                     </p>
                     <p className={styles.timeCreated}>
-                        
+                        {videoData.timeCreated}
                     </p>
                 </div>
                 <CommentBox videoOwnerID={videoData.userID} videoID={videoData.videoID}/>
