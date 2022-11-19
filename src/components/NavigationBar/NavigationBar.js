@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
@@ -9,6 +9,7 @@ import {styled} from '@mui/system';
 import SearchBox from './SearchBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import {useMediaQuery} from 'react-responsive';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -33,6 +34,7 @@ const StyledMenuIcon = styled(MenuIcon)`
 function NavigationBar() {
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
+    const mobile = useMediaQuery({query : "(max-width: 470px)"})
 
     const handleHomePage = () => {
         navigate("/");
@@ -76,23 +78,18 @@ function NavigationBar() {
 
                 <div className={styles.accountItems}>        
                     <SearchBox/>
-                    {user ? 
-                    user.emailVerified ? <a className={styles.accountLink} onClick={handleAccount} title="Account"><AccountCircleIcon fontSize="large"/></a>: 
-                    <a className={styles.accountLink} onClick={handleLogin} title="Account">
-                        <AccountCircleIcon fontSize="large"/>
-                    </a> :  <a className={styles.accountLink} onClick={handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a>}
+                    {user ? <a className={styles.accountLink} onClick={user.emailVerified ? handleAccount : handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a> : 
+                     <a className={styles.accountLink} onClick={handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a>}
 
                     {user ? 
-                    user.emailVerified ? <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
-                    <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>
-                        Sign Up
-                    </StyledButton> :  <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>Sign Up</StyledButton>}
+                    <StyledButton onClick={user.emailVerified ? handleSignOut : handleCreateAccount}>Sign Out</StyledButton> : 
+                    <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>Sign Up</StyledButton>}
                 </div>
             </section>
             <section className={styles.navBarTwoBackground}>
                 <div className={styles.navBarTwo}>
 
-                    <StyledMenuIcon fontSize={"large"} onClick={handleNav} />
+                    {mobile ? <StyledMenuIcon fontSize={"large"} onClick={handleNav}/> : <></>}
 
                     <a className={styles.videoLink} onClick={handleCategory}>
                         All
