@@ -31,7 +31,6 @@ function DisplayVideo() {
         loadingBlock.style.display = "none";
     }
 
-
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
