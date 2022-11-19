@@ -25,6 +25,14 @@ const StyledButton = styled(Button)`
     }
 `
 
+const StyledMenuIcon = styled(MenuIcon)`
+    cursor: pointer;
+
+    &:hover{
+        color: grey;
+    }
+`
+
 function NavigationBar() {
     const navigate = useNavigate();
     const [user] = useAuthState(auth);
@@ -50,6 +58,13 @@ function NavigationBar() {
         navigate("/", {state: {category: category}})
     }
 
+    const handleNav = (e) => {
+        const navBar = e.target.parentElement.parentElement;
+        const currentHeight = navBar.style.height;
+        navBar.style.height =  currentHeight ?  currentHeight == "auto" ? "40px" : "auto"  
+                                            : "auto";
+    }
+
 
     const handleSignOut = async () => {
         await signOut(auth);
@@ -65,7 +80,6 @@ function NavigationBar() {
 
                 <div className={styles.accountItems}>        
                     <SearchBox/>
-        
                     {user ? 
                     user.emailVerified ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
                     <a className={styles.accountLink} onClick={handleLogin}>
@@ -82,7 +96,7 @@ function NavigationBar() {
             <section className={styles.navBarTwoBackground}>
                 <div className={styles.navBarTwo}>
                     <div className={styles.hamburger}>
-                        <MenuIcon />
+                        <StyledMenuIcon fontSize={"large"} onClick={handleNav}/>
                     </div>
                     <a className={styles.videoLink} onClick={handleCategory}>
                         All

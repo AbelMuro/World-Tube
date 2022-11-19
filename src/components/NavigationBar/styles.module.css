@@ -81,9 +81,17 @@
     display: none;
 }
 
+.hamdburger:hover{
+    color:rgb(163, 163, 163)
+}
 @media(max-width: 850px){
     .navBarTwo{
         width: 400px;
+    }
+}
+@media(max-width: 700px){
+    .logo{
+        font-size: 16px;
     }
 }
 
@@ -98,5 +106,14 @@
     }
     .navBarTwo{
         flex-direction: column;
+        gap: 20px;
+        width: 100%;
+        height: 40px;
+        overflow: hidden;
+    }
+    .videoLink{
+        border-bottom: 1px solid white;
+        width: 100%;
+        text-align: center;
     }
 }
