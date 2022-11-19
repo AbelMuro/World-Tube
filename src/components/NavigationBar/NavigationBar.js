@@ -8,6 +8,7 @@ import {Button} from '@mui/material';
 import {styled} from '@mui/system';
 import SearchBox from './SearchBox';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -19,10 +20,6 @@ const StyledButton = styled(Button)`
         color: #F4F3F3;
     }     
 
-    &:disabled {
-        background-color: rgb(46, 46, 46);
-        color: rgb(100, 100, 100);
-    }
 `
 
 const StyledMenuIcon = styled(MenuIcon)`
@@ -59,10 +56,9 @@ function NavigationBar() {
     }
 
     const handleNav = (e) => {
-        const navBar = e.target.parentElement.parentElement;
+        const navBar = document.querySelector("." + styles.navBarTwo);
         const currentHeight = navBar.style.height;
-        navBar.style.height =  currentHeight ?  currentHeight == "auto" ? "40px" : "auto"  
-                                            : "auto";
+        navBar.style.height = currentHeight == "auto" ? "40px" : "auto"  
     }
 
 
@@ -81,10 +77,10 @@ function NavigationBar() {
                 <div className={styles.accountItems}>        
                     <SearchBox/>
                     {user ? 
-                    user.emailVerified ? <a className={styles.accountLink} onClick={handleAccount}>Account</a>: 
-                    <a className={styles.accountLink} onClick={handleLogin}>
-                        Log In
-                    </a> :  <a className={styles.accountLink} onClick={handleLogin}>Log In</a>}
+                    user.emailVerified ? <a className={styles.accountLink} onClick={handleAccount} title="Account"><AccountCircleIcon fontSize="large"/></a>: 
+                    <a className={styles.accountLink} onClick={handleLogin} title="Account">
+                        <AccountCircleIcon fontSize="large"/>
+                    </a> :  <a className={styles.accountLink} onClick={handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a>}
 
                     {user ? 
                     user.emailVerified ? <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
@@ -95,9 +91,9 @@ function NavigationBar() {
             </section>
             <section className={styles.navBarTwoBackground}>
                 <div className={styles.navBarTwo}>
-                    <div className={styles.hamburger}>
-                        <StyledMenuIcon fontSize={"large"} onClick={handleNav}/>
-                    </div>
+
+                    <StyledMenuIcon fontSize={"large"} onClick={handleNav} />
+
                     <a className={styles.videoLink} onClick={handleCategory}>
                         All
                     </a>

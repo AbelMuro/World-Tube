@@ -79,6 +79,7 @@
 
 .hamburger{
     display: none;
+    cursor: pointer;
 }
 
 .hamdburger:hover{

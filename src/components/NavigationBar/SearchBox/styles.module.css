@@ -31,3 +31,17 @@
 .submit:hover{
     background-color: rgb(94, 96, 99);
 }
+
+.openSearch{
+    cursor: pointer;
+}
+
+.dialogContent{
+    padding: 10px;
+}
+
+.dialogTitle{
+    font-family: "crimson text";
+    font-size: 40px;
+    text-align: center;
+}
