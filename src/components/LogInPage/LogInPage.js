@@ -4,9 +4,10 @@ import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, updateProfile} from 'firebase/auth';
-import {doc, getDoc,} from 'firebase/firestore';
+import {doc, getDoc, setDoc,} from 'firebase/firestore';
 import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
+import emptyAvatar from './images/empty avatar.png'
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -64,7 +65,7 @@ function LogInPage () {
             const userDoc = await getDoc(userDocRef);
             if(userDoc.exists()){
                 const userInfo = userDoc.data();
-                await updateProfile(credentials.user, {displayName: userInfo.username, photoURL: userInfo.imageURL });
+                await updateProfile(credentials.user, {displayName: userInfo.username, photoURL: userInfo.imageURL }, {merge: true});
             }
             navigate("/account-page");   
         }
