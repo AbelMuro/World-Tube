@@ -102,11 +102,11 @@ function ReplyOrEdit({videoOwnerID, videoID, commentOwnerID ,commentID, comment}
 
     return( 
         <>
-        <Stack spacing={2} direction="row" sx={{position: "absolute", right: "10px", top: "70px"}}>
+        <Stack spacing={2} direction="row" sx={{position: "absolute", right: "10px", bottom: "10px"}}>
             <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleReplyDialog}>
                 Reply
             </StyledButton>
-            { !user ? <></> :
+            {!user ? <></> :
             (user.uid == commentOwnerID) ? <StyledButton variant="contained" sx={{width: "46px", height: "30px"}} onClick={handleEditDialog}>
                 Edit
             </StyledButton>: <></>}

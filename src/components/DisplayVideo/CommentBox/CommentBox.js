@@ -6,6 +6,7 @@ import {setDoc, doc} from 'firebase/firestore';
 import {v4 as uuid} from 'uuid';
 import {useAuthState} from 'react-firebase-hooks/auth';
 import emptyAvatar from './images/empty avatar.png';
+import {useMediaQuery} from '@mui/material';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -26,8 +27,10 @@ const StyledButton = styled(Button)`
 function CommentBox({videoOwnerID, videoID}) {
     const [comment, setComment] = useState();
     const [user] = useAuthState(auth);
+    const mobile = useMediaQuery("(max-width: 1100px)");
 
     const handleComment = (e) => {
+        if(e.target.value.length < 300)
         setComment(e.target.value);
     }
 
@@ -46,7 +49,7 @@ function CommentBox({videoOwnerID, videoID}) {
             comment: comment,
             commentID : commentID,
             userID: user.uid,
-            userImage: user.photoURL ? user.photoURL : emptyAvatar,
+            userImage: user.photoURL,
             username: user.displayName, 
             order: millisecondsSince1970,
             timeStamp: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`  
@@ -62,7 +65,7 @@ function CommentBox({videoOwnerID, videoID}) {
 
     return(                
     <div>
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={(mobile ? {width: "90%", margin: "auto"} : {})}>
             <TextField id="outlined-basic" label="Enter a comment" multiline rows={4} value={comment} onChange={handleComment}/>
             <StyledButton variant="contained" onClick={submitComment} sx={{marginBottom: "20px"}}>
                 Submit Comment

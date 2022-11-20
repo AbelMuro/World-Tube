@@ -26,21 +26,21 @@ function DisplayReplies({userID, videoID, commentID}){
                 const commentOwnerID = replyComment.userID;               //usersReplyID is used to compare with the users ID
 
                 return (
-                <div className={styles.reply} key={uuid()}>
-                    <div className={styles.userInfo}>
-                        <img src={image} className={styles.userImage}/>                        
-                        <p className={styles.username}>
-                            {username}
+                    <div className={styles.reply} key={uuid()}>
+                        <div className={styles.userInfo}>
+                            <img src={image} className={styles.userImage}/>                        
+                            <p className={styles.username}>
+                                {username}
+                            </p>
+                        </div>
+                        <p className={styles.timeStamp}>
+                            {timeStamp}
                         </p>
-                    </div>
-                    <p className={styles.timeStamp}>
-                        {timeStamp}
-                    </p>
-                    <p className={styles.commentReply}>
-                        {comment}   
-                    </p>    
-                    <DialogPopup commentOwnerID={ commentOwnerID} comment={comment} userID={userID} videoID={videoID} commentID={commentID} commentReplyID={commentReplyID}/>
-                </div>)
+                        <p className={styles.commentReply}>
+                            {comment}   
+                        </p>    
+                        <DialogPopup commentOwnerID={ commentOwnerID} comment={comment} userID={userID} videoID={videoID} commentID={commentID} commentReplyID={commentReplyID}/>
+                    </div>)
             })}
         
         </div>

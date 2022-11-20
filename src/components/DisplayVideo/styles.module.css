@@ -1,4 +1,4 @@
-.title{
+.title, .otherVideosTitle{
     font-family: "crimson text";
 }
 
@@ -123,3 +123,41 @@
     top: 0px;
     left: 0px;
 }
+
+.videoContainer{
+    width: 700px;
+}
+
+
+@media(max-width: 1100px) {
+    .videoContainer{
+        width: auto;
+    }
+    .flexContainer{
+        flex-direction: column;
+        padding: 0px;
+        margin-top: 0px;
+    }
+    .video{
+        width: 100%;
+    }
+
+    .otherVideos{
+        width: 100%;
+    }
+
+    .otherVideosTitle{
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .otherVideoTitle{
+        font-size: 35px;
+    }
+
+    .userInfo, .title, .timeStamp{
+        width: 90%;
+        margin: auto;
+    }
+}
+

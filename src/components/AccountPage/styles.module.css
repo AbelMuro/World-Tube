@@ -105,3 +105,46 @@
     font-family: "crimson text";
 }
 
+@media(max-width: 940px){
+    .accountContainer{
+        flex-direction: column;
+    }
+    .basicInfoContainer{
+        padding: 20px 0px; 
+    }
+}
+
+@media(max-width: 525px){
+    .basicInfo{
+        width: 100%;
+    }
+
+    .otherInfo{
+        margin-left: 10px;
+        width: 90%;
+        grid-template-columns: auto;
+    }
+}
+
+@media(max-width: 500px) {
+    .usersAvatar{
+        width: 250px;
+    }
+
+    .username{
+        font-size: 25px;
+    }
+}
+
+@media(max-width: 460px){
+    .basicInfoContainer{
+        padding: 20px 0px;
+    }
+
+    .basicInfo{
+        flex-direction: column;
+    }
+    .usersAvatar{
+        align-self: center;
+    }
+}

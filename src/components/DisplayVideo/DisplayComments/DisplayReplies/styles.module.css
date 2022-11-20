@@ -34,6 +34,8 @@
 .commentReply{
     font-size: 19px;
     font-family: "crimson text";
+    margin: 30px;
+    word-break: break-all;
 }
 
 .commentReplies{
@@ -51,4 +53,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media(max-width: 800px){
+    .commentReply{
+        font-size: 16px;
+    }
+
+    .reply{
+        gap: 0px;
+    }
+}
+
+@media(max-width: 450px){
+    .commentReply{
+        margin: 30px 15px;
+    }
 }

@@ -48,3 +48,9 @@
 .desc{
     font-family: "crimson text";
 }
+
+@media(max-width: 365px){
+    .logInContainer{
+        width: 280px;
+    }
+}

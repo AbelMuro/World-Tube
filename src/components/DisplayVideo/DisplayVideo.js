@@ -59,7 +59,7 @@ function DisplayVideo() {
                 <DisplayComments videoOwnerID={videoData.userID} videoID={videoData.videoID}/>
             </div>    
             <div className={styles.otherVideosByUser}>
-                <h1 className={styles.title}>
+                <h1 className={styles.otherVideosTitle}>
                     Other videos by {videoData.username}
                 </h1>
                 <div className={styles.allVideos}>

@@ -15,3 +15,11 @@
     align-items: center;
 }
 
+@media(max-width: 412px) {
+    .dialog{
+        width: auto;
+    }
+    .title{
+        width: auto;
+    }
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {query, collection, orderBy} from 'firebase/firestore';
 import {firestore} from '../../Firebase-config';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
@@ -7,17 +7,32 @@ import styles from './styles.module.css';
 import {v4 as uuid} from 'uuid';
 import DisplayReplies from './DisplayReplies';
 import ReplyOrEdit from './ReplyOrEdit';
+import {useMediaQuery} from '@mui/material';
 
 function DisplayComments({videoOwnerID, videoID}){
+    const [showComments, setShowComments] = useState("") 
+    const mobile = useMediaQuery("(max-width: 1100px)");
     const commentCollection = collection(firestore, `${videoOwnerID}/${videoID}/commentSection`);
     const q = query(commentCollection, orderBy("order", "desc"));
     const [allComments, loadingComments] = useCollectionData(q);
 
+    const handleCommentSection = () => {
+        const commentSection = document.querySelector("." + styles.displayComments);
+        const currentHeight = commentSection.style.height;
+        commentSection.style.height = currentHeight == "auto" ? "123px" : "auto";
+        setShowComments((prevState) => {
+            return !prevState;
+        });
+    }
+
+ 
+//TODO: try to find a way to hide the 'show less/ show more' when there are no comments to be displayed
     return(                
         <div className={styles.displayComments}>
-            {(loadingComments) ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.map((comment) => {       
+            {mobile ? <div className={styles.showComments} onClick={handleCommentSection}>{showComments ? "Show less..." : "Show more..."} </div> : <></>}
+            {loadingComments ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.length > 0 ? allComments.map((comment) => {    
                     return (
-                        <div id={comment.commentID} className={styles.commentContainer} key={uuid()} >  
+                        <div id={comment.commentID} className={styles.commentContainer} key={uuid()}>  
                             <div className={styles.nestedFlex}>
                                 <p className={styles.username}> 
                                     <img src={comment.userImage} className={styles.userImage}/>
@@ -29,14 +44,12 @@ function DisplayComments({videoOwnerID, videoID}){
                                 <p className={styles.datePosted}>
                                     {comment.timeStamp}
                                 </p>
-
                                 <ReplyOrEdit videoOwnerID={videoOwnerID} videoID={videoID} commentOwnerID={comment.userID} commentID={comment.commentID} comment={comment.comment}/>
-
                             </div>         
                             <DisplayReplies userID={videoOwnerID} videoID={videoID} commentID={comment.commentID}/>                                                          
                         </div>
                     )
-            })}                        
+            }) : <h1 className={styles.noComments}> No comments yet</h1> }                        
         </div>
     )
 }

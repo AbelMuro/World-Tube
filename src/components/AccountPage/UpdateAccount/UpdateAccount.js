@@ -11,6 +11,7 @@ import styles from './styles.module.css';
 import UploadImage from './UploadImage';
 import TextFields from './TextFields';
 import {CircularProgress} from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -26,6 +27,22 @@ const StyledButton = styled(Button)`
         color: #F4F3F3;
     }     
 `
+const MobileButton = styled(Button)`
+    background-color: #F4F3F3;
+    color: #464646;
+    font-family: "crimson text";
+    width: 100%; 
+    display: block;
+    margin: auto;   
+    margin-top: 40px;
+
+    &:hover {
+        background-color: #464646;
+        color: #F4F3F3;
+    }     
+`
+
+
 const ReverseStyledButton = styled(Button)`
     background-color: #464646;
     color: #F4F3F3;
@@ -53,6 +70,8 @@ const DialogButton = styled(Button)`
 
 
 function UpdateAccount({forceRender}) {
+    const mobile = useMediaQuery("(max-width: 525px)");
+    const mobileDialog = useMediaQuery("(max-width: 400px)");
     const [open, setOpen] = useState(false);
     const image = useRef();
     const textFields = useRef();
@@ -191,9 +210,7 @@ function UpdateAccount({forceRender}) {
  
     return(
         <>
-            <StyledButton variant="contained" onClick={handleOpen}>
-                Update Account
-            </StyledButton>
+            <StyledButton variant="contained" onClick={handleOpen} sx={(mobile ? {width: "90%"} : {})}> Update Account</StyledButton> : 
             <Dialog open={open}>
                 {loading ? <div className={styles.loading}><CircularProgress/></div> :
                 <DialogContent className={styles.dialog}>
@@ -202,12 +219,12 @@ function UpdateAccount({forceRender}) {
                     </DialogTitle>
                     <UploadImage ref={image}/>
 
-                    <Stack spacing={2}>
+                    <Stack spacing={2}  sx={(mobileDialog ? {width: "250px"} : {})}>
                         <TextFields ref={textFields} />                        
-                        <ReverseStyledButton variant="contained" onClick={submit}>
+                        <ReverseStyledButton variant="contained" onClick={submit} sx={(mobileDialog ? {width: "250px"} : {})}>
                             Submit
                         </ReverseStyledButton>
-                        <ReverseStyledButton variant="contained" onClick={handleOpen}>
+                        <ReverseStyledButton variant="contained" onClick={handleOpen} sx={(mobileDialog ? {width: "250px"} : {})}>
                             Close
                         </ReverseStyledButton>
                     </Stack>

@@ -5,6 +5,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 40px;
 }
 
 .videos {
@@ -35,4 +36,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
+}
+
+.noVideos{
+    font-family: "crimson text";
 }
