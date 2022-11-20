@@ -6,6 +6,7 @@ import {Dialog, DialogContent, DialogTitle, Button, Stack} from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import {styled} from '@mui/system';
 import DialogSearchBox from './DialogSearchBox';
+import Cookies from 'js-cookie';
 
 const StyledMagnifyingGlass = styled(SearchIcon)`
     position: absolute;
@@ -53,6 +54,15 @@ function SearchBox(){
     const shrinkSearchBox = () => {
         const searchBox = document.querySelector("." + styles.searchBox);
         searchBox.style.width = "100px";
+        if(Cookies.get("useCookies") == "true" && search) {
+            let allSearchQueries = Cookies.get("allSearchQueries");
+            if(allSearchQueries) {
+                allSearchQueries += "/" + search.replace(" ", "");
+                Cookies.set("allSearchQueries", allSearchQueries);
+            }
+            else
+                Cookies.set("allSearchQueries", search);
+        }
         setSearch("");
     }
 

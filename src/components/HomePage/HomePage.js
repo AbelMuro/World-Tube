@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {firestore} from '../Firebase-config';
 import {collection, query, where} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
@@ -7,8 +7,35 @@ import {v4 as uuid} from "uuid";
 import {useNavigate, useLocation} from 'react-router-dom';
 import LoadingScreen from './LoadingScreen';
 import {CircularProgress} from '@mui/material';
+import {Dialog, DialogTitle, DialogContent, Stack, Button} from '@mui/material';
+import {styled} from '@mui/system';
+import CookieIcon from '@mui/icons-material/Cookie';
+import Cookies from 'js-cookie';
+
+const StyledDialogContent = styled(DialogContent)`
+    background-color: #252525;
+    color: white;
+    font-family: "crimson text";
+
+`
+
+const StyledButton = styled(Button)`
+    background-color: #F4F3F3;
+    color: #464646;
+    font-family: "crimson text";
+
+    &:hover {
+        background-color: #464646;
+        color: #F4F3F3;
+    }     
+
+`
+
+
 
 function HomePage() {
+    const useCookies = Cookies.get("useCookies");
+    const [open, setOpen] = useState(useCookies ? false : true);
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
     const q = state ? state?.search ? query(allVideosRef, where("searchTitle", ">=", state.search), where("searchTitle", "<=", state.search + '\uf8ff')) :
@@ -34,6 +61,16 @@ function HomePage() {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
         navigate(`/${videoData.title}`, {state: videoData});
+    }
+
+    const handleAccept = () => {
+        Cookies.set("useCookies", "true");
+        setOpen(false);
+    }
+
+    const handleDecline = () => {
+        Cookies.set("useCookies", "false")
+        setOpen(false);
     }
 
     return(
@@ -75,6 +112,28 @@ function HomePage() {
                     )
                 })}
             </div>
+            <Dialog open={open}>
+                <StyledDialogContent>
+                    <DialogTitle sx={{textAlign: "center"}}>
+                        Cookies <CookieIcon fontSize="large"/>
+                    </DialogTitle>
+                    <Stack spacing={2}>
+                        <p>
+                            This site uses cookies to store information about your preferences,
+                            we respect your privacy and will use the info we got from your search results
+                            for marketing purposes.
+                        </p>
+                        <StyledButton variant="contained" onClick={handleAccept}>
+                            Accept
+                        </StyledButton>
+                        <StyledButton variant="contained" onClick={handleDecline}>
+                            Decline
+                        </StyledButton>
+                    </Stack>
+
+                </StyledDialogContent>
+
+            </Dialog>
         </section>
     )
 }

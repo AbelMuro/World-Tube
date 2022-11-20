@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, memo} from 'react';
 import {TextField, Button} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import {styled} from '@mui/system';
@@ -24,6 +24,15 @@ function DialogSearchBox({setOpen}) {
     }
 
     const submitSearch = () => {
+        if(Cookies.get("useCookies") == "true" && search) {
+            const allSearchQueries = Cookies.get("allSearchQueries");
+            if(allSearchQueries) {
+                allSearchQueries += (" " + search);
+                Cookies.set("allSearchQueries", allSearchQueries);
+            }
+            else
+                Cookies.set("allSearchQueries", search);
+        }
         navigate('/', {state: {search: search.toLowerCase()}});
         setOpen(false);
     }
@@ -36,4 +45,4 @@ function DialogSearchBox({setOpen}) {
     )
 }
 
-export default DialogSearchBox;
+export default memo(DialogSearchBox);
