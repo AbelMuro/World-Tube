@@ -117,7 +117,7 @@ function HomePage() {
                     <DialogTitle sx={{textAlign: "center"}}>
                         Cookies <CookieIcon fontSize="large"/>
                     </DialogTitle>
-                    <Stack spacing={2}>
+                    <Stack spacing={2} sx={{width: "300px"}}>
                         <p>
                             This site uses cookies to store information about your preferences,
                             we respect your privacy and will use the info we got from your search results
