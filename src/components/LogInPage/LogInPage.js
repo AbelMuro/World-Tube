@@ -7,7 +7,6 @@ import {signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider
 import {doc, getDoc, setDoc,} from 'firebase/firestore';
 import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
-import emptyAvatar from './images/empty avatar.png'
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
