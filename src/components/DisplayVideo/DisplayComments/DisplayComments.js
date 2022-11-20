@@ -29,7 +29,10 @@ function DisplayComments({videoOwnerID, videoID}){
 //TODO: try to find a way to hide the 'show less/ show more' when there are no comments to be displayed
     return(                
         <div className={styles.displayComments}>
-            {mobile ? <div className={styles.showComments} onClick={handleCommentSection}>{showComments ? "Show less..." : "Show more..."} </div> : <></>}
+            {
+            mobile ? loadingComments ? ""  : allComments.length > 1 ? <div className={styles.showComments} onClick={handleCommentSection}>{showComments ? "Show less..." : "Show more..."} </div> : "" :
+                ""
+            }
             {loadingComments ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.length > 0 ? allComments.map((comment) => {    
                     return (
                         <div id={comment.commentID} className={styles.commentContainer} key={uuid()}>  
