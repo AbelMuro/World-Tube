@@ -10,7 +10,7 @@ import ReplyOrEdit from './ReplyOrEdit';
 import {useMediaQuery} from '@mui/material';
 
 function DisplayComments({videoOwnerID, videoID}){
-    const [showComments, setShowComments] = useState("") 
+    const [showComments, setShowComments] = useState(false) 
     const mobile = useMediaQuery("(max-width: 1100px)");
     const commentCollection = collection(firestore, `${videoOwnerID}/${videoID}/commentSection`);
     const q = query(commentCollection, orderBy("order", "desc"));
@@ -24,9 +24,20 @@ function DisplayComments({videoOwnerID, videoID}){
             return !prevState;
         });
     }
+    useEffect(() => {
+        const commentSection = document.querySelector("." + styles.displayComments);
+        if(!mobile){
+            commentSection.style.height = "auto";
+            setShowComments(true);
+        }
+        else{
+            commentSection.style.height = "123px";
+            setShowComments(false);
+        }
+            
+    }, [mobile])
 
  
-//TODO: try to find a way to hide the 'show less/ show more' when there are no comments to be displayed
     return(                
         <div className={styles.displayComments}>
             {
