@@ -87,7 +87,7 @@ function HomePage() {
                                 <div className={styles.loadingBox}>
                                     <CircularProgress />
                                 </div>
-                                <video className={styles.video} data-video={JSON.stringify(video)} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded}>
+                                <video className={styles.video} data-video={JSON.stringify(video)} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded} muted>
                                     <source src={video.url}/>
                                     Your Browser doesn't support videos
                                 </video>                                  
