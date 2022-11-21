@@ -136,6 +136,7 @@ function UploadVideo({user}) {
         <Dialog open={open} onClose={handleClose}>
             {loading ? 
             <div className={styles.loading}>
+                May take a while for videos with higher resolution
                 <CircularProgress />
             </div> : 
             <>

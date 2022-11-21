@@ -21,10 +21,9 @@ function DisplayVideo() {
     const [allUsersVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
-    {/* find a way to put the video url into this object*/}
     const plyrProps = {
         source: {type: "video", sources: [{src: videoData.url}]},
-        options: undefined
+        options: [{quality: {default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360]}}]
     }
 
     const handleVideoLink = (e) => {

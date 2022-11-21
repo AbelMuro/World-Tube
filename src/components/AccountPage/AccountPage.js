@@ -12,10 +12,6 @@ function AccountPage() {
     const [user] = useAuthState(auth);
     const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component  
 
-    const handleError = () => {
-        console.log("error");
-    }
-
     function getDateCreated() {
         const dateCreated = new Date(Number(user.metadata.createdAt));
         return dateCreated.toDateString();
@@ -38,7 +34,7 @@ function AccountPage() {
         <section className={styles.accountContainer}>
             <div className={styles.basicInfoContainer}>
                 <div className={styles.basicInfo}>    
-                    <img src={user.photoURL} className={styles.usersAvatar} onError={handleError}/>
+                    <img src={user.photoURL} className={styles.usersAvatar}/>
                     <div className={styles.userInfo}>
                         <p className={styles.username}>
                             {user.displayName}
