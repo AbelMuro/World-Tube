@@ -73,7 +73,7 @@ function NavigationBar() {
         <nav className={styles.navigationBar}>
             <section className={styles.navBarOne}>
                 <h1 className={styles.logo} onClick={handleHomePage}>
-                    WORLD-TUBE
+                    WORLD VIEW
                 </h1>
 
                 <div className={styles.accountItems}>        

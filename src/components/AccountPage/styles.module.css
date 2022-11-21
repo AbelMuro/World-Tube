@@ -29,6 +29,7 @@
 
 #aboutMe{
     align-self: start;
+    overflow-wrap: break-word;
 }
 
 .title, .desc{
@@ -37,7 +38,7 @@
     font-size: 25px;
 }
 .desc{
-    word-break: break-all;
+    overflow-wrap: break-word;
 }
 
 .videosUploaded{
@@ -117,6 +118,10 @@
 @media(max-width: 525px){
     .basicInfo{
         width: 100%;
+    }
+
+    .basicInfoContainer{
+        height: auto;
     }
 
     .otherInfo{

@@ -9,7 +9,8 @@ import {useLocation} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-import Plyr from 'plyr-react';
+//import Plyr from 'plyr';
+import Plyr from 'plyr-react'
 import './plyr.css';
 
 
@@ -21,17 +22,22 @@ function DisplayVideo() {
     const [allUsersVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
-    const plyrProps = {
-        source: {type: "video", sources: [{src: videoData.url}]},
-        options: [{quality: {default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360]}}]
-    }
-
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
         navigate(`/${videoData.title}`, {state : videoData});
         window.location.reload(false);
     }
+    const plyrProps = {
+        source: {type: "video", sources: [{src: videoData.url, size: 1080}, 
+                                          {src: videoData.url, size: 720},
+                                          {src: videoData.url, size: 576},
+                                          {src: videoData.url, size: 480},
+                                          {src: videoData.url, size: 360},
+                                          {src: videoData.url, size: 240}]}, 
+        options: { default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240] }, 
+      }
+
 
     const handleLoad = (e) => {
         const loadingBlock = e.target.previousElementSibling;
@@ -41,7 +47,8 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-                <Plyr {...plyrProps} className={["plyr-react plyr", styles.video].join(" ")}/>
+                <Plyr {...plyrProps}/>
+
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
