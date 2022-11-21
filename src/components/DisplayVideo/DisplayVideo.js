@@ -42,7 +42,7 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-                <Plyr {...plyrProps}/>
+                <Plyr {...plyrProps} className={["plyr-react plyr", styles.video].join(" ")}/>
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
