@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect} from 'react';
 import {collection, query, where} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import {firestore} from '../Firebase-config';
@@ -10,19 +10,22 @@ import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 import Plyr from 'plyr-react';
-//TODO: figure out why this css file is not being imported
-import 'plyr-react/plyr.css';
+import './plyr.css';
 
 
 function DisplayVideo() {
     const {state} = useLocation();
-    const video = useRef();
     const videoData = state;
     const collectionRef = collection(firestore, `${videoData.userID}`);
     const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
     const [allUsersVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
+    {/* find a way to put the video url into this object*/}
+    const plyrProps = {
+        source: videoData.url,
+        options: undefined
+    }
 
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
@@ -39,7 +42,11 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-                <Plyr />
+                <Plyr src={videoData.url}/>
+                <video className={styles.video} controls constrolslist="nodownload">
+                    <source src={videoData.url} id="sourceVideo"/>
+                    Your Browser doesn't support videos
+                </video>
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
