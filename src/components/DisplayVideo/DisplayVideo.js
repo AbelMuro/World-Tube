@@ -23,7 +23,7 @@ function DisplayVideo() {
 
     {/* find a way to put the video url into this object*/}
     const plyrProps = {
-        source: videoData.url,
+        source: {type: "video", sources: [{src: videoData.url}]},
         options: undefined
     }
 
@@ -42,11 +42,7 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-                <Plyr src={videoData.url}/>
-                <video className={styles.video} controls constrolslist="nodownload">
-                    <source src={videoData.url} id="sourceVideo"/>
-                    Your Browser doesn't support videos
-                </video>
+                <Plyr {...plyrProps}/>
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
