@@ -15,7 +15,6 @@
 
 .navBarTwoBackground{
     background-color: rgb(37, 37, 37);
-    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -28,6 +27,7 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    transition: height 0.2s linear;
 }
 
 .accountItems{

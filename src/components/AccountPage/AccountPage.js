@@ -1,7 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import {auth, firestore} from '../Firebase-config';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import { doc, getDoc} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
 import styles from './styles.module.css';
 import {CircularProgress} from '@mui/material';
 import DisplayVideos from './DisplayVideos';

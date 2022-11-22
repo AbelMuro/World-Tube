@@ -57,10 +57,10 @@ function NavigationBar() {
         navigate("/", {state: {category: category}})
     }
 
-    const handleNav = (e) => {
+    const handleNav = () => {
         const navBar = document.querySelector("." + styles.navBarTwo);
         const currentHeight = navBar.style.height;
-        navBar.style.height = currentHeight == "auto" ? "40px" : "auto"  
+        navBar.style.height = currentHeight == "287px" ? "40px" : "287px"  
     }
 
 

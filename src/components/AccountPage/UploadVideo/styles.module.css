@@ -7,6 +7,8 @@
     font-family: "crimson text";
 }
 
-.progressLoading{
-    color: none;
+.loadingTitle{
+    font-family: "crimson text";
+    font-size: 20px;
 }
+

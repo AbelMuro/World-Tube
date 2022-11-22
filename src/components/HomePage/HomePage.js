@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {firestore} from '../Firebase-config';
-import {collection, query, where} from 'firebase/firestore';
+import {collection, query, where, orderBy} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
 import styles from './styles.module.css';
 import {v4 as uuid} from "uuid";
@@ -15,16 +15,20 @@ function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
     const q = state ? state?.search ? query(allVideosRef, where("searchTitle", ">=", state.search), where("searchTitle", "<=", state.search + '\uf8ff')) :
-                      state.category != "All" ? query(allVideosRef, where("category", "==", state.category)) : query(allVideosRef)
-              : query(allVideosRef);
+                      state.category != "All" ? query(allVideosRef, where("category", "==", state.category)) : query(allVideosRef, orderBy("order", "desc"))
+              : query(allVideosRef, orderBy("order", "desc"));
     const [allVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
     const playVideoOnHover = (e) => {
+        const videoContainer = e.target.parentElement;
+        videoContainer.style.zIndex = 1;
         e.target.play();
     }   
 
     const stopVideoOnLeave = (e) => {
+        const videoContainer = e.target.parentElement;
+        videoContainer.style.zIndex = 0;
         e.target.pause();
     } 
 

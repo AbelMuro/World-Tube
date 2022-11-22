@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Select, MenuItem, InputLabel, 
-       FormControl,Dialog, DialogTitle, 
-       Stack, Button, TextField, CircularProgress} from '@mui/material';
+       FormControl,Dialog, DialogTitle, DialogContent, 
+       Stack, Button, TextField} from '@mui/material';
 import {styled} from '@mui/system';
 import styles from './styles.module.css';
 import {storage, firestore, auth} from '../../Firebase-config';
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
 import {setDoc, doc} from 'firebase/firestore';
 import {useUploadFile} from 'react-firebase-hooks/storage';
+import {useDispatch} from 'react-redux';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -38,17 +39,15 @@ const ReverseStyledButton = styled(Button)`
     }     
 `
 
-//TODO: implement redux into this application and use the global store to store the loading state object
-// then you can use the loading state object to display a loading notifier in the display-videos component
 function UploadVideo({user}) {
+    const dispatch = useDispatch();
     const [video, setVideo] = useState([]);
     const [uploadFile] = useUploadFile(auth);
     const [title, setTitle] = useState("");
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [category, setCategory] = useState("");
-
+    let disable = loading;
 
     const handleVideo = (e) => {
         setVideo(e.target.files);
@@ -84,7 +83,7 @@ function UploadVideo({user}) {
     useEffect(() => {
         if(video.length > 0) {
             setLoading(true);
-            setProgress(1);
+            dispatch({type: "loading start"});
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
             (async function uploadStorage(){
                 try{
@@ -97,9 +96,7 @@ function UploadVideo({user}) {
                     currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
                     const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
                     //uploading the video onto the storage and then getting the URL of that video
-                    setProgress(10);
                     let {metadata} = await uploadFile(ref, video[0]);              //uploading the file to the storage
-                    setProgress(30);
                     let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
                     const videoID = metadata.md5Hash.replace("/", "");
                     //referencing two collections, the users personal collection and the developers collection
@@ -121,9 +118,11 @@ function UploadVideo({user}) {
                     //setting the object onto the firestore
                     await setDoc(usersDocument, videoData)
                     await setDoc(developersDocument, videoData)
-                    setProgress(100);
-                    setLoading(false); 
-                    setOpen(false);             
+                    setLoading(false);
+                    dispatch({type: "loading stop"}); 
+                    setOpen(false); 
+                    setCategory("");
+                    setTitle("");            
                 }
                 catch(error){
                     setLoading(false);
@@ -135,19 +134,29 @@ function UploadVideo({user}) {
 
     return(
     <>
-        <StyledButton id="outlined-basic" variant="contained" component="label" onClick={handleOpen}>
+        <StyledButton id="outlined-basic" variant="contained" component="label" onClick={handleOpen} disabled={disable}>
             Upload videos
         </StyledButton>
         <Dialog open={open} onClose={handleClose}>
             {loading ? 
-            <div className={styles.loading}>
-                <CircularProgress variant="determinate" value={progress}/>
-            </div> : 
-            <>
-                <DialogTitle sx={{textAlign: "center", margin: "10px 120px"}}>
+            <DialogContent sx={{padding: "50px"}}>
+                <Stack spacing={2} sx={{width: "300px"}}>
+                    <p className={styles.loadingTitle}>
+                        Video is being uploaded, which may take some time.
+                        you can close this window and check the progress of the 
+                        video being uploading in your account page
+                    </p>
+                    <StyledButton variant="contained" onClick={handleClose}>
+                        Close
+                    </StyledButton>
+                </Stack>                
+            </DialogContent>
+ : 
+            <DialogContent>
+                <DialogTitle sx={{textAlign: "center"}}>
                     Enter data about the video
                 </DialogTitle>
-                <Stack spacing={2} sx={{margin: "10px 120px", marginBottom: "40px"}}>
+                <Stack spacing={2} sx={{marginTop: "10px"}}>
                     <TextField id="outlined-basic" label="Enter Title" value={title} onChange={handleTitle} required/>
 
                     <FormControl>
@@ -169,7 +178,7 @@ function UploadVideo({user}) {
                         Close 
                     </ReverseStyledButton>                       
                 </Stack>
-            </> 
+            </DialogContent> 
             }
         </Dialog>    
     </>

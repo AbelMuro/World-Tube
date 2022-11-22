@@ -9,8 +9,11 @@ import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
 
+import {useSelector} from 'react-redux';
+
 
 function DisplayVideos({userID}) {
+    const isUploading = useSelector((state) => state.loadingState);
     const collectionRef = collection(firestore, userID);
     const q = query(collectionRef, where("url", "!=", false ));
     const [videos, loading] = useCollectionData(q);
@@ -29,7 +32,9 @@ function DisplayVideos({userID}) {
 
     return loading ? (<div className={styles.loading}><CircularProgress /></div>) : (
         <section className={styles.allVideos}>
-            <div></div>
+            {isUploading ? <div className={styles.uploadingVideo}>
+                <CircularProgress/>
+            </div> : <></> }
             {videos.length > 0 ? videos.map((video) => {
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
@@ -42,7 +47,7 @@ function DisplayVideos({userID}) {
                             </video>                            
                         </div>
                     )
-                }) : <div className={styles.noVideos}>no videos</div>
+                }) :isUploading ? <></> : <div className={styles.noVideos}>no videos</div>
             }
         </section>
     );
