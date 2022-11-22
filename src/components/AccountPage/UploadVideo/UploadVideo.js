@@ -38,13 +38,15 @@ const ReverseStyledButton = styled(Button)`
     }     
 `
 
-
+//TODO: implement redux into this application and use the global store to store the loading state object
+// then you can use the loading state object to display a loading notifier in the display-videos component
 function UploadVideo({user}) {
     const [video, setVideo] = useState([]);
     const [uploadFile] = useUploadFile(auth);
     const [title, setTitle] = useState("");
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
     const [category, setCategory] = useState("");
 
 
@@ -82,8 +84,8 @@ function UploadVideo({user}) {
     useEffect(() => {
         if(video.length > 0) {
             setLoading(true);
+            setProgress(1);
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
-
             (async function uploadStorage(){
                 try{
                     //creating a date object and formatting it
@@ -95,8 +97,10 @@ function UploadVideo({user}) {
                     currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
                     const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
                     //uploading the video onto the storage and then getting the URL of that video
-                    let {metadata} = await uploadFile(ref, video[0]);                           //uploading the file to the storage
-                    let url = await getDownloadURL(ref);                                        //getting the url of the video in the storage
+                    setProgress(10);
+                    let {metadata} = await uploadFile(ref, video[0]);              //uploading the file to the storage
+                    setProgress(30);
+                    let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
                     const videoID = metadata.md5Hash.replace("/", "");
                     //referencing two collections, the users personal collection and the developers collection
                     const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
@@ -117,6 +121,7 @@ function UploadVideo({user}) {
                     //setting the object onto the firestore
                     await setDoc(usersDocument, videoData)
                     await setDoc(developersDocument, videoData)
+                    setProgress(100);
                     setLoading(false); 
                     setOpen(false);             
                 }
@@ -136,8 +141,7 @@ function UploadVideo({user}) {
         <Dialog open={open} onClose={handleClose}>
             {loading ? 
             <div className={styles.loading}>
-                May take a while for videos with higher resolution
-                <CircularProgress />
+                <CircularProgress variant="determinate" value={progress}/>
             </div> : 
             <>
                 <DialogTitle sx={{textAlign: "center", margin: "10px 120px"}}>

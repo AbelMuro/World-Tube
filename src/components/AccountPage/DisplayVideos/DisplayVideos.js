@@ -29,6 +29,7 @@ function DisplayVideos({userID}) {
 
     return loading ? (<div className={styles.loading}><CircularProgress /></div>) : (
         <section className={styles.allVideos}>
+            <div></div>
             {videos.length > 0 ? videos.map((video) => {
                     return(
                         <div key={uuid()} className={styles.videoContainer} >

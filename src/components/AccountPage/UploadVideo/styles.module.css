@@ -6,3 +6,7 @@
     height: 400px;
     font-family: "crimson text";
 }
+
+.progressLoading{
+    color: none;
+}
