@@ -22,11 +22,6 @@
     object-fit: contain;
     height: 200px;
     cursor: pointer;
-    transition: all 0.2s linear;
-}
-
-.video:hover{
-    transform: scale(1.2, 1.2);
 }
 
 .userImage{
@@ -52,11 +47,19 @@
 }
 
 .loadingContainer{
+    background-color: black;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     z-index: 0;
+    width: 355.55px;
+    height: 200px;
+    transition: all 0.2s linear;
+}
+
+.loadingContainer:hover{
+    transform: scale(1.2, 1.2);
 }
 
 .loadingBox{
@@ -69,6 +72,7 @@
     width: 355.55px;
     height: 200px;
     background-color: rgb(235, 233, 233);
+    pointer-events: none;
 }
 
 @media (max-width: 1575px){
@@ -105,5 +109,9 @@
     .gridContainer{
         grid-template-columns: 302px;
         width: 302px;
+    }
+    .loadingContainer{
+        width: 302.22px;
+        height: 170px;
     }
 }

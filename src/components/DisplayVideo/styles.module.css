@@ -89,9 +89,13 @@
 }
 
 .otherVideoContainer{
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    border: 1px solid grey;
+    border-radius: 20px;
+    padding: 20px;
 }
 
 .otherVideoTitle{
@@ -142,6 +146,10 @@
         width: 100%;
     }
 
+    /* find a way to dynamically hard code the height for the loading container*/
+    .loadingVideo{
+        width: 100%;
+    }
     .otherVideos{
         width: 100%;
     }
@@ -158,6 +166,11 @@
     .userInfo, .title, .timeStamp{
         width: 90%;
         margin: auto;
+    }
+
+    .otherVideoContainer{
+        width: 100%;
+        padding: 20px 0px;
     }
 }
 

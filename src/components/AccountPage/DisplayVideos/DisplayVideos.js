@@ -39,7 +39,7 @@ function DisplayVideos({userID}) {
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
                             <div className={styles.loadingVideo}>
-                                <CircularProgress/>
+                                <CircularProgress disableShrink/>
                             </div>
                             <video className={styles.videos} onClick={displayVideo} onLoadedData={handleLoad} data-video={JSON.stringify(video)}>
                                 <source src={`${video.url}#t=3`}/>

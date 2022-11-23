@@ -73,28 +73,25 @@ function DisplayVideo() {
                 <h1 className={styles.otherVideosTitle}>
                     Other videos by {videoData.username}
                 </h1>
-                <div className={styles.allVideos}>
-                    {loading ? <div className={styles.loading}><CircularProgress/></div> : allUsersVideos.length >= 1 ? allUsersVideos.map((video) => {
-                            return (
-                                <div className={styles.otherVideoContainer} key={uuid()}>
-                                    <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
-                                        <div className={styles.loadingVideo}>
-                                            <CircularProgress />
-                                        </div>
-                                        <video className={styles.otherVideos} onLoadedData={handleLoad}>
-                                            <source src={`${video.url}#t=5`}/>
-                                            Your Browser doesn't support videos
-                                        </video>                                          
-                                    </a>
-                                    <p className={styles.otherVideoTitle}>
-                                        {video.title}   
-                                    </p>                              
-                                </div>
-
-                            ) 
+                {loading ? <div className={styles.loading}><CircularProgress/></div> : allUsersVideos.length >= 1 ? allUsersVideos.map((video) => {
+                        return (
+                            <div className={styles.otherVideoContainer} key={uuid()}>
+                                <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
+                                    <div className={styles.loadingVideo}>
+                                        <CircularProgress />
+                                    </div>
+                                    <video className={styles.otherVideos} onLoadedData={handleLoad}>
+                                        <source src={`${video.url}#t=5`}/>
+                                        Your Browser doesn't support videos
+                                    </video>                                          
+                                </a>
+                                <p className={styles.otherVideoTitle}>
+                                    {video.title}   
+                                </p>                              
+                            </div>
+                        ) 
                         }) : <h2 className={styles.noOtherVideos}>No other videos</h2>
                     }
-                </div>
             </div>    
         </section>
 
