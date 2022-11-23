@@ -42,7 +42,7 @@ function DisplayVideos({userID}) {
                                 <CircularProgress/>
                             </div>
                             <video className={styles.videos} onClick={displayVideo} onLoadedData={handleLoad} data-video={JSON.stringify(video)}>
-                                <source src={video.url}/>
+                                <source src={`${video.url}#t=3`}/>
                                 Your browser doesn't support videos
                             </video>                            
                         </div>

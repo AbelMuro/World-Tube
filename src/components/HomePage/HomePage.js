@@ -11,6 +11,7 @@ import UseCookies from './useCookies';
 
 
 //TODO: find a way to generate a frame from a video, convert it into an image, and then use it as a thumbnail for the video
+//also, put all the videos in a black container, this will make sure that every video is the same width and height
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
@@ -59,7 +60,7 @@ function HomePage() {
                                     <CircularProgress />
                                 </div>
                                 <video className={styles.video} data-video={JSON.stringify(video)} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded} muted>
-                                    <source src={video.url}/>
+                                    <source src={`${video.url}#t=2`}/>
                                     Your Browser doesn't support videos
                                 </video>                                  
                             </div>
