@@ -1,8 +1,9 @@
 .allVideos{
-    width: 100%;
+    width: 800px;
     gap: 20px;
     display: grid;
     grid-template-columns: repeat(2, auto);
+    margin: auto;
     margin-bottom: 40px;
     overflow: hidden;
 }
@@ -46,6 +47,12 @@
 
 .noVideos{
     font-family: "crimson text";
+}
+
+@media(max-width: 1315px) {
+    .allVideos{
+        width: 100%;
+    }
 }
 
 @media (max-width: 1308px) {

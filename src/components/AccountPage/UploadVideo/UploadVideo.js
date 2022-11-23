@@ -8,7 +8,7 @@ import {storage, firestore, auth} from '../../Firebase-config';
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
 import {setDoc, doc} from 'firebase/firestore';
 import {useUploadFile} from 'react-firebase-hooks/storage';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
@@ -40,6 +40,7 @@ const ReverseStyledButton = styled(Button)`
 `
 
 function UploadVideo({user}) {
+    const loadingState = useSelector((state) => state.loadingState)
     const dispatch = useDispatch();
     const [video, setVideo] = useState([]);
     const [uploadFile] = useUploadFile(auth);
@@ -47,7 +48,7 @@ function UploadVideo({user}) {
     const [open, setOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState("");
-    let disable = loading;
+    let disable = loadingState;
 
     const handleVideo = (e) => {
         setVideo(e.target.files);
