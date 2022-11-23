@@ -10,7 +10,7 @@ import {CircularProgress} from '@mui/material';
 import UseCookies from './useCookies';
 
 
-
+//TODO: find a way to generate a frame from a video, convert it into an image, and then use it as a thumbnail for the video
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
