@@ -7,6 +7,10 @@
     overflow: hidden;
 }
 
+.noVideos{
+    grid-column: 1/3;
+}
+
 .videos {
     object-fit: contain;
     height: 200px;
@@ -48,17 +52,26 @@
     .allVideos{
         grid-template-columns: auto;
     }
+    .noVideos {
+        grid-column: 1/2;
+    }
 }
 
 @media (max-width: 940px) {
     .allVideos{
         grid-template-columns: auto auto;
     }
+    .noVideos{
+        grid-column: 1/3;
+    }
 }
 
 @media (max-width: 755px) {
     .allVideos{
         grid-template-columns: auto;
+    }
+    .noVideos{
+        grid-column: 1/2;
     }
 }
 
