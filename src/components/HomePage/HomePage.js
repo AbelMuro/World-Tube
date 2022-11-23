@@ -10,8 +10,8 @@ import {CircularProgress} from '@mui/material';
 import UseCookies from './useCookies';
 
 
-//TODO: find a way to generate a frame from a video, convert it into an image, and then use it as a thumbnail for the video
-//also, put all the videos in a black container, this will make sure that every video is the same width and height
+//TODO: also, put all the videos in a black container, this will make sure that every video is the same width and height
+//TODO: work on the css in the other videos of the display video component
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      

@@ -35,7 +35,7 @@ function DisplayVideo() {
                                           {src: videoData.url, size: 480},
                                           {src: videoData.url, size: 360},
                                           {src: videoData.url, size: 240}]}, 
-        options: { default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240] }, 
+        options: { default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240], autoplay: true }, 
       }
 
 
@@ -82,7 +82,7 @@ function DisplayVideo() {
                                             <CircularProgress />
                                         </div>
                                         <video className={styles.otherVideos} onLoadedData={handleLoad}>
-                                            <source src={video.url}/>
+                                            <source src={`${video.url}#t=5`}/>
                                             Your Browser doesn't support videos
                                         </video>                                          
                                     </a>
