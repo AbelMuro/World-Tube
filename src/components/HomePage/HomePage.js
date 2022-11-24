@@ -44,7 +44,6 @@ function HomePage() {
 
 
     //TODO: delete all videos from the firestore and replace the video tag with the img tag in homepage component and accountpage component
-    //TODO: also find out how to dynamically create a video tag when the user hovers over the img
     return(
         <section className={styles.homeContainer}>
             <h1 className={styles.title}>
@@ -55,13 +54,7 @@ function HomePage() {
                     return (
                         <div key={uuid()} data-id={video.videoID} data-user={video.userID}>     
                             <div className={styles.loadingContainer}>
-                                <div className={styles.loadingBox}>
-                                    <CircularProgress disableShrink/>
-                                </div>
-                                <video className={styles.video} data-video={JSON.stringify(video)} onClick={handleNavigate} onMouseOver={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onLoadedData={videoLoaded} muted>
-                                    <source src={`${video.url}#t=4`}/>
-                                    Your Browser doesn't support videos
-                                </video>                                  
+                                <img src={video.thumbnail} className={styles.thumbnail}/>                    
                             </div>
    
                             <h2 className={styles.videoTitle}>

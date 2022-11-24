@@ -24,6 +24,11 @@
     cursor: pointer;
 }
 
+.thumbnail{
+    object-fit: contain;
+    height: 200px;
+}
+
 .userImage{
     object-fit: contain;
     width: 50px;
