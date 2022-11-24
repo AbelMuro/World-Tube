@@ -89,7 +89,7 @@
 }
 
 .otherVideoContainer{
-    width: 300px;
+    width: 365px;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -103,9 +103,16 @@
     font-size: 22px;
 }
 
+
+/* TODO: work on the responsiveness of the bottom videoLink*/
 .videoLink{
+    background-color: black;
     cursor: pointer;
     position: relative;
+    width: 355.55px;
+    height: 200px; 
+    display: flex;
+    justify-content: center;
 }
 
 .loading{
@@ -130,6 +137,10 @@
 
 .videoContainer{
     width: 700px;
+}
+
+.thumbnail{
+    pointer-events: none;
 }
 
 

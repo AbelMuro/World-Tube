@@ -77,13 +77,7 @@ function DisplayVideo() {
                         return (
                             <div className={styles.otherVideoContainer} key={uuid()}>
                                 <a className={styles.videoLink} onClick={handleVideoLink} data-video={JSON.stringify(video)}>
-                                    <div className={styles.loadingVideo}>
-                                        <CircularProgress />
-                                    </div>
-                                    <video className={styles.otherVideos} onLoadedData={handleLoad}>
-                                        <source src={`${video.url}#t=5`}/>
-                                        Your Browser doesn't support videos
-                                    </video>                                          
+                                    <img className={styles.thumbnail} src={video.thumbnail}/>                               
                                 </a>
                                 <p className={styles.otherVideoTitle}>
                                     {video.title}   
