@@ -12,3 +12,16 @@
     font-size: 20px;
 }
 
+#canvas {
+    display: none;
+}
+
+.video{
+    object-fit: contain;
+    height: 200px;
+}
+
+.image{
+    width: 200px;
+    object-fit: contain;
+}

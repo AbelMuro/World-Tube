@@ -10,8 +10,6 @@ import {CircularProgress} from '@mui/material';
 import UseCookies from './useCookies';
 
 
-//TODO: also, put all the videos in a black container, this will make sure that every video is the same width and height
-//TODO: work on the css in the other videos of the display video component
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
@@ -33,7 +31,7 @@ function HomePage() {
         e.target.pause();
     } 
 
-    const videoLoaded = (e) => {
+    const videoLoaded = async (e) => {
         const loadingBox = e.target.previousElementSibling;
         loadingBox.style.display = "none";
     }
@@ -45,6 +43,8 @@ function HomePage() {
     }
 
 
+    //TODO: delete all videos from the firestore and replace the video tag with the img tag in homepage component and accountpage component
+    //TODO: also find out how to dynamically create a video tag when the user hovers over the img
     return(
         <section className={styles.homeContainer}>
             <h1 className={styles.title}>
@@ -53,8 +53,7 @@ function HomePage() {
             <div className={styles.gridContainer}>
                 {loading ? <LoadingScreen/> : allVideos.map((video) => {
                     return (
-                        <div key={uuid()} data-id={video.videoID} data-user={video.userID}>
-           
+                        <div key={uuid()} data-id={video.videoID} data-user={video.userID}>     
                             <div className={styles.loadingContainer}>
                                 <div className={styles.loadingBox}>
                                     <CircularProgress disableShrink/>

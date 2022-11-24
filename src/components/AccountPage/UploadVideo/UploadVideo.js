@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Select, MenuItem, InputLabel, 
        FormControl,Dialog, DialogTitle, DialogContent, 
        Stack, Button, TextField} from '@mui/material';
-import {styled} from '@mui/system';
+import {style, styled} from '@mui/system';
 import styles from './styles.module.css';
 import {storage, firestore, auth} from '../../Firebase-config';
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
@@ -81,57 +81,62 @@ function UploadVideo({user}) {
         }
     } 
 
-    useEffect(() => {
-        if(video.length > 0) {
+    const handleSubmit = async () => {
+        if(video.length == 0) return;
+
+        try{
             setLoading(true);
             dispatch({type: "loading start"});
+            //using a canvas to create a thumbnail from the video being uploaded
+            const videoRef = document.querySelector("." + styles.video);
+            const canvas = document.createElement("canvas");
+            let context = canvas.getContext("2d");
+            context.drawImage(videoRef, 0, 0, 220, 150);
+            let imageURL = canvas.toDataURL("image/png");
+            //creating a date object and formatting it
+            const currentDate = new Date();
+            const millisecondsSince1970 = currentDate.getTime();
+            const readableDate = currentDate.toLocaleDateString();
+            const currentHour = ((currentDate.getHours() + 11) % 12 + 1);
+            let currentMinutes = currentDate.getMinutes();
+            currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
+            const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
+            //uploading the video onto the storage and then getting the URL of that video
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
-            (async function uploadStorage(){
-                try{
-                    //creating a date object and formatting it
-                    const currentDate = new Date();
-                    const millisecondsSince1970 = currentDate.getTime();
-                    const readableDate = currentDate.toLocaleDateString();
-                    const currentHour = ((currentDate.getHours() + 11) % 12 + 1);
-                    let currentMinutes = currentDate.getMinutes();
-                    currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
-                    const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
-                    //uploading the video onto the storage and then getting the URL of that video
-                    let {metadata} = await uploadFile(ref, video[0]);              //uploading the file to the storage
-                    let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
-                    const videoID = metadata.md5Hash.replace("/", "");
-                    //referencing two collections, the users personal collection and the developers collection
-                    const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
-                    const developersDocument = doc(firestore, "developers collection", `allVideos/videoCollection/${videoID}`);
-                    //creating an object that contains all the meta data of the video being uploaded
-                    const videoData = {                                              
-                        username: user.displayName,
-                        title: title,
-                        searchTitle: title.toLowerCase(),
-                        userImage: user.photoURL,
-                        category: category,
-                        timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
-                        url: url,
-                        userID: user.uid,
-                        videoID: videoID,
-                        order: millisecondsSince1970,
-                    }
-                    //setting the object onto the firestore
-                    await setDoc(usersDocument, videoData)
-                    await setDoc(developersDocument, videoData)
-                    setLoading(false);
-                    dispatch({type: "loading stop"}); 
-                    setOpen(false); 
-                    setCategory("");
-                    setTitle("");            
-                }
-                catch(error){
-                    setLoading(false);
-                    console.log(error.message);
-                }
-            })(); 
+            let {metadata} = await uploadFile(ref, video[0]);              //uploading the file to the storage
+            let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
+            const videoID = metadata.md5Hash.replace("/", "");
+            //referencing two collections, the users personal collection and the developers collection
+            const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
+            const developersDocument = doc(firestore, "developers collection", `allVideos/videoCollection/${videoID}`);
+            //creating an object that contains all the meta data of the video being uploaded
+            const videoData = {                                              
+                username: user.displayName,
+                title: title,
+                searchTitle: title.toLowerCase(),
+                userImage: user.photoURL,
+                category: category,
+                timeCreated: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
+                url: url,
+                userID: user.uid,
+                videoID: videoID,
+                order: millisecondsSince1970,
+                thumbnail: imageURL
+            }
+            //storing the object into the firestore
+            await setDoc(usersDocument, videoData)
+            await setDoc(developersDocument, videoData)
+            setLoading(false);
+            dispatch({type: "loading stop"}); 
+            setOpen(false); 
+            setCategory("");
+            setTitle("");            
         }
-    }, [video]);
+        catch(error){
+            setLoading(false);
+            console.log(error.message);
+        }
+    }
 
     return(
     <>
@@ -170,11 +175,18 @@ function UploadVideo({user}) {
                             <MenuItem value="Other">Other</MenuItem>
                         </Select>      
                     </FormControl>    
-
+                    {video.length > 0 ? (
+                        <video className={styles.video}>
+                            <source src={URL.createObjectURL(video[0]) + "#t=5"}/>
+                        </video>) : <></>
+                        }
                     <ReverseStyledButton variant="contained" component="label" onClick={handleClick}>
-                        Select Video
+                        Upload Video
                         {(title && category) ? <input type="file" hidden accept="video/*" onChange={handleVideo} /> : <></>}
                     </ReverseStyledButton>     
+                    <ReverseStyledButton variant="contained" onClick={handleSubmit} >
+                        Submit
+                    </ReverseStyledButton>
                     <ReverseStyledButton variant="contained" onClick={handleClose}>
                         Close 
                     </ReverseStyledButton>                       
