@@ -53,6 +53,12 @@
     font-family: "crimson text";
 }
 
+.thumbnail {
+    object-fit: contain;
+    height: 200px;
+    cursor: pointer;
+}
+
 @media(max-width: 1315px) {
     .allVideos{
         width: 100%;

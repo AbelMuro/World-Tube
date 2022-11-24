@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Select, MenuItem, InputLabel, 
        FormControl,Dialog, DialogTitle, DialogContent, 
        Stack, Button, TextField} from '@mui/material';
-import {style, styled} from '@mui/system';
+import {styled} from '@mui/system';
 import styles from './styles.module.css';
 import {storage, firestore, auth} from '../../Firebase-config';
 import {ref as storageRef, getDownloadURL} from 'firebase/storage';
@@ -71,6 +71,7 @@ function UploadVideo({user}) {
     }
 
     const handleSubmit = async () => {
+
         if(video.length == 0){
             alert("Please select a video");
             return;
@@ -79,7 +80,7 @@ function UploadVideo({user}) {
             alert("Please enter a title");
             return;
         }
-        else if(category == ""){
+        if(category == ""){
             alert("Please select a category");
             return;
         }
@@ -89,10 +90,13 @@ function UploadVideo({user}) {
             dispatch({type: "loading start"});
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
+            const dimensions = videoRef.getBoundingClientRect();        
             const canvas = document.createElement("canvas");
-            let context = canvas.getContext("2d");
-            context.drawImage(videoRef, 0, 0, 220, 150);
-            let imageURL = canvas.toDataURL("image/png");
+            canvas.setAttribute("width", dimensions.width);
+            canvas.setAttribute("height", 200);
+            const context = canvas.getContext("2d");
+            context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
+            const imageURL = canvas.toDataURL("image/png");   
             //creating a date object and formatting it
             const currentDate = new Date();
             const millisecondsSince1970 = currentDate.getTime();
@@ -103,7 +107,7 @@ function UploadVideo({user}) {
             const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
             //uploading the video onto the storage and then getting the URL of that video
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
-            let {metadata} = await uploadFile(ref, video[0]);              //uploading the file to the storage
+            let {metadata} = await uploadFile(ref, video[0]);       
             let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
             const videoID = metadata.md5Hash.replace("/", "");
             //referencing two collections, the users personal collection and the developers collection
@@ -133,6 +137,7 @@ function UploadVideo({user}) {
             setTitle("");            
         }
         catch(error){
+            console.log(error);
             setLoading(false);
             dispatch({type: "loading stop"}); 
             setOpen(false); 
@@ -140,6 +145,21 @@ function UploadVideo({user}) {
             setTitle("");  
         }
     }
+
+    useEffect(() => {
+        if(video.length == 0) return;
+        
+        const videoElement = document.createElement("video");
+        videoElement.setAttribute("class", styles.video);
+        const sourceElement = document.createElement("source");
+        sourceElement.setAttribute("size", 1080);
+        sourceElement.setAttribute("src",URL.createObjectURL(video[0]) + "#t=5");
+        videoElement.appendChild(sourceElement);
+        const videoContainer = document.querySelector("." + styles.videoContainer);
+        if(videoContainer.firstElementChild) videoContainer.removeChild(videoContainer.firstElementChild)
+        videoContainer.appendChild(videoElement);
+
+    },[video])
 
     return(
     <>
@@ -160,7 +180,7 @@ function UploadVideo({user}) {
                     </StyledButton>
                 </Stack>                
             </DialogContent>
- : 
+            : 
             <DialogContent>
                 <DialogTitle sx={{textAlign: "center"}}>
                     Enter data about the video
@@ -177,16 +197,13 @@ function UploadVideo({user}) {
                             <MenuItem value="News">News</MenuItem>
                             <MenuItem value="Other">Other</MenuItem>
                         </Select>      
-                    </FormControl>    
-                    {video.length > 0 ? (
-                        <video className={styles.video}>
-                            <source src={URL.createObjectURL(video[0]) + "#t=5"}/>
-                        </video>) : <></>
-                        }
+                    </FormControl>   
+
                     <ReverseStyledButton variant="contained" component="label">
                         Upload Video
-                        {(title && category) ? <input type="file" hidden accept="video/*" onChange={handleVideo} /> : <></>}
-                    </ReverseStyledButton>     
+                        <input type="file" hidden accept="video/*" onChange={handleVideo} />
+                    </ReverseStyledButton>                      
+                    <div className={styles.videoContainer}></div> 
                     <ReverseStyledButton variant="contained" onClick={handleSubmit} >
                         Submit
                     </ReverseStyledButton>

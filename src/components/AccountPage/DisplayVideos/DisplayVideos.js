@@ -38,13 +38,7 @@ function DisplayVideos({userID}) {
             {videos.length > 0 ? videos.map((video) => {
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
-                            <div className={styles.loadingVideo}>
-                                <CircularProgress disableShrink/>
-                            </div>
-                            <video className={styles.videos} onClick={displayVideo} onLoadedData={handleLoad} data-video={JSON.stringify(video)}>
-                                <source src={`${video.url}#t=3`}/>
-                                Your browser doesn't support videos
-                            </video>                            
+                            <img src={video.thumbnail} className={styles.thumbnail} data-video={JSON.stringify(video)} onClick={displayVideo}/>
                         </div>
                     )
                 }) :isUploading ? <></> : <div className={styles.noVideos}>no videos</div>

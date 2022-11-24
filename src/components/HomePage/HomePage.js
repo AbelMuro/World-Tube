@@ -42,8 +42,6 @@ function HomePage() {
         navigate(`/${videoData.title}`, {state: videoData});
     }
 
-
-    //TODO: delete all videos from the firestore and replace the video tag with the img tag in homepage component and accountpage component
     return(
         <section className={styles.homeContainer}>
             <h1 className={styles.title}>
