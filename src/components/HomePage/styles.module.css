@@ -51,7 +51,7 @@
     margin: 10px 0px;
 }
 
-.loadingContainer{
+.videoContainer{
     background-color: black;
     display: flex;
     justify-content: center;
@@ -63,22 +63,19 @@
     transition: all 0.2s linear;
 }
 
-.loadingContainer:hover{
+.videoContainer:hover{
     transform: scale(1.2, 1.2);
 }
 
-.loadingBox{
-    position: absolute;
-    left:0px;
-    top: 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 355.55px;
+.thumbnail{
+    object-fit: contain;
     height: 200px;
-    background-color: rgb(235, 233, 233);
-    pointer-events: none;
 }
+
+.playVideo{
+    display: none;
+}
+
 
 @media (max-width: 1575px){
     .gridContainer{

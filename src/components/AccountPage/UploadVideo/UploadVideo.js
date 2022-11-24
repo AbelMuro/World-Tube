@@ -70,19 +70,19 @@ function UploadVideo({user}) {
         setTitle(e.target.value);
     }
 
-    const handleClick = (e) => {
+    const handleSubmit = async () => {
+        if(video.length == 0){
+            alert("Please select a video");
+            return;
+        }
         if(title == "") {
             alert("Please enter a title");
-            e.preventDefault;
+            return;
         }
         else if(category == ""){
             alert("Please select a category");
-            e.preventDefault;
+            return;
         }
-    } 
-
-    const handleSubmit = async () => {
-        if(video.length == 0) return;
 
         try{
             setLoading(true);
@@ -134,7 +134,10 @@ function UploadVideo({user}) {
         }
         catch(error){
             setLoading(false);
-            console.log(error.message);
+            dispatch({type: "loading stop"}); 
+            setOpen(false); 
+            setCategory("");
+            setTitle("");  
         }
     }
 
@@ -180,7 +183,7 @@ function UploadVideo({user}) {
                             <source src={URL.createObjectURL(video[0]) + "#t=5"}/>
                         </video>) : <></>
                         }
-                    <ReverseStyledButton variant="contained" component="label" onClick={handleClick}>
+                    <ReverseStyledButton variant="contained" component="label">
                         Upload Video
                         {(title && category) ? <input type="file" hidden accept="video/*" onChange={handleVideo} /> : <></>}
                     </ReverseStyledButton>     

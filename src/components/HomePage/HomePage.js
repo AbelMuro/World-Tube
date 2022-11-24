@@ -53,8 +53,14 @@ function HomePage() {
                 {loading ? <LoadingScreen/> : allVideos.map((video) => {
                     return (
                         <div key={uuid()} data-id={video.videoID} data-user={video.userID}>     
-                            <div className={styles.loadingContainer}>
-                                <img src={video.thumbnail} className={styles.thumbnail}/>                    
+                            <div className={styles.videoContainer}>
+                                <img src={video.thumbnail} className={styles.thumbnail} data-video={JSON.stringify(video)} onClick={handleNavigate}/>
+                                <div className={styles.playVideo}>
+                                    <video className={styles.video}>
+                                        <source src={video.url} size={720}/>
+                                        Your browser doesn't support videos    
+                                    </video>    
+                                </div>                          
                             </div>
    
                             <h2 className={styles.videoTitle}>
