@@ -71,6 +71,17 @@ function UploadVideo({user}) {
     }
 
     const handleSubmit = async () => {
+        const videoElement = document.querySelector("." + styles.video);
+        const mediaData = await navigator.mediaDevices.getUserMedia({ 
+            video: {
+                width: { ideal: 4096 },
+                height: { ideal: 2160 } 
+            } 
+        })
+
+        console.log(mediaData);
+
+        return;
 
         if(video.length == 0){
             alert("Please select a video");

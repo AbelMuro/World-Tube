@@ -33,11 +33,10 @@ function DisplayVideo() {
     const plyrProps = {
         source: {type: "video", sources: [{src: videoData.url, size: 1080}, 
                                           {src: videoData.url, size: 720},
-                                          {src: videoData.url, size: 576},
                                           {src: videoData.url, size: 480},
                                           {src: videoData.url, size: 360},
                                           {src: videoData.url, size: 240}]}, 
-        options: { default: 1080, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240], autoplay: true }, 
+        options: {autoplay: true}, 
       }
 
 
