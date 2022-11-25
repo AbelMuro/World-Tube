@@ -25,19 +25,24 @@ const UploadImage = forwardRef((props, ref) => {
 
     useEffect(() => {
         if(image.length == 1){
-            const imageUploaded = document.querySelector("." + styles.imageUploaded);
-            imageUploaded.setAttribute("src", image[0].name);
+            const imageContainer = document.querySelector("." + styles.imageUploaded);
+            const imageUploaded = imageContainer.firstElementChild;
+            imageUploaded.setAttribute("class", styles.image);
+            imageUploaded.setAttribute("src", URL.createObjectURL(image[0]));
         }
     }, [image])
 
     return(   
         <Stack spacing={2} sx={{marginBottom: "10px", ...(mobile ? {width: "250px"} : {})}}>
+            <Box sx={{fontSize: "18px", fontFamily: "crimson text"}}>
+                Please select images that have the same aspect ratio. {"(1:1)"}
+            </Box>
             <ReverseStyledButton variant="contained" component="label" sx={(mobile ? {width: "250px"} : {})}>
                 Upload account image
-                <input type="file" hidden accept="image/*" onChange={handleImage} ref={ref}/>
+                <input type="file" hidden accept="image/*" onChange={handleImage} ref={ref} />
             </ReverseStyledButton>
             <Box className={styles.imageUploaded}>
-                <img/>
+                <img />
             </Box>
         </Stack>                 
         )
