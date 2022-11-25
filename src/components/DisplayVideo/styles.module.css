@@ -189,8 +189,9 @@
     }
 
     .otherVideoContainer{
-        width: 100%;
-        padding: 20px 0px;
+        width: 90%;
+        padding: 20px;
+        margin: auto;
     }
 }
 
@@ -199,3 +200,18 @@
         height: auto;
     }
 }
+
+@media(max-width: 800px) {
+    .otherVideoTitle{
+        font-size: 4.375VW;
+    }
+}
+
+@media(max-width: 600px) {
+    .otherVideoTitle{
+        font-size: 26.3375px;
+    }
+}
+
+
+
