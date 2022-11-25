@@ -50,6 +50,7 @@ function CreateAccount() {
     const [openEmailInUseDialog, setOpenEmailInUseDialog] = useState(false);
     const [openUsernameIsEmptyDialog, setOpenUsernameIsEmptyDialog] = useState(false);
     const [openUsernameAlreadyExistsDialog, setOpenUsernameAlreadyExistsDialog] = useState(false);
+    const [openEmailIsInvalidDialog, setOpenEmailIsInvalidDialog] = useState(false);
     const navigate = useNavigate();
     let disable = !password.match(/\d/g) || !password.match(/\W/g) || !password.match(/[a-zA-Z]/g) || password.length < 6 || loading;
 
@@ -80,6 +81,26 @@ function CreateAccount() {
 
     const closeUsernameAlreadyExistsDialog = () => {
         setOpenUsernameAlreadyExistsDialog(false);
+    }
+
+    const closeEmailIsInvalidDialog = () => {
+        setOpenEmailIsInvalidDialog(false);
+    }
+
+    async function removeUsername() {
+        const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+        const devsDoc = await getDoc(devsDocRef); 
+        const allUsernames = devsDoc.data().allUsernames;
+        const updatedUsernames = allUsernames.filter((user) => {
+            const currentUser = user.username;
+            if(currentUser == username)
+                return false;
+            else
+                return true;
+        })
+        await setDoc(devsDocRef, {
+            allUsernames: updatedUsernames
+        });
     }
 
     const handleRegister = async () => {
@@ -120,23 +141,9 @@ function CreateAccount() {
             setOpenEmailVerificationDialog(true);            
         }
         catch(error){
-            console.log(error);
             setLoading(false);
             if(error.message == "Firebase: Error (auth/email-already-in-use)."){
-                //this block of code will delete the username that was registered before createUserWithEmailAndPassword() threw an error
-                const devsDocRef = doc(firestore, `developers collection/userInfo`); 
-                const devsDoc = await getDoc(devsDocRef); 
-                const allUsernames = devsDoc.data().allUsernames;
-                const updatedUsernames = allUsernames.filter((user) => {
-                    const currentUser = user.username;
-                    if(currentUser == username)
-                        return false;
-                    else
-                        return true;
-                })
-                await setDoc(devsDocRef, {
-                    allUsernames: updatedUsernames
-                });
+                removeUsername()
                 setOpenEmailInUseDialog(true); 
             }
                 
@@ -145,6 +152,11 @@ function CreateAccount() {
             
             else if(error.message == "username already exists")
                 setOpenUsernameAlreadyExistsDialog(true);
+
+            else{
+                removeUsername()
+                setOpenEmailIsInvalidDialog(true);
+            }
         }
     }
 
@@ -208,6 +220,16 @@ function CreateAccount() {
                             Username already exists
                         </DialogTitle>
                         <DialogButton variant="contained" onClick={closeUsernameAlreadyExistsDialog}>
+                            OK
+                        </DialogButton>
+                    </DialogContent>
+                </Dialog>
+                <Dialog open={openEmailIsInvalidDialog}>
+                    <DialogContent className={styles.dialogContent}>
+                        <DialogTitle className={styles.dialogTitle} style={{textAlign: "center"}}>
+                            Email is invalid
+                        </DialogTitle>
+                        <DialogButton variant="contained" onClick={closeEmailIsInvalidDialog}>
                             OK
                         </DialogButton>
                     </DialogContent>

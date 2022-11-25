@@ -8,6 +8,7 @@ import {doc, getDoc} from 'firebase/firestore';
 import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
 
+
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
     color: #464646;
@@ -52,6 +53,8 @@ function LogInPage () {
                 alert(error.message);
             else if(error.message == "password is empty")
                 alert(error.message);
+            else
+                alert("email is invalid");
         }
     }
 
