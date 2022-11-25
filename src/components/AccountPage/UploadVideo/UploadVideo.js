@@ -107,7 +107,8 @@ function UploadVideo({user}) {
             const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
             //uploading the video onto the storage and then getting the URL of that video
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
-            let {metadata} = await uploadFile(ref, video[0]);       
+            let {metadata} = await uploadFile(ref, video[0]); 
+            console.log(metadata);      
             let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
             const videoID = metadata.md5Hash.replace("/", "");
             //referencing two collections, the users personal collection and the developers collection

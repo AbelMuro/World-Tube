@@ -6,7 +6,6 @@ import styles from './styles.module.css';
 import {v4 as uuid} from "uuid";
 import {useNavigate, useLocation} from 'react-router-dom';
 import LoadingScreen from './LoadingScreen';
-import {CircularProgress} from '@mui/material';
 import UseCookies from './useCookies';
 
 
@@ -20,15 +19,19 @@ function HomePage() {
     const navigate = useNavigate();
 
     const playVideoOnHover = (e) => {
-        const videoContainer = e.target.parentElement;
-        videoContainer.style.zIndex = 1;
-        e.target.play();
+        const thumbnail = e.target.firstElementChild;
+        thumbnail.style.display = "none";
+        const video = e.target.lastElementChild;
+        video.style.display = "block"
+        video.play();
     }   
 
     const stopVideoOnLeave = (e) => {
-        const videoContainer = e.target.parentElement;
-        videoContainer.style.zIndex = 0;
-        e.target.pause();
+        const thumbnail = e.target.firstElementChild;
+        thumbnail.style.display = "block";
+        const video = e.target.lastElementChild;
+        video.style.display = "none"
+        video.pause();
     } 
 
     const videoLoaded = async (e) => {
@@ -51,14 +54,12 @@ function HomePage() {
                 {loading ? <LoadingScreen/> : allVideos.map((video) => {
                     return (
                         <div key={uuid()} data-id={video.videoID} data-user={video.userID}>     
-                            <div className={styles.videoContainer}>
-                                <img src={video.thumbnail} className={styles.thumbnail} data-video={JSON.stringify(video)} onClick={handleNavigate}/>
-                                <div className={styles.playVideo}>
-                                    <video className={styles.video}>
-                                        <source src={video.url} size={720}/>
-                                        Your browser doesn't support videos    
-                                    </video>    
-                                </div>                          
+                            <div className={styles.videoContainer} onMouseEnter={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onClick={handleNavigate} data-video={JSON.stringify(video)}>
+                                <img src={video.thumbnail} className={styles.thumbnail} />
+                                <video className={styles.video} muted>
+                                    <source src={video.url}/>
+                                    Your browser doesn't support videos    
+                                </video>    
                             </div>
    
                             <h2 className={styles.videoTitle}>

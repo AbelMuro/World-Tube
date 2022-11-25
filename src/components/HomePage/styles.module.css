@@ -19,14 +19,20 @@
 }
 
 .video{
+    display: none;
     object-fit: contain;
     height: 200px;
-    cursor: pointer;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    left: 0;
+    margin: auto;
 }
 
 .thumbnail{
     object-fit: contain;
     height: 200px;
+    pointer-events: none
 }
 
 .userImage{
@@ -61,6 +67,7 @@
     width: 355.55px;
     height: 200px;
     transition: all 0.2s linear;
+    cursor: pointer;
 }
 
 .videoContainer:hover{
@@ -70,12 +77,8 @@
 .thumbnail{
     object-fit: contain;
     height: 200px;
+    cursor: pointer;
 }
-
-.playVideo{
-    display: none;
-}
-
 
 @media (max-width: 1575px){
     .gridContainer{

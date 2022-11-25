@@ -41,7 +41,7 @@ function DisplayComments({videoOwnerID, videoID}){
     return(                
         <div className={styles.displayComments}>
             {
-            mobile ? loadingComments ? ""  : allComments.length > 1 ? <div className={styles.showComments} onClick={handleCommentSection}>{showComments ? "Show less..." : "Show more..."} </div> : "" :
+            mobile ? loadingComments ? ""  : allComments.length >= 1 ? <div className={styles.showComments} onClick={handleCommentSection}>{showComments ? "Show less..." : "Show more..."} </div> : "" :
                 ""
             }
             {loadingComments ? <div className={styles.loadingCircle}><CircularProgress /></div> : allComments.length > 0 ? allComments.map((comment) => {    

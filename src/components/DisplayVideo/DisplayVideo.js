@@ -9,7 +9,7 @@ import {useLocation} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-//import Plyr from 'plyr';
+import dashjs from 'dashjs';
 import Plyr from 'plyr-react'
 import './plyr.css';
 
@@ -28,6 +28,8 @@ function DisplayVideo() {
         navigate(`/${videoData.title}`, {state : videoData});
         window.location.reload(false);
     }
+
+    //TODO: find a way to dynamically find the highest quality option for every video displayed
     const plyrProps = {
         source: {type: "video", sources: [{src: videoData.url, size: 1080}, 
                                           {src: videoData.url, size: 720},
@@ -35,7 +37,7 @@ function DisplayVideo() {
                                           {src: videoData.url, size: 480},
                                           {src: videoData.url, size: 360},
                                           {src: videoData.url, size: 240}]}, 
-        options: { default: 576, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240], autoplay: true }, 
+        options: { default: 1080, options: [4320, 2880, 2160, 1440, 1080, 720, 576, 480, 360, 240], autoplay: true }, 
       }
 
 
