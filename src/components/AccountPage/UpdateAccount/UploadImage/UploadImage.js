@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState, memo, forwardRef} from 'react';
+import React, {useEffect, useState, memo, forwardRef} from 'react';
 import {Button, Stack, Box} from '@mui/material';
 import {styled} from '@mui/system';
 import styles from './styles.module.css';
@@ -23,12 +23,11 @@ const UploadImage = forwardRef((props, ref) => {
         setImage(e.target.files);
     }
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         if(image.length == 1){
             const imageUploaded = document.querySelector("." + styles.imageUploaded);
-            imageUploaded.innerHTML = image[0].name;
+            imageUploaded.setAttribute("src", image[0].name);
         }
-        
     }, [image])
 
     return(   
@@ -38,7 +37,7 @@ const UploadImage = forwardRef((props, ref) => {
                 <input type="file" hidden accept="image/*" onChange={handleImage} ref={ref}/>
             </ReverseStyledButton>
             <Box className={styles.imageUploaded}>
-
+                <img/>
             </Box>
         </Stack>                 
         )

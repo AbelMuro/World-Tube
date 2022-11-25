@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {Button, Dialog, DialogTitle, DialogContent, Stack} from '@mui/material';
 import {styled} from '@mui/system';
 import {auth, storage, firestore} from '../../Firebase-config';
@@ -13,25 +13,12 @@ import TextFields from './TextFields';
 import {CircularProgress} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
     color: #464646;
     font-family: "crimson text";
     width: 500px; 
-    display: block;
-    margin: auto;   
-    margin-top: 40px;
-
-    &:hover {
-        background-color: #464646;
-        color: #F4F3F3;
-    }     
-`
-const MobileButton = styled(Button)`
-    background-color: #F4F3F3;
-    color: #464646;
-    font-family: "crimson text";
-    width: 100%; 
     display: block;
     margin: auto;   
     margin-top: 40px;
@@ -65,7 +52,6 @@ const DialogButton = styled(Button)`
         background-color: #464646;
         color: #F4F3F3;
     }     
-
 `
 
 
@@ -208,6 +194,7 @@ function UpdateAccount({forceRender}) {
         }
     }
  
+
     return(
         <>
             <StyledButton variant="contained" onClick={handleOpen} sx={(mobile ? {width: "90%"} : {})}> Update Account</StyledButton> : 
