@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {v4 as uuid} from 'uuid';
 
-import {collection, query , where} from 'firebase/firestore';
+import {collection, query, orderBy} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore'
 import {firestore} from '../../Firebase-config';
 
@@ -15,14 +15,9 @@ import {useSelector} from 'react-redux';
 function DisplayVideos({userID}) {
     const isUploading = useSelector((state) => state.loadingState);
     const collectionRef = collection(firestore, userID);
-    const q = query(collectionRef, where("url", "!=", false ));
+    const q = query(collectionRef, orderBy("order", "desc"));
     const [videos, loading] = useCollectionData(q);
     const navigate = useNavigate();
-
-    const handleLoad = (e) => {
-        const loadingBlock = e.target.previousElementSibling;
-        loadingBlock.style.display = "none";
-    }
 
     const displayVideo = (e) => {
         let videoData = e.target.getAttribute("data-video");
@@ -36,6 +31,8 @@ function DisplayVideos({userID}) {
                 <CircularProgress/>
             </div> : <></> }
             {videos.length > 0 ? videos.map((video) => {
+                    if(!video.url) return;
+
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
                             <img src={video.thumbnail} className={styles.thumbnail} data-video={JSON.stringify(video)} onClick={displayVideo}/>

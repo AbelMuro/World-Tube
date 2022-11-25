@@ -28,6 +28,10 @@ function DisplayVideo() {
                                         return {src: videoData.url, size: resolution};
                                 })
 
+    const plyrProps = {
+        source: {type: "video", sources: availableResolutions}
+    }
+
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
@@ -35,11 +39,11 @@ function DisplayVideo() {
         window.location.reload(false);
     }
 
-    const plyrProps = {
-        source: {type: "video", sources: availableResolutions, 
-        options: {autoplay: true}, 
-      }
-    }
+    useEffect(() => {
+        const videoContainer = document.querySelector(".plyr__video-wrapper");
+        const video = videoContainer.firstElementChild;
+        video.setAttribute("poster", videoData.thumbnail);
+    })
 
     return(
         <section className={styles.flexContainer}>
