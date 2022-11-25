@@ -71,7 +71,7 @@ function UploadVideo({user}) {
     }
 
     const handleSubmit = async () => {
-        
+
         if(video.length == 0){
             alert("Please select a video");
             return;
@@ -107,8 +107,7 @@ function UploadVideo({user}) {
             const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
             //uploading the video onto the storage and then getting the URL of that video
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
-            let {metadata} = await uploadFile(ref, video[0]); 
-            console.log(metadata);      
+            let {metadata} = await uploadFile(ref, video[0]);      
             let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
             const videoID = metadata.md5Hash.replace("/", "");
             //referencing two collections, the users personal collection and the developers collection
@@ -126,7 +125,8 @@ function UploadVideo({user}) {
                 userID: user.uid,
                 videoID: videoID,
                 order: millisecondsSince1970,
-                thumbnail: imageURL
+                thumbnail: imageURL,
+                resolution: videoRef.videoHeight
             }
             //storing the object into the firestore
             await setDoc(usersDocument, videoData)

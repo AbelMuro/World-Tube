@@ -9,9 +9,9 @@ import {useLocation} from 'react-router-dom';
 import {v4 as uuid} from 'uuid';
 import {useNavigate} from 'react-router-dom';
 import {CircularProgress} from '@mui/material';
-import dashjs from 'dashjs';
 import Plyr from 'plyr-react'
 import './plyr.css';
+
 
 
 function DisplayVideo() {
@@ -21,6 +21,12 @@ function DisplayVideo() {
     const q = query(collectionRef, where("title", "!=", `${videoData.title}`));
     const [allUsersVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
+    const allResolutions = [240, 360, 480, 720, 1080];
+
+    const availableResolutions = allResolutions.map((resolution) => {
+                                    if(videoData.resolution >= resolution)
+                                        return {src: videoData.url, size: resolution};
+                                })
 
     const handleVideoLink = (e) => {
         let videoData = e.target.getAttribute("data-video");
@@ -29,20 +35,10 @@ function DisplayVideo() {
         window.location.reload(false);
     }
 
-    //TODO: find a way to dynamically find the highest quality option for every video displayed
     const plyrProps = {
-        source: {type: "video", sources: [{src: videoData.url, size: 1080}, 
-                                          {src: videoData.url, size: 720},
-                                          {src: videoData.url, size: 480},
-                                          {src: videoData.url, size: 360},
-                                          {src: videoData.url, size: 240}]}, 
+        source: {type: "video", sources: availableResolutions, 
         options: {autoplay: true}, 
       }
-
-
-    const handleLoad = (e) => {
-        const loadingBlock = e.target.previousElementSibling;
-        loadingBlock.style.display = "none";
     }
 
     return(

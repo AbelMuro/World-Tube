@@ -18,6 +18,7 @@ function HomePage() {
     const [allVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
 
+    
     const playVideoOnHover = (e) => {
         const thumbnail = e.target.firstElementChild;
         thumbnail.style.display = "none";
@@ -34,10 +35,6 @@ function HomePage() {
         video.pause();
     } 
 
-    const videoLoaded = async (e) => {
-        const loadingBox = e.target.previousElementSibling;
-        loadingBox.style.display = "none";
-    }
 
     const handleNavigate = (e) => {
         let videoData = e.target.getAttribute("data-video");
