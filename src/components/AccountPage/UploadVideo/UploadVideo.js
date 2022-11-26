@@ -86,17 +86,20 @@ function UploadVideo({user}) {
         }
 
         try{
-            setLoading(true);
-            dispatch({type: "loading start"});
+            //setLoading(true);
+            //dispatch({type: "loading start"});
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
             const dimensions = videoRef.getBoundingClientRect();        
             const canvas = document.createElement("canvas");
             canvas.setAttribute("width", dimensions.width);
-            canvas.setAttribute("height", 200);
+            canvas.setAttribute("height", 200 * 3);
             const context = canvas.getContext("2d");
             context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
-            const imageURL = canvas.toDataURL("image/png");   
+            const imageURL = canvas.toDataURL("image/png"); 
+            const img = document.querySelector("." + styles.img);
+            img.setAttribute("src", imageURL);
+            return;
             //creating a date object and formatting it
             const currentDate = new Date();
             const millisecondsSince1970 = currentDate.getTime();
@@ -147,6 +150,7 @@ function UploadVideo({user}) {
         }
     }
 
+    //TODO: find a way to improve the quality of the thumbnail by increasing the size of the videoo tag
     useEffect(() => {
         if(video.length == 0) return;
         
@@ -204,8 +208,9 @@ function UploadVideo({user}) {
                     <ReverseStyledButton variant="contained" component="label">
                         Upload Video
                         <input type="file" hidden accept="video/*" onChange={handleVideo} />
-                    </ReverseStyledButton>                      
+                    </ReverseStyledButton>                   
                     <div className={styles.videoContainer}></div> 
+                    <img className={styles.img}/>
                     <ReverseStyledButton variant="contained" onClick={handleSubmit} >
                         Submit
                     </ReverseStyledButton>
