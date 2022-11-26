@@ -88,6 +88,9 @@ function UploadVideo({user}) {
         try{
             setLoading(true);
             dispatch({type: "loading start"});
+
+            //TODO: learn about the offscreen canvas
+            
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
             const dimensions = videoRef.getBoundingClientRect();        
@@ -97,6 +100,10 @@ function UploadVideo({user}) {
             const context = canvas.getContext("2d");
             context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
             const imageURL = canvas.toDataURL("image/png"); 
+
+
+
+
             //creating a date object and formatting it
             const currentDate = new Date();
             const millisecondsSince1970 = currentDate.getTime();

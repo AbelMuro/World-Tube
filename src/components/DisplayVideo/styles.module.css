@@ -143,6 +143,11 @@
     pointer-events: none;
 }
 
+.other{
+    object-fit: contain;
+    width: 200px;
+}
+
 
 @media(max-width: 1100px) {
     .videoContainer{
