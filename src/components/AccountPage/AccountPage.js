@@ -65,7 +65,7 @@ function AccountPage() {
                     <h2 className={styles.title}>
                         Email: 
                     </h2>
-                    <p className={styles.desc} id={styles.email}>
+                    <p className={styles.desc}>
                         {user.email}
                     </p>
                     <h2 className={styles.title}>

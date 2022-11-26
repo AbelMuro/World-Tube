@@ -83,7 +83,7 @@
 
 @media(max-width: 405px) {
     .thumbnail{
-        width: 320px;
+        height: 170px;
     }
     .videoContainer{
         width: 320px;

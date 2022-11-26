@@ -2,7 +2,7 @@
     display: flex;
     width: 100%;
     gap: 20px;
-    height: 100%;
+    min-height: 100%;
 }
 
 .basicInfoContainer {
@@ -119,12 +119,6 @@
     }
 }
 
-@media(max-width: 755px){
-    .videosUploaded{
-        
-    }
-}
-
 @media(max-width: 525px){
     .basicInfo{
         width: 100%;
@@ -139,6 +133,7 @@
         width: 90%;
         grid-template-columns: auto;
     }
+    
 }
 
 @media(max-width: 500px) {
@@ -161,5 +156,11 @@
     }
     .usersAvatar{
         align-self: center;
+    }
+}
+
+@media(max-width: 405px){
+    .desc{
+        width: 340px;
     }
 }

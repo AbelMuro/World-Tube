@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './styles.module.css';
 import {useNavigate} from 'react-router-dom';
 import {auth} from '../Firebase-config';
@@ -60,7 +60,7 @@ function NavigationBar() {
     const handleNav = () => {
         const navBar = document.querySelector("." + styles.navBarTwo);
         const currentHeight = navBar.style.height;
-        navBar.style.height = currentHeight == "287px" ? "40px" : "287px"  
+        navBar.style.height = currentHeight == "287px" ? "40px" : "287px";  
     }
 
 
@@ -68,6 +68,15 @@ function NavigationBar() {
         await signOut(auth);
         navigate("/login");
     }
+
+    useEffect(() => {
+        if(!mobile){
+            const navBar = document.querySelector("." + styles.navBarTwo);
+            if(navBar.style.height == "287px")
+                navBar.style.height =  "40px"; 
+        }
+
+    },[mobile])
 
     return (
         <nav className={styles.navigationBar}>
