@@ -32,7 +32,6 @@ function DisplayVideos({userID}) {
             </div> : <></> }
             {videos.length > 0 ? videos.map((video) => {
                     if(!video.url) return;
-
                     return(
                         <div key={uuid()} className={styles.videoContainer} >
                             <img src={video.thumbnail} className={styles.thumbnail} data-video={JSON.stringify(video)} onClick={displayVideo}/>

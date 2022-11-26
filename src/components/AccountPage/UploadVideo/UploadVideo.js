@@ -88,7 +88,7 @@ function UploadVideo({user}) {
         try{
             setLoading(true);
             dispatch({type: "loading start"});
-            
+
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
             const dimensions = videoRef.getBoundingClientRect();        
@@ -209,7 +209,6 @@ function UploadVideo({user}) {
                         <input type="file" hidden accept="video/*" onChange={handleVideo} />
                     </ReverseStyledButton>                   
                     <div className={styles.videoContainer}></div> 
-                    <img className={styles.img}/>
                     <ReverseStyledButton variant="contained" onClick={handleSubmit} >
                         Submit
                     </ReverseStyledButton>

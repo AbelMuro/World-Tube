@@ -23,11 +23,6 @@
     margin: auto;
 }
 
-.offScreenVideo{
-    object-fit: contain;
-    height: 500px;
-}
-
 .image{
     height: 200px;
     object-fit: contain;
@@ -38,11 +33,6 @@
     width: 355.55;
     height: 200;
     overflow: hidden;
-}
-
-.img{
-    object-fit: contain;
-    height: 200px;
 }
 
 @media(max-width: 645px){

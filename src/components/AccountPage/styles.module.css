@@ -119,6 +119,12 @@
     }
 }
 
+@media(max-width: 755px){
+    .videosUploaded{
+        
+    }
+}
+
 @media(max-width: 525px){
     .basicInfo{
         width: 100%;
@@ -155,11 +161,5 @@
     }
     .usersAvatar{
         align-self: center;
-    }
-}
-
-@media (max-width: 420px){
-    #email{
-        
     }
 }
