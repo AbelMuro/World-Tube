@@ -4,7 +4,7 @@ import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, updateProfile} from 'firebase/auth';
-import {doc, getDoc} from 'firebase/firestore';
+import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,6 +63,21 @@ function LogInPage () {
             const provider = new GoogleAuthProvider();
             const credentials = await signInWithPopup(auth, provider);  
             const userID = credentials.user.uid;
+            const username = credentials.user.displayName;
+
+            //checking if the Google username already exists in the database
+            const devsDocRef = doc(firestore, `developers collection/userInfo`); 
+            const devsDoc = await getDoc(devsDocRef); 
+            if(devsDoc.exists()){
+                const allUsernames = devsDoc.data().allUsernames;
+                allUsernames.forEach((usernameDoc) => {
+                    const currentUsername = usernameDoc.username;  
+                    if(currentUsername == username)
+                        throw {message: "username already exists"}  
+                })      
+            }   
+
+            //checking if the user has already registered their google email with the app before
             const userDocRef = doc(firestore, `${userID}/userInfo`);
             const userDoc = await getDoc(userDocRef);
             if(userDoc.exists()){
@@ -72,6 +87,11 @@ function LogInPage () {
             navigate("/account-page");   
         }
         catch(error){
+            if(error.message == "username already exists"){
+                alert("Your Google username is already being used by someone else, please change it if you want to log in with Google");
+                signOut();
+            }
+
             console.log(error);
         }
     }

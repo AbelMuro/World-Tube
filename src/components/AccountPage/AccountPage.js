@@ -7,8 +7,28 @@ import {CircularProgress} from '@mui/material';
 import DisplayVideos from './DisplayVideos';
 import UploadVideo from './UploadVideo';
 import UpdateAccount from './UpdateAccount';
+import {Button, useMediaQuery} from '@mui/material';
+import {styled} from '@mui/system';
+
+const StyledButton = styled(Button)`
+    background-color: #F4F3F3;
+    color: #464646;
+    font-family: "crimson text";
+    width: 500px; 
+    display: block;
+    margin: auto;   
+    margin-top: 40px;
+    text-align: center;
+
+    &:hover {
+        background-color: #464646;
+        color: #F4F3F3;
+    }     
+
+`
 
 function AccountPage() {
+    const mobile = useMediaQuery("(max-width: 525px)");
     const [user] = useAuthState(auth);
     const [,forceRender] = useState(0.00000000001);                     //forceRender will be used by one of the child components to render the parent component  
 
@@ -45,7 +65,7 @@ function AccountPage() {
                     <h2 className={styles.title}>
                         Email: 
                     </h2>
-                    <p className={styles.desc}>
+                    <p className={styles.desc} id={styles.email}>
                         {user.email}
                     </p>
                     <h2 className={styles.title}>
@@ -61,7 +81,7 @@ function AccountPage() {
                         User hasn't written anything
                     </p>
                 </div>
-                <UpdateAccount forceRender={forceRender}/>                    
+                {user.providerData[0].providerId == "google.com"  ? <StyledButton sx={(mobile ? {width: "90%"} : {})} href="https://myaccount.google.com/" target="_blank"> Update Google Account </StyledButton> : <UpdateAccount forceRender={forceRender} />}                    
             </div>
 
             <div className={styles.videosUploaded}>     

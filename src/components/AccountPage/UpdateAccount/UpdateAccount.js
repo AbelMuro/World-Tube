@@ -197,7 +197,9 @@ function UpdateAccount({forceRender}) {
 
     return(
         <>
-            <StyledButton variant="contained" onClick={handleOpen} sx={(mobile ? {width: "90%"} : {})}> Update Account</StyledButton> : 
+            <StyledButton variant="contained" onClick={handleOpen} sx={(mobile ? {width: "90%"} : {})}> 
+                Update Account
+            </StyledButton> : 
             <Dialog open={open}>
                 {loading ? <div className={styles.loading}><CircularProgress/></div> :
                 <DialogContent className={styles.dialog}>
