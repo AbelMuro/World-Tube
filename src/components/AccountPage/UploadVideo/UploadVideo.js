@@ -173,9 +173,9 @@ function UploadVideo({user}) {
                 <Stack spacing={2} sx={{width: "300px"}}>
                     <p className={styles.loadingTitle}>
                         Video is being uploaded, which may take some time.
-                        you can close this popup window and check the progress of the 
-                        video being uploading in your account page. But do NOT 
-                        close the application or the browser tab.
+                        You can close this popup window and check the progress of the 
+                        video in your account page. But do NOT close the application 
+                        or the browser tab.
                     </p>
                     <StyledButton variant="contained" onClick={handleClose}>
                         Close
