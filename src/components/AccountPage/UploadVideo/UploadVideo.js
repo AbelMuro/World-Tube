@@ -86,37 +86,18 @@ function UploadVideo({user}) {
         }
 
         try{
-            //setLoading(true);
-            //dispatch({type: "loading start"});
-
-            //TODO: learn about the offscreen canvas
-
-            const videoElement = document.createElement("video");
-            videoElement.setAttribute("class", styles.offScreenVideo);
-            const sourceElement = document.createElement("source");
-            sourceElement.setAttribute("src", URL.createObjectURL(video[0]) + "#t=5");            
-            const dimensions = videoElement.getBoundingClientRect()
-            const canvas = new OffscreenCanvas(dimensions.width, dimensions.height);             
-            const context = canvas.getContext("2d"); 
-            context.drawImage(videoElement, 0, 0, dimensions.width, dimensions.height);
-            const imageURL = canvas.convertToBlob();
-            console.log(imageURL);
-            //const img = document.querySelector("." + styles.img);
-            //img.setAttribute("src", imageURL);
-
-
+            setLoading(true);
+            dispatch({type: "loading start"});
+            
             //using a canvas to create a thumbnail from the video being uploaded
-            //const videoRef = document.querySelector("." + styles.video);
-            //const dimensions = videoRef.getBoundingClientRect();        
-            //const canvas = document.createElement("canvas");
-            //canvas.setAttribute("width", dimensions.width);
-            //canvas.setAttribute("height", dimensions.height);
-            //const context = canvas.getContext("2d");
-            //context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
-            //const imageURL = canvas.toDataURL("image/png"); 
-
-
-            return;
+            const videoRef = document.querySelector("." + styles.video);
+            const dimensions = videoRef.getBoundingClientRect();        
+            const canvas = document.createElement("canvas");
+            canvas.setAttribute("width", dimensions.width);
+            canvas.setAttribute("height", dimensions.height);
+            const context = canvas.getContext("2d");
+            context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
+            const imageURL = canvas.toDataURL("image/png"); 
 
             //creating a date object and formatting it
             const currentDate = new Date();

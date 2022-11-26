@@ -30,7 +30,6 @@ function DisplayVideo() {
 
     const plyrProps = {
         source: {type: "video", sources: availableResolutions},
-        options: {previewThumbnails: {enabled: true, src: videoData.thumbnail}}
     }
 
     const handleVideoLink = (e) => {
@@ -43,9 +42,7 @@ function DisplayVideo() {
     useEffect(() => {
         const videoContainer = document.querySelector(".plyr__video-wrapper");
         const video = videoContainer.firstElementChild;
-        //TODO: find a way to set imageURL into poster, because its not working atm
-        video.setAttribute("poster", videoData.thumbnail);
-
+        video.autoplay = true;
     })
 
     return(
