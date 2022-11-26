@@ -86,20 +86,17 @@ function UploadVideo({user}) {
         }
 
         try{
-            //setLoading(true);
-            //dispatch({type: "loading start"});
+            setLoading(true);
+            dispatch({type: "loading start"});
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
             const dimensions = videoRef.getBoundingClientRect();        
             const canvas = document.createElement("canvas");
             canvas.setAttribute("width", dimensions.width);
-            canvas.setAttribute("height", 200 * 3);
+            canvas.setAttribute("height", dimensions.height);
             const context = canvas.getContext("2d");
             context.drawImage(videoRef, 0, 0, dimensions.width, dimensions.height);
             const imageURL = canvas.toDataURL("image/png"); 
-            const img = document.querySelector("." + styles.img);
-            img.setAttribute("src", imageURL);
-            return;
             //creating a date object and formatting it
             const currentDate = new Date();
             const millisecondsSince1970 = currentDate.getTime();

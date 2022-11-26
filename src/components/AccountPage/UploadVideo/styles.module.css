@@ -18,7 +18,7 @@
 
 .video{
     object-fit: contain;
-    height: 400px;
+    height: 200px;
     display: block;
     margin: auto;
 }
@@ -30,12 +30,19 @@
 
 .videoContainer{
     background-color: black;
-    width: auto;
-    height: auto;
+    width: 355.55;
+    height: 200;
     overflow: hidden;
 }
 
 .img{
     object-fit: contain;
     height: 577px;
+}
+
+@media(max-width: 645px){
+    .video{
+        height: auto;
+        width: 100%;
+    }
 }

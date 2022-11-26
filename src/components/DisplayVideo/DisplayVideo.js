@@ -29,7 +29,8 @@ function DisplayVideo() {
                                 })
 
     const plyrProps = {
-        source: {type: "video", sources: availableResolutions}
+        source: {type: "video", sources: availableResolutions},
+        options: {previewThumbnails: {enabled: true, src: videoData.thumbnail}}
     }
 
     const handleVideoLink = (e) => {
@@ -42,7 +43,17 @@ function DisplayVideo() {
     useEffect(() => {
         const videoContainer = document.querySelector(".plyr__video-wrapper");
         const video = videoContainer.firstElementChild;
-        video.setAttribute("poster", videoData.thumbnail);
+
+        const dimensions = video.getBoundingClientRect();        
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("width", dimensions.width);
+        canvas.setAttribute("height", dimensions.height);
+        const context = canvas.getContext("2d");
+        context.drawImage(video, 0, 0, dimensions.width, dimensions.height);
+        const imageURL = canvas.toDataURL("image/png"); 
+
+        //TODO: find a way to set imageURL into poster, because its not working atm
+        video.setAttribute("poster", imageURL);
     })
 
     return(
