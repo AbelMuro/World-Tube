@@ -10,16 +10,16 @@ const PlyrVideo = forwardRef((props, ref) => {
 
     useEffect(() => {
         if(isHeightBiggerThanWidth) {
-            document.querySelector("#plyrVideo").setAttribute("class", styles.plyrVideo);
-            document.querySelector("#background").setAttribute("class", styles.background);
+            const background = document.querySelector("#background");
+            background.setAttribute("class", styles.plyrVideo);
+            const video = document.querySelector(".plyr__video-wrapper").firstElementChild;
+            video.setAttribute("id", styles.plyrVideo);
         }
     })
-    
+
     return(
         <div id="background">
-            <div id="plyrVideo">
-                <video ref={raptorRef} className="plyr-react plyr"/>                
-            </div>
+                <video ref={raptorRef} className="plyr-react plyr"/>                              
         </div>
     )  
 
