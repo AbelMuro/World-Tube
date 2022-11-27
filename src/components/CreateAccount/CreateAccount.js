@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './styles.module.css';
 import {auth, firestore} from '../Firebase-config';
 import {updateProfile, createUserWithEmailAndPassword, signOut, sendEmailVerification} from 'firebase/auth';
-import {TextField, Stack, Button, CircularProgress, Dialog, DialogTitle, DialogContent} from '@mui/material';
+import {TextField, Stack, Button, CircularProgress, Dialog, DialogTitle, DialogContent, useMediaQuery} from '@mui/material';
 import {styled} from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import emptyAvatar from './images/empty avatar.png';
@@ -42,6 +42,7 @@ const DialogButton = styled(Button)`
 `
 
 function CreateAccount() {
+    const mobile = useMediaQuery("(max-width: 515px)");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -185,7 +186,7 @@ function CreateAccount() {
                     </Stack> 
                 </Stack>
                 <Dialog open={openEmailVerificationDialog}>
-                    <DialogContent className={styles.dialogContent}>
+                    <DialogContent className={styles.dialogContent} sx={( mobile ? {} : {width: "400px"})}>
                         <DialogTitle className={styles.dialogTitle}>
                             Please verify your email. An email link was sent to the email address you provided
                         </DialogTitle>

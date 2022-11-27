@@ -73,55 +73,9 @@
 }
 
 .video{
-    object-fit: contain;
-    width: 700px;
+    height: 500px;
 }
 
-.otherVideos{
-    object-fit: contain;
-    width: 300px;
-    pointer-events: none;
-}
-
-.noOtherVideos{
-    font-family: "crimson text";
-    text-align: center;
-}
-
-.otherVideoContainer{
-    width: 365px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid grey;
-    border-radius: 20px;
-    padding: 20px;
-}
-
-.otherVideoTitle{
-    font-family: "crimson text";
-    font-size: 22px;
-}
-
-
-/* TODO: work on the responsiveness of the bottom videoLink*/
-.videoLink{
-    background-color: black;
-    cursor: pointer;
-    position: relative;
-    width: 355.55px;
-    height: 200px; 
-    display: flex;
-    justify-content: center;
-}
-
-.loading{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 200px;
-}
 
 .loadingVideo{
     background-color: rgb(238, 238, 238);
@@ -139,15 +93,10 @@
     width: 700px;
 }
 
-.thumbnail{
-    pointer-events: none;
-}
-
 .other{
     object-fit: contain;
     width: 200px;
 }
-
 
 @media(max-width: 1100px) {
     .videoContainer{
@@ -162,59 +111,15 @@
         width: 100%;
     }
 
-    .videoLink{
-        height: 600px;
-        width: 100%;
-    }
-    .thumbnail {
-        object-fit: contain;
-        width: 100%;
-    }
-
     /* TODO: find a way to dynamically hard code the height for the loading container */
     .loadingVideo{
         width: 100%;
     }
-    .otherVideos{
-        width: 100%;
-    }
 
-    .otherVideosTitle{
-        font-size: 30px;
-        text-align: center;
-    }
-
-    .otherVideoTitle{
-        font-size: 35px;
-    }
 
     .userInfo, .title, .timeStamp{
         width: 90%;
         margin: auto;
-    }
-
-    .otherVideoContainer{
-        width: 90%;
-        padding: 20px;
-        margin: auto;
-    }
-}
-
-@media(max-width: 820px) {
-    .videoLink {
-        height: auto;
-    }
-}
-
-@media(max-width: 800px) {
-    .otherVideoTitle{
-        font-size: 4.375VW;
-    }
-}
-
-@media(max-width: 600px) {
-    .otherVideoTitle{
-        font-size: 26.3375px;
     }
 }
 

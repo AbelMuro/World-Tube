@@ -48,6 +48,7 @@ function HomePage() {
     const handleNavigate = (e) => {
         let videoData = e.target.getAttribute("data-video");
         videoData = JSON.parse(videoData);
+        
         navigate(`/${videoData.title}`, {state: videoData});
     }
 

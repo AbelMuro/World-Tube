@@ -86,12 +86,13 @@ function UploadVideo({user}) {
         }
 
         try{
-            setLoading(true);
-            dispatch({type: "loading start"});
+            //setLoading(true);
+            //dispatch({type: "loading start"});
 
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
-            const dimensions = videoRef.getBoundingClientRect();        
+            const dimensions = videoRef.getBoundingClientRect(); 
+            const isHeightBiggerThanWidth = dimensions.height > dimensions.width;
             const canvas = document.createElement("canvas");
             canvas.setAttribute("width", dimensions.width);
             canvas.setAttribute("height", dimensions.height);
@@ -128,7 +129,8 @@ function UploadVideo({user}) {
                 videoID: videoID,
                 order: millisecondsSince1970,
                 thumbnail: imageURL,
-                resolution: videoRef.videoHeight
+                resolution: videoRef.videoHeight,
+                isHeightBiggerThanWidth : isHeightBiggerThanWidth
             }
             //storing the object into the firestore
             await setDoc(usersDocument, videoData)
