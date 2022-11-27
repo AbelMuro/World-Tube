@@ -7,7 +7,7 @@ import OtherVideosByUser from './OtherVideosByUser';
 import PlyrVideo from './PlyrVideo';
 
 
-//DELETE THE VIDEO (set me free ) FROM FIRESTORAGE and firestore
+//TODO: DELETE THE VIDEO (set me free ) FROM FIRESTORAGE and firestore
 
 function DisplayVideo() {
     const {state} = useLocation();
