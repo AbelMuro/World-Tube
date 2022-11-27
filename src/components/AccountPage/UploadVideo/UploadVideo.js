@@ -67,6 +67,7 @@ function UploadVideo({user}) {
     }
 
     const handleTitle = (e) => {
+        if(e.target.value.length < 35)
         setTitle(e.target.value);
     }
 
