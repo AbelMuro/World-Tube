@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {firestore} from '../Firebase-config';
 import {collection, query, where, orderBy} from 'firebase/firestore';
 import {useCollectionData} from 'react-firebase-hooks/firestore';
@@ -17,20 +17,29 @@ function HomePage() {
               : query(allVideosRef, orderBy("order", "desc"));
     const [allVideos, loading] = useCollectionData(q);
     const navigate = useNavigate();
+    const videoPlayback = useRef();
 
     
     const playVideoOnHover = (e) => {
-        const thumbnail = e.target.firstElementChild;
-        thumbnail.style.display = "none";
-        const video = e.target.lastElementChild;
-        video.style.display = "block"
-        video.play();
+        e.target.style.zIndex = 1;
+        e.target.lastElementChild.style.display = "block";
+        videoPlayback.current = setTimeout(() => {
+            e.target.lastElementChild.style.display = "none";
+            const thumbnail = e.target.firstElementChild;
+            thumbnail.style.display = "none";
+            const video = e.target.querySelector("." + styles.video);
+            video.style.display = "block"
+            video.play()
+        }, 2000)
     }   
 
     const stopVideoOnLeave = (e) => {
+        clearTimeout(videoPlayback.current);
+        e.target.style.zIndex = 0;
+        e.target.lastElementChild.style.display = "none";
         const thumbnail = e.target.firstElementChild;
         thumbnail.style.display = "block";
-        const video = e.target.lastElementChild;
+        const video = e.target.querySelector("." + styles.video);
         video.style.display = "none"
         video.pause();
     } 
@@ -53,10 +62,13 @@ function HomePage() {
                         <div key={uuid()} data-id={video.videoID} data-user={video.userID}>     
                             <div className={styles.videoContainer} onMouseEnter={playVideoOnHover} onMouseLeave={stopVideoOnLeave} onClick={handleNavigate} data-video={JSON.stringify(video)}>
                                 <img src={video.thumbnail} className={styles.thumbnail} />
-                                <video className={styles.video} muted>
+                                <video className={styles.video} muted controls>
                                     <source src={video.url}/>
                                     Your browser doesn't support videos    
-                                </video>    
+                                </video>   
+                                <p className={styles.keepHovering}>
+                                    Keep hovering to play..
+                                </p> 
                             </div>
    
                             <h2 className={styles.videoTitle}>

@@ -63,19 +63,6 @@ function LogInPage () {
             const provider = new GoogleAuthProvider();
             const credentials = await signInWithPopup(auth, provider);  
             const userID = credentials.user.uid;
-            const username = credentials.user.displayName;
-
-            //checking if the Google username already exists in the database
-            const devsDocRef = doc(firestore, `developers collection/userInfo`); 
-            const devsDoc = await getDoc(devsDocRef); 
-            if(devsDoc.exists()){
-                const allUsernames = devsDoc.data().allUsernames;
-                allUsernames.forEach((usernameDoc) => {
-                    const currentUsername = usernameDoc.username;  
-                    if(currentUsername == username)
-                        throw {message: "username already exists"}  
-                })      
-            }   
 
             //checking if the user has already registered their google email with the app before
             const userDocRef = doc(firestore, `${userID}/userInfo`);

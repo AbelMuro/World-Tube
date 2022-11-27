@@ -80,6 +80,22 @@
     cursor: pointer;
 }
 
+.keepHovering{
+    width: 60%;
+    display: none;
+    background-color: rgb(53, 53, 53);
+    font-family: "crimson text";
+    padding: 10px;
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    color: white;
+    text-align: center;
+    pointer-events: none;
+}
+
 @media (max-width: 1575px){
     .gridContainer{
         grid-template-columns: repeat(3, 355px);

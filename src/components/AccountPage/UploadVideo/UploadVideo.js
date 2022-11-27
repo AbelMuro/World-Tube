@@ -175,7 +175,7 @@ function UploadVideo({user}) {
             <DialogContent sx={{padding: "50px"}}>
                 <Stack spacing={2} sx={{width: "300px"}}>
                     <p className={styles.loadingTitle}>
-                        Video is being uploaded, which may take some time.
+                        Video is uploading, which may take some time.
                         You can close this popup window and check the progress of the 
                         video in your account page. But do NOT close the application 
                         or the browser tab.
