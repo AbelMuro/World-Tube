@@ -19,7 +19,7 @@ const PlyrVideo = forwardRef((props, ref) => {
 
     return(
         <div id="background">
-                <video ref={raptorRef} className="plyr-react plyr"/>                              
+            <video ref={raptorRef} className="plyr-react plyr"/>                              
         </div>
     )  
 
