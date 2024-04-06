@@ -6,9 +6,6 @@ import {useLocation} from 'react-router-dom';
 import OtherVideosByUser from './OtherVideosByUser';
 import PlyrVideo from './PlyrVideo';
 
-
-//TODO: DELETE THE VIDEO (set me free ) FROM FIRESTORAGE and firestore
-
 function DisplayVideo() {
     const {state} = useLocation();
     const videoData = state;
