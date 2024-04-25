@@ -7,6 +7,7 @@ import {v4 as uuid} from "uuid";
 import {useNavigate, useLocation} from 'react-router-dom';
 import LoadingScreen from './LoadingScreen';
 import UseCookies from './useCookies';
+import DisplayVideo from './DisplayVideo'
 
 //i will need to break down the component into smaller components
 function HomePage() {
