@@ -8,7 +8,7 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import LoadingScreen from './LoadingScreen';
 import UseCookies from './useCookies';
 
-
+//i will need to break down the component into smaller components
 function HomePage() {
     const {state} = useLocation();
     const allVideosRef = collection(firestore, "developers collection/allVideos/videoCollection");      
