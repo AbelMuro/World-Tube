@@ -26,7 +26,7 @@ const StyledButton = styled(Button)`
     }     
 
 `
-
+//i need to import the empty avatar here and refactor the account page
 function AccountPage() {
     const mobile = useMediaQuery("(max-width: 525px)");
     const [user] = useAuthState(auth);

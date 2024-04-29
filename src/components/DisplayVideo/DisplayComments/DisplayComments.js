@@ -8,6 +8,7 @@ import {v4 as uuid} from 'uuid';
 import DisplayReplies from './DisplayReplies';
 import ReplyOrEdit from './ReplyOrEdit';
 import {useMediaQuery} from '@mui/material';
+import UserInfo from './UserInfo';
 
 function DisplayComments({videoOwnerID, videoID}){
     const [showComments, setShowComments] = useState(false) 
@@ -48,10 +49,7 @@ function DisplayComments({videoOwnerID, videoID}){
                     return (
                         <div id={comment.commentID} className={styles.commentContainer} key={uuid()}>  
                             <div className={styles.nestedFlex}>
-                                <p className={styles.username}> 
-                                    <img src={comment.userImage} className={styles.userImage}/>
-                                    {comment.username}
-                                </p>
+                                <UserInfo userID={comment.userID}/>
                                 <p className={[styles.comment, "commentToSelect"].join(" ")}>
                                     {comment.comment}
                                 </p>

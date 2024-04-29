@@ -29,18 +29,6 @@
     font-family: "crimson text";
 }
 
-.userInfo{
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.userImage{
-    object-fit: contain;
-    width: 50px;
-    border-radius: 100%;
-}
-
 .otherVideosByUser{
     display: flex;
     flex-direction: column;

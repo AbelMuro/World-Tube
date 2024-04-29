@@ -1,0 +1,15 @@
+.userImage{
+    object-fit: contain;
+    width: 50px;
+    border-radius: 100%;
+    display: block;
+    margin: auto;
+}
+
+.username{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: "crimson text";
+    text-align: center;
+}

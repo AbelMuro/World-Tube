@@ -11,19 +11,6 @@
     position: relative;
 }
 
-.userInfo{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.userImage{
-    object-fit: contain;
-    width: 40px;
-    border-radius: 100%;
-}
-
 .timeStamp{
     position: absolute;
     top: 10px;

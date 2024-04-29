@@ -1,0 +1,11 @@
+.videoDesc{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.userImage{
+    object-fit: contain;
+    width: 50px;
+    border-radius: 100%;
+}

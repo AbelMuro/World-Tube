@@ -52,7 +52,9 @@ function CommentBox({videoOwnerID, videoID}) {
             userImage: user.photoURL,
             username: user.displayName, 
             order: millisecondsSince1970,
-            timeStamp: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`  
+            timeStamp: `${readableDate} ${currentHour}:${currentMinutes} ${AmOrPm}`,
+            videoOwnerID: videoOwnerID,
+            videoID: videoID,  
         })
         await setDoc(commentRef, {
             videoOwnerID: videoOwnerID,

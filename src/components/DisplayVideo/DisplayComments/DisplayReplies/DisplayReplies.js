@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 import {v4 as uuid} from 'uuid'
 import {CircularProgress} from '@mui/material';
 import DialogPopup from './DialogPopup';
-
+import UserInfo from './UserInfo';
 
 function DisplayReplies({userID, videoID, commentID}){
     const commentReplyCollection = collection(firestore, `${userID}/${videoID}/commentSection/${commentID}/commentReplies`);
@@ -18,21 +18,14 @@ function DisplayReplies({userID, videoID, commentID}){
             allReplies.length == 0 ? <></> :
         <div className={styles.commentReplies}> 
             {allReplies.map((replyComment) => {
-                const image = replyComment.userImage;
                 const comment = replyComment.comment;
-                const username = replyComment.username;
                 const timeStamp = replyComment.timeStamp
                 const commentReplyID = replyComment.commentID;
                 const commentOwnerID = replyComment.userID;               //usersReplyID is used to compare with the users ID
 
                 return (
                     <div className={styles.reply} key={uuid()}>
-                        <div className={styles.userInfo}>
-                            <img src={image} className={styles.userImage}/>                        
-                            <p className={styles.username}>
-                                {username}
-                            </p>
-                        </div>
+                        <UserInfo userID={commentOwnerID }/>
                         <p className={styles.timeStamp}>
                             {timeStamp}
                         </p>

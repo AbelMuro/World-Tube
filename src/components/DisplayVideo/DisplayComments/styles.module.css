@@ -38,14 +38,6 @@
     height: auto;
 }
 
-.userImage{
-    object-fit: contain;
-    width: 50px;
-    border-radius: 100%;
-    display: block;
-    margin: auto;
-}
-
 .comment{
     font-family: "crimson text";
     font-size: 19px;
@@ -59,14 +51,6 @@
     top: 10px;
     right: 10px;
     font-family: "crimson text";
-}
-
-.username{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    font-family: "crimson text";
-    text-align: center;
 }
 
 .noComments{

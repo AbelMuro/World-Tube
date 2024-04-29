@@ -5,6 +5,7 @@ import DisplayComments from './DisplayComments';
 import {useLocation} from 'react-router-dom';
 import OtherVideosByUser from './OtherVideosByUser';
 import PlyrVideo from './PlyrVideo';
+import UserInfo from './UserInfo';
 
 function DisplayVideo() {
     const {state} = useLocation();
@@ -14,7 +15,6 @@ function DisplayVideo() {
                                     if(videoData.resolution >= resolution)
                                         return {src: videoData.url, size: resolution};
                                 })
-
     const plyrProps = {
         source: {type: "video", sources: availableResolutions},
         options: {autoplay: true}
@@ -23,18 +23,11 @@ function DisplayVideo() {
     return(
         <section className={styles.flexContainer}>
             <div className={styles.videoContainer}>
-
                 <PlyrVideo {...plyrProps} isHeightBiggerThanWidth={videoData.isHeightBiggerThanWidth}/>                    
-
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
-                <div className={styles.userInfo}>
-                    <img className={styles.userImage} src={videoData.userImage}/>
-                    <p className={styles.username}>
-                        {videoData.username} 
-                    </p>
-                </div>
+                <UserInfo video={videoData}/>
                 <div className={styles.timeStamp}>
                     <p className={styles.timeStampTitle}>
                         Posted on: 

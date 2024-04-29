@@ -18,84 +18,6 @@
     margin-top: 20px; 
 }
 
-.video{
-    display: none;
-    object-fit: contain;
-    height: 200px;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    left: 0;
-    margin: auto;
-}
-
-.thumbnail{
-    object-fit: contain;
-    height: 200px;
-    pointer-events: none
-}
-
-.userImage{
-    object-fit: contain;
-    width: 50px;
-    border-radius: 100%;
-}
-
-.videoTitle, .videoTimeStamp, #username{
-    font-family: "crimson text";
-}
-
-.videoTimeStamp {
-    display: flex;
-    gap: 10px;
-}
-
-.videoDesc{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 10px 0px;
-}
-
-.videoContainer{
-    background-color: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    z-index: 0;
-    width: 355.55px;
-    height: 200px;
-    transition: transform 0.2s linear;
-    cursor: pointer;
-}
-
-.videoContainer:hover{
-    transform: scale(1.2, 1.2);
-}
-
-.thumbnail{
-    object-fit: contain;
-    height: 200px;
-    cursor: pointer;
-}
-
-.keepHovering{
-    width: 60%;
-    display: none;
-    background-color: rgb(53, 53, 53);
-    font-family: "crimson text";
-    padding: 10px;
-    position: absolute;
-    bottom: 5px;
-    left: 0;
-    right: 0;
-    margin: auto;
-    color: white;
-    text-align: center;
-    pointer-events: none;
-}
-
 @media (max-width: 1575px){
     .gridContainer{
         grid-template-columns: repeat(3, 355px);
@@ -130,33 +52,12 @@
         width: 350px;
     }
 
-    .videoContainer{
-        width: 350px;
-    }
 }
 
-
-@media(max-width: 400px){
-    .video{
-        height: 170px;
-    }
-    .loadingContainer{
-        width: 302.22px;
-        height: 170px;
-    }
-}
 
 @media(max-width: 380px){
     .gridContainer{
         width: 302px;
         grid-template-columns: 302px
-    }
-    .videoContainer{
-        width: 100%;
-        height: 170px;
-    }
-
-    .thumbnail{
-        height: 170px;
     }
 }
