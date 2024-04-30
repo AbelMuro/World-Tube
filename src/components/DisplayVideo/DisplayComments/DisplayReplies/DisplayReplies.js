@@ -10,7 +10,7 @@ import UserInfo from './UserInfo';
 
 function DisplayReplies({userID, videoID, commentID}){
     const commentReplyCollection = collection(firestore, `${userID}/${videoID}/commentSection/${commentID}/commentReplies`);
-    const q = query(commentReplyCollection, orderBy("order", "desc"))
+    const q = query(commentReplyCollection, orderBy("order"))
     const [allReplies, loadingReplies] = useCollectionData(q);
 
 
