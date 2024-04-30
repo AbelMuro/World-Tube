@@ -37,12 +37,7 @@ function LogInPage () {
             if(email == "") throw {message: "email is empty"};
             if(password == "") throw {message: "password is empty"};
             await signInWithEmailAndPassword(auth, email, password)
-            if(auth.currentUser.emailVerified) 
-                navigate("/account-page");
-            else{
-                alert("Please verify your email")
-                signOut(auth);
-            }
+            navigate("/account-page");
         }
         catch(error){
             if(error.message == "Firebase: Error (auth/user-not-found).")
@@ -78,7 +73,6 @@ function LogInPage () {
                 alert("Your Google username is already being used by someone else, please change it if you want to log in with Google");
                 signOut();
             }
-
             console.log(error);
         }
     }

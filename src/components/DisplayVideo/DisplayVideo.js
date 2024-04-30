@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './styles.module.css';
 import CommentBox from './CommentBox';
 import DisplayComments from './DisplayComments';
@@ -27,7 +27,7 @@ function DisplayVideo() {
                 <h1 className={styles.title}>
                     {videoData.title}
                 </h1>
-                <UserInfo video={videoData}/>
+                <UserInfo userID={videoData.userID}/>
                 <div className={styles.timeStamp}>
                     <p className={styles.timeStampTitle}>
                         Posted on: 

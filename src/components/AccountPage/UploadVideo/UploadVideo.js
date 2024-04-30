@@ -87,13 +87,10 @@ function UploadVideo({user}) {
         }
 
         try{
-            //setLoading(true);
-            //dispatch({type: "loading start"});
-
+            setLoading(true);
             //using a canvas to create a thumbnail from the video being uploaded
             const videoRef = document.querySelector("." + styles.video);
             const dimensions = videoRef.getBoundingClientRect(); 
-            const isHeightBiggerThanWidth = dimensions.height > dimensions.width;
             const canvas = document.createElement("canvas");
             canvas.setAttribute("width", dimensions.width);
             canvas.setAttribute("height", dimensions.height);
@@ -109,14 +106,19 @@ function UploadVideo({user}) {
             let currentMinutes = currentDate.getMinutes();
             currentMinutes = currentMinutes.toString().length == 1 ? `0${currentMinutes}` : currentMinutes;
             const AmOrPm = currentDate.getHours() >= 12 ? "PM" : "AM";
-            //uploading the video onto the storage and then getting the URL of that video
+
+            //uploading the video onto the storage
             const ref = storageRef(storage, `/${user.uid}/${video[0].name}`);  
             let {metadata} = await uploadFile(ref, video[0]);      
-            let url = await getDownloadURL(ref); //getting the url of the video in the storage                           
+
+            //getting the url of the video in the storage    
+            let url = await getDownloadURL(ref);                        
             const videoID = metadata.md5Hash.replace("/", "");
+
             //referencing two collections, the users personal collection and the developers collection
             const usersDocument = doc(firestore,`${user.uid}`, `${videoID}`);
             const developersDocument = doc(firestore, "developers collection", `allVideos/videoCollection/${videoID}`);
+
             //creating an object that contains all the meta data of the video being uploaded
             const videoData = {                                              
                 username: user.displayName,
@@ -131,7 +133,6 @@ function UploadVideo({user}) {
                 order: millisecondsSince1970,
                 thumbnail: imageURL,
                 resolution: videoRef.videoHeight,
-                isHeightBiggerThanWidth : isHeightBiggerThanWidth
             }
             //storing the object into the firestore
             await setDoc(usersDocument, videoData)
@@ -152,15 +153,14 @@ function UploadVideo({user}) {
         }
     }
 
-    //TODO: find a way to improve the quality of the thumbnail by increasing the size of the videoo tag
     useEffect(() => {
-        if(video.length == 0) return;
+        if(video.length === 0) return;
         
         const videoElement = document.createElement("video");
         videoElement.setAttribute("class", styles.video);
         const sourceElement = document.createElement("source");
         sourceElement.setAttribute("size", 1080);
-        sourceElement.setAttribute("src",URL.createObjectURL(video[0]) + "#t=5");
+        sourceElement.setAttribute("src", URL.createObjectURL(video[0]) + "#t=5");
         videoElement.appendChild(sourceElement);
         const videoContainer = document.querySelector("." + styles.videoContainer);
         if(videoContainer.firstElementChild) videoContainer.removeChild(videoContainer.firstElementChild)

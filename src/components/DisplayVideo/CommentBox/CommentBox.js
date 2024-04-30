@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {Stack, TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
-import {firestore, auth} from '../../Firebase-config';
+import {firestore, auth} from '~/components/Firebase-config';
 import {setDoc, doc} from 'firebase/firestore';
 import {v4 as uuid} from 'uuid';
 import {useAuthState} from 'react-firebase-hooks/auth';
-import emptyAvatar from './images/empty avatar.png';
 import {useMediaQuery} from '@mui/material';
 
 const StyledButton = styled(Button)`

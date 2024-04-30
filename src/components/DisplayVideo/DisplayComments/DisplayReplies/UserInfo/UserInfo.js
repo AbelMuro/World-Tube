@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './styles.module.css';
 import icons from '~/common/Icons';
+import {doc} from 'firebase/firestore';
+import { useDocumentData } from 'react-firebase-hooks/firestore';
+import {firestore} from '~/components/Firebase-config';
 
 function UserInfo({userID}) {
     const docRef = doc(firestore, `${userID}/userInfo`);

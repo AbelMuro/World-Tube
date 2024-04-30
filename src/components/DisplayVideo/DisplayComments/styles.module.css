@@ -5,6 +5,14 @@
     margin: 10px 0px;
 }
 
+.loadingCircle{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .displayComments{
     position: relative;
 }
@@ -65,6 +73,8 @@
         padding-top: 30px;
         height: 123px;
         overflow: hidden;
+        width: 87%;
+        margin: 10px auto 0px auto;
     }
 }
 
