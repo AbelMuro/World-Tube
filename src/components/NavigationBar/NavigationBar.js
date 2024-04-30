@@ -87,11 +87,11 @@ function NavigationBar() {
 
                 <div className={styles.accountItems}>        
                     <SearchBox/>
-                    {user ? <a className={styles.accountLink} onClick={user.emailVerified ? handleAccount : handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a> : 
+                    {user ? <a className={styles.accountLink} onClick={handleAccount} title="Account"><AccountCircleIcon fontSize="large"/></a> : 
                      <a className={styles.accountLink} onClick={handleLogin} title="Account"><AccountCircleIcon fontSize="large"/></a>}
 
                     {user ? 
-                    <StyledButton onClick={user.emailVerified ? handleSignOut : handleCreateAccount}>Sign Out</StyledButton> : 
+                    <StyledButton onClick={handleSignOut}>Sign Out</StyledButton> : 
                     <StyledButton className={styles.signUpButton} onClick={handleCreateAccount}>Sign Up</StyledButton>}
                 </div>
             </section>

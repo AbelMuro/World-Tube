@@ -4,10 +4,9 @@ import {TextField, Button} from '@mui/material';
 import {styled} from '@mui/system';
 import googleIcon from './images/google icon.png';
 import {signInWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider, updateProfile} from 'firebase/auth';
-import {doc, getDoc, setDoc} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
 import {auth, firestore} from '../Firebase-config';
 import { useNavigate } from 'react-router-dom';
-
 
 const StyledButton = styled(Button)`
     background-color: #F4F3F3;
