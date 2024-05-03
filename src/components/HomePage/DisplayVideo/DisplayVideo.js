@@ -2,12 +2,14 @@ import React, {useRef, useState, useEffect} from 'react';
 import styles from './styles.module.css';
 import { useNavigate } from 'react-router-dom';
 import UserInfo from './UserInfo';
+import { CircularProgress } from '@mui/material';
 
 function DisplayVideo({video}) {
     const [hover, setHover] = useState(false);
     const [play, setPlay] = useState(false);
     const [message, setMessage] = useState(false);
     const [thumbnail, setThumbnail] = useState(true);
+    const [loading, setLoading] = useState(false);
     const videoPlayback = useRef();
     const navigate = useNavigate();
 
@@ -20,6 +22,14 @@ function DisplayVideo({video}) {
         e.target.style.zIndex = 0;
         setHover(false);
     } 
+
+    const handleLoadStart = () => {
+        setLoading(true);
+    }
+
+    const handleLoadFinish = () => {
+        setLoading(false)
+    }
 
     const handleNavigate = (e) => {
         navigate(`/${video.title}`, {state: video});
@@ -64,7 +74,7 @@ function DisplayVideo({video}) {
                     {thumbnail && 
                         <img src={video.thumbnail} className={styles.thumbnail}/>}
                     {play && 
-                        <video className={styles.video} muted controls={false}>
+                        <video className={styles.video} muted controls={false} onLoadStart={handleLoadStart} onLoadedData={handleLoadFinish}>
                             <source src={video.url}/>
                             Your browser doesn't support videos    
                         </video>}
@@ -72,6 +82,7 @@ function DisplayVideo({video}) {
                         <p className={styles.keepHovering}>
                             Keep hovering to play..
                         </p>}
+                    {loading && <CircularProgress/>}
             </div>
             <h2 className={styles.videoTitle}>
                 {video.title}
