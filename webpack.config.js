@@ -11,7 +11,8 @@ module.exports = {
     },
     plugins: [                      
         new HtmlWebpackPlugin({               
-            filename: 'index.html',          
+            filename: 'index.html',      
+            favicon: './src/images/world view.png',    
             template: './src/index.html'      
         }),
         new dotenv({systemvars: true})
